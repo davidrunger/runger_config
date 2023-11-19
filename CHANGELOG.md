@@ -1,3 +1,6 @@
+## Unreleased
+[no unreleased changes yet]
+
 # Change log
 
 ## v2.6.0 (2023-11-19)
