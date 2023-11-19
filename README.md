@@ -1,7 +1,7 @@
 [![Cult Of Martians](http://cultofmartians.com/assets/badges/badge.svg)](https://cultofmartians.com/tasks/anyway-config-options-parse.html#task)
-[![Gem Version](https://badge.fury.io/rb/anyway_config.svg)](https://rubygems.org/gems/anyway_config) [![Build](https://github.com/palkan/anyway_config/workflows/Build/badge.svg)](https://github.com/palkan/anyway_config/actions)
-[![JRuby Build](https://github.com/palkan/anyway_config/workflows/JRuby%20Build/badge.svg)](https://github.com/palkan/anyway_config/actions)
-[![TruffleRuby Build](https://github.com/palkan/anyway_config/workflows/TruffleRuby%20Build/badge.svg)](https://github.com/palkan/anyway_config/actions)
+[![Gem Version](https://badge.fury.io/rb/runger_config.svg)](https://rubygems.org/gems/runger_config) [![Build](https://github.com/davidrunger/runger_config/workflows/Build/badge.svg)](https://github.com/davidrunger/runger_config/actions)
+[![JRuby Build](https://github.com/davidrunger/runger_config/workflows/JRuby%20Build/badge.svg)](https://github.com/davidrunger/runger_config/actions)
+[![TruffleRuby Build](https://github.com/davidrunger/runger_config/workflows/TruffleRuby%20Build/badge.svg)](https://github.com/davidrunger/runger_config/actions)
 
 # Anyway Config
 
@@ -20,14 +20,14 @@ For application developers, Anyway Config could be useful to:
 - **Free code of ENV/credentials/secrets dependency** and use configuration classes instead—your code should not rely on configuration data sources.
 
 **NOTE:** this readme shows documentation for 2.x version.
-For version 1.x see the [1-4-stable branch](https://github.com/palkan/anyway_config/tree/1-4-stable).
+For version 1.x see the [1-4-stable branch](https://github.com/davidrunger/runger_config/tree/1-4-stable).
 
-<a href="https://evilmartians.com/?utm_source=anyway_config">
+<a href="https://evilmartians.com/?utm_source=runger_config">
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54"></a>
 
 ## Links
 
-- [Anyway Config: Keep your Ruby configuration sane](https://evilmartians.com/chronicles/anyway-config-keep-your-ruby-configuration-sane?utm_source=anyway_config)
+- [Anyway Config: Keep your Ruby configuration sane](https://evilmartians.com/chronicles/anyway-config-keep-your-ruby-configuration-sane?utm_source=runger_config)
 
 ## Table of contents
 
@@ -73,7 +73,7 @@ end
 
 Using Ruby classes to represent configuration allows you to add helper methods and computed parameters easily, makes the configuration **testable**.
 
-The `anyway_config` gem takes care of loading parameters from **different sources** (YAML, credentials/secrets, environment variables, etc.). Internally, we use a _pipeline pattern_ and provide the [Loaders API](#data-loaders) to manage and [extend](#custom-loaders) its functionality.
+The `runger_config` gem takes care of loading parameters from **different sources** (YAML, credentials/secrets, environment variables, etc.). Internally, we use a _pipeline pattern_ and provide the [Loaders API](#data-loaders) to manage and [extend](#custom-loaders) its functionality.
 
 Check out the libraries using Anyway Config for more examples:
 
@@ -81,7 +81,7 @@ Check out the libraries using Anyway Config for more examples:
 - [AnyCable](https://github.com/anycable/anycable)
 - [Sniffer](https://github.com/aderyabin/sniffer)
 - [Blood Contracts](https://github.com/sclinede/blood_contracts)
-- [and others](https://github.com/palkan/anyway_config/network/dependents).
+- [and others](https://github.com/davidrunger/runger_config/network/dependents).
 
 ## Installation
 
@@ -91,7 +91,7 @@ Adding to a gem:
 # my-cool-gem.gemspec
 Gem::Specification.new do |spec|
   # ...
-  spec.add_dependency "anyway_config", ">= 2.0.0"
+  spec.add_dependency "runger_config", ">= 2.0.0"
   # ...
 end
 ```
@@ -100,7 +100,7 @@ Or adding to your project:
 
 ```ruby
 # Gemfile
-gem "anyway_config", "~> 2.0"
+gem "runger_config", "~> 2.0"
 ```
 
 ### Supported Ruby versions
@@ -118,7 +118,7 @@ you can define a schema for your configuration, provide defaults, add validation
 Anyway Config provides a base class to inherit from with a few DSL methods:
 
 ```ruby
-require "anyway_config"
+require "runger_config"
 
 module MyCoolGem
   class Config < Anyway::Config
@@ -372,7 +372,7 @@ development:
 
 ### Multi-env configuration
 
-_⚡️ This feature will be turned on by default in the future releases. You can turn it on now via `config.anyway_config.future.use :unwrap_known_environments`._
+_⚡️ This feature will be turned on by default in the future releases. You can turn it on now via `config.runger_config.future.use :unwrap_known_environments`._
 
 If the YML does not have keys that are one of the "known" Rails environments (development, production, test)—the same configuration will be available in all environments, similar to non-Rails behavior:
 
@@ -385,7 +385,7 @@ port: 3002
 To extend the list of known environments, use the setting in the relevant part of your Rails code:
 
 ```ruby
-Rails.application.config.anyway_config.known_environments << "staging"
+Rails.application.config.runger_config.known_environments << "staging"
 ```
 
 If your YML defines at least a single "environmental" top-level, you _have_ to separate all your settings per-environment. You can't mix and match:
@@ -400,7 +400,7 @@ port: 3002 # This value will not be loaded at all
 To provide default values you can use YAML anchors, but they do not deep-merge settings, so Anyway Config provides a way to define a special top-level key for default values like this:
 
 ```ruby
-config.anyway_config.default_environmental_key = "default"
+config.runger_config.default_environmental_key = "default"
 ```
 
 After that, Anyway Config will start reading settings under the `"default"` key and then merge environmental settings into them.
@@ -419,17 +419,17 @@ staging:
 
 You can specify the lookup path for YAML files in one of the following ways:
 
-- By setting `config.anyway_config.default_config_path` to a target directory path:
+- By setting `config.runger_config.default_config_path` to a target directory path:
 
 ```ruby
-config.anyway_config.default_config_path = "/etc/configs"
-config.anyway_config.default_config_path = Rails.root.join("etc", "configs")
+config.runger_config.default_config_path = "/etc/configs"
+config.runger_config.default_config_path = Rails.root.join("etc", "configs")
 ```
 
-- By setting `config.anyway_config.default_config_path` to a Proc, which accepts a config name and returns the path:
+- By setting `config.runger_config.default_config_path` to a Proc, which accepts a config name and returns the path:
 
 ```ruby
-config.anyway_config.default_config_path = ->(name) { Rails.root.join("data", "configs", "#{name}.yml") }
+config.runger_config.default_config_path = ->(name) { Rails.root.join("data", "configs", "#{name}.yml") }
 ```
 
 - By overriding a specific config YML file path via the `<NAME>_CONF` env variable, e.g., `MYCOOLGEM_CONF=path/to/cool.yml`
@@ -494,13 +494,13 @@ You can configure the configs folder path:
 
 ```ruby
 # The path must be relative to Rails root
-config.anyway_config.autoload_static_config_path = "path/to/configs"
+config.runger_config.autoload_static_config_path = "path/to/configs"
 ```
 
 **NOTE:** Configs loaded from the `autoload_static_config_path` are **not reloaded in development**. We call them _static_. So, it makes sense to keep only configs necessary for initialization in this folder. Other configs, _dynamic_, could be stored in `app/configs`.
-Or you can store everything in `app/configs` by setting `config.anyway_config.autoload_static_config_path = "app/configs"`.
+Or you can store everything in `app/configs` by setting `config.runger_config.autoload_static_config_path = "app/configs"`.
 
-**NOTE 2**: Since _static_ configs are loaded before initializers, it's not possible to use custom inflection Rules (usually defined in `config/initializers/inflections.rb`) to resolve constant names from files. If you rely on custom inflection rules (see, for example, [#81](https://github.com/palkan/anyway_config/issues/81)), we recommend configuration Rails inflector before initialization as well:
+**NOTE 2**: Since _static_ configs are loaded before initializers, it's not possible to use custom inflection Rules (usually defined in `config/initializers/inflections.rb`) to resolve constant names from files. If you rely on custom inflection rules (see, for example, [#81](https://github.com/davidrunger/runger_config/issues/81)), we recommend configuration Rails inflector before initialization as well:
 
 ```ruby
 # config/application.rb
@@ -549,7 +549,7 @@ Would you like to generate a heroku.yml file? (Y/n) n
 You can also specify the `--app` option to put the newly created class into `app/configs` folder.
 Alternatively, you can call `rails g anyway:app_config name param1 param2 ...`.
 
-**NOTE:** The generated `ApplicationConfig` class uses a singleton pattern along with `delegate_missing_to` to re-use the same instance across the application. However, the delegation can lead to unexpected behaviour and break Anyway Config internals if you have attributes named as `Anyway::Config` class methods. See [#120](https://github.com/palkan/anyway_config/issues/120).
+**NOTE:** The generated `ApplicationConfig` class uses a singleton pattern along with `delegate_missing_to` to re-use the same instance across the application. However, the delegation can lead to unexpected behaviour and break Anyway Config internals if you have attributes named as `Anyway::Config` class methods. See [#120](https://github.com/davidrunger/runger_config/issues/120).
 
 ### Loading Anyway Config before Rails
 
@@ -745,7 +745,7 @@ config at this location, too.
 
 Local configs are meant for using in development and only loaded if `Anyway::Settings.use_local_files` is `true` (which is true by default if `RACK_ENV` or `RAILS_ENV` env variable is equal to `"development"`).
 
-**NOTE:** in Rails apps you can use `Rails.application.configuration.anyway_config.use_local_files`.
+**NOTE:** in Rails apps you can use `Rails.application.configuration.runger_config.use_local_files`.
 
 Don't forget to add `*.local.yml` (and `config/credentials/local.*`) to your `.gitignore`.
 
@@ -904,7 +904,7 @@ conf.to_source_trace["host"]
 #=> {type: :user, called_from: "/path/to/caller.rb:15"}
 ```
 
-You can disable tracing functionality by setting `Anyway::Settings.tracing_enabled = false` or `config.anyway_config.tracing_enabled = false` in Rails.
+You can disable tracing functionality by setting `Anyway::Settings.tracing_enabled = false` or `config.runger_config.tracing_enabled = false` in Rails.
 
 ### Pretty print
 
@@ -1059,7 +1059,7 @@ To use them with Steep, add the following your `Steepfile`:
 ```ruby
 library "pathname"
 library "optparse"
-library "anyway_config"
+library "runger_config"
 ```
 
 We also provide an API to generate a type signature for your config class:
@@ -1114,7 +1114,7 @@ Yeah, a lot of annotations 😞 Welcome to the type-safe world!
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at [https://github.com/palkan/anyway_config](https://github.com/palkan/anyway_config).
+Bug reports and pull requests are welcome on GitHub at [https://github.com/davidrunger/runger_config](https://github.com/davidrunger/runger_config).
 
 ## License
 
