@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module Anyway # :nodoc:
-  VERSION = "2.6.2.alpha"
+  VERSION = "2.7.0"
 end
