@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version = Anyway::VERSION
   s.authors = ["Vladimir Dementyev"]
   s.email = ["dementiev.vm@gmail.com"]
-  s.homepage = "http://github.com/palkan/anyway_config"
+  s.homepage = "http://github.com/davidrunger/anyway_config"
   s.summary = "Configuration DSL for Ruby libraries and applications"
   s.description = %{
     Configuration DSL for Ruby libraries and applications.
@@ -15,12 +15,12 @@ Gem::Specification.new do |s|
   }
 
   s.metadata = {
-    "bug_tracker_uri" => "http://github.com/palkan/anyway_config/issues",
-    "changelog_uri" => "https://github.com/palkan/anyway_config/blob/master/CHANGELOG.md",
-    "documentation_uri" => "http://github.com/palkan/anyway_config",
-    "funding_uri" => "https://github.com/sponsors/palkan",
-    "homepage_uri" => "http://github.com/palkan/anyway_config",
-    "source_code_uri" => "http://github.com/palkan/anyway_config",
+    "bug_tracker_uri" => "http://github.com/davidrunger/anyway_config/issues",
+    "changelog_uri" => "https://github.com/davidrunger/anyway_config/blob/master/CHANGELOG.md",
+    "documentation_uri" => "http://github.com/davidrunger/anyway_config",
+    "funding_uri" => "https://github.com/sponsors/davidrunger",
+    "homepage_uri" => "http://github.com/davidrunger/anyway_config",
+    "source_code_uri" => "http://github.com/davidrunger/anyway_config",
   }
 
   s.metadata.merge!({
