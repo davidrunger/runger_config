@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version = Anyway::VERSION
   s.authors = ["Vladimir Dementyev"]
   s.email = ["dementiev.vm@gmail.com"]
-  s.homepage = "http://github.com/davidrunger/anyway_config"
+  s.homepage = "http://github.com/davidrunger/runger_config"
   s.summary = "Configuration DSL for Ruby libraries and applications"
   s.description = %{
     Configuration DSL for Ruby libraries and applications.
@@ -15,12 +15,12 @@ Gem::Specification.new do |s|
   }
 
   s.metadata = {
-    "bug_tracker_uri" => "http://github.com/davidrunger/anyway_config/issues",
-    "changelog_uri" => "https://github.com/davidrunger/anyway_config/blob/master/CHANGELOG.md",
-    "documentation_uri" => "http://github.com/davidrunger/anyway_config",
+    "bug_tracker_uri" => "http://github.com/davidrunger/runger_config/issues",
+    "changelog_uri" => "https://github.com/davidrunger/runger_config/blob/master/CHANGELOG.md",
+    "documentation_uri" => "http://github.com/davidrunger/runger_config",
     "funding_uri" => "https://github.com/sponsors/davidrunger",
-    "homepage_uri" => "http://github.com/davidrunger/anyway_config",
-    "source_code_uri" => "http://github.com/davidrunger/anyway_config",
+    "homepage_uri" => "http://github.com/davidrunger/runger_config",
+    "source_code_uri" => "http://github.com/davidrunger/runger_config",
   }
 
   s.metadata.merge!({
