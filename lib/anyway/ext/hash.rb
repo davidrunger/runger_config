@@ -8,7 +8,6 @@ module Anyway
         def stringify_keys!
           keys.each do |key|
             value = delete(key)
-            value.stringify_keys! if value.is_a?(::Hash)
             self[key.to_s] = value
           end
 

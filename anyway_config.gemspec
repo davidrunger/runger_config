@@ -3,7 +3,7 @@
 require_relative "lib/anyway/version"
 
 Gem::Specification.new do |s|
-  s.name = "anyway_config"
+  s.name = "runger_config"
   s.version = Anyway::VERSION
   s.authors = ["Vladimir Dementyev"]
   s.email = ["dementiev.vm@gmail.com"]
@@ -18,10 +18,14 @@ Gem::Specification.new do |s|
     "bug_tracker_uri" => "http://github.com/palkan/anyway_config/issues",
     "changelog_uri" => "https://github.com/palkan/anyway_config/blob/master/CHANGELOG.md",
     "documentation_uri" => "http://github.com/palkan/anyway_config",
+    "funding_uri" => "https://github.com/sponsors/palkan",
     "homepage_uri" => "http://github.com/palkan/anyway_config",
     "source_code_uri" => "http://github.com/palkan/anyway_config",
-    "funding_uri" => "https://github.com/sponsors/palkan"
   }
+
+  s.metadata.merge!({
+    "rubygems_mfa_required" => "true",
+  })
 
   s.license = "MIT"
 
