@@ -627,7 +627,7 @@ describe Anyway::Config, type: :config do
                 values:
                   port => 3334 (type=load),
                   host => "test.host" (type=yml path=./config/cool.yml),
-                  user => { 
+                  user => {
                     name => "john" (type=env key=COOL_USER__NAME),
                     password => "root" (type=yml path=./config/cool.yml)
                   }>
@@ -640,14 +640,8 @@ describe Anyway::Config, type: :config do
 
   describe ".config_name" do
     specify "<SomeModule>::Config", :aggregate_failures do
-      # TODO(v3.0): Fix this confusion https://github.com/palkan/anyway_config/issues/104
-      if Gem::Version.new(Anyway::VERSION) >= Gem::Version.new("3.0.0")
-        expect(AnywayTest::Config.config_name).to eq "anyway_test"
-        expect(AnywayTest::Config.env_prefix).to eq "ANYWAY_TEST"
-      else
-        expect(AnywayTest::Config.config_name).to eq "anywaytest"
-        expect(AnywayTest::Config.env_prefix).to eq "ANYWAYTEST"
-      end
+      expect(AnywayTest::Config.config_name).to eq "anyway_test"
+      expect(AnywayTest::Config.env_prefix).to eq "ANYWAY_TEST"
     end
 
     specify "<Some>Config" do
@@ -665,17 +659,20 @@ describe Anyway::Config, type: :config do
       end
     end
 
-    context "non-inferrable name" do
-      let(:config) do
+    context "nested name" do
+      subject(:config) { config_class.new }
+
+      let(:config_class) do
         Class.new(described_class) do
           def self.name
-            "Some::Nested::Config"
+            "SimpleCov::Formatter::Terminal::Config"
           end
         end
       end
 
-      it "raises error" do
-        expect { config.new }.to raise_error(/specify .+ explicitly/)
+      specify do
+        expect(config.config_name).to eq "simple_cov_formatter_terminal"
+        expect(config.env_prefix).to eq "SIMPLE_COV_FORMATTER_TERMINAL"
       end
     end
   end

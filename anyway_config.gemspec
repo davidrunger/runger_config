@@ -43,6 +43,8 @@ Gem::Specification.new do |s|
     s.add_runtime_dependency "ruby-next-core", ">= 0.14.0"
   end
 
+  s.add_runtime_dependency "activesupport", ">= 7.1.2"
+
   s.add_development_dependency "ammeter", "~> 1.1.3"
   s.add_development_dependency "rake", ">= 13.0"
   s.add_development_dependency "rspec", ">= 3.8"

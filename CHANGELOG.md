@@ -1,5 +1,6 @@
 ## Unreleased
-[no unreleased changes yet]
+
+- Support name inference for nested classes
 
 ## v2.6.1 (2023-11-19)
 
