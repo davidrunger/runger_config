@@ -4,6 +4,10 @@ source 'https://rubygems.org'
 
 gem "debug", platform: :mri unless ENV["CI"]
 
+group :development do
+  gem 'runger_release_assistant', require: false
+end
+
 gemspec
 
 eval_gemfile "gemfiles/rubocop.gemfile"

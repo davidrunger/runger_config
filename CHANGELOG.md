@@ -1,6 +1,8 @@
 # Change log
 
-## master
+## 2.5.5 (2023-11-19)
+
+- Don't deep stringify keys
 
 ## 2.5.4 (2023-10-15)
 

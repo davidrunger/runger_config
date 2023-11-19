@@ -21,7 +21,7 @@ describe Anyway::Ext::Hash do
         "a" => 1,
         "b" => "hello",
         "c" => {
-          "id" => 1
+          id: 1
         }
       }
     end
