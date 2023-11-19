@@ -1,6 +1,6 @@
 # Change log
 
-## Unreleased
+## v2.6.0 (2023-11-19)
 
 - Don't deep stringify keys
 
