@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "active_support/all"
 require "anyway/optparse_config"
 require "anyway/dynamic_config"
 
@@ -292,16 +293,12 @@ module Anyway # :nodoc:
             "via `config_name :my_config`"
         end
 
-        # handle two cases:
-        # - SomeModule::Config => "some_module"
-        # - SomeConfig => "some"
-        unless name =~ /^(\w+)(::)?Config$/
+        unless name.underscore.gsub("/", "_") =~ /(\w+)_config\z/
           raise "Couldn't infer config name, please, specify it explicitly " \
             "via `config_name :my_config`"
         end
 
-        # TODO(v3.0): Replace downcase with underscore
-        Regexp.last_match[1].tap(&:downcase!)
+        Regexp.last_match[1].delete_suffix("_config").tap(&:downcase!)
       end
 
       def validate_param_names!(names)

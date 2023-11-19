@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     runger_config (2.6.2.alpha)
+      activesupport (>= 7.1.2)
       ruby-next (>= 0.14.0)
 
 GEM
