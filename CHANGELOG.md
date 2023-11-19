@@ -1,3 +1,6 @@
+## Unreleased
+[no unreleased changes yet]
+
 ## v2.6.1 (2023-11-19)
 
 - Update GitHub links from palkan to davidrunger
