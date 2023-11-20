@@ -3,13 +3,15 @@
 # where 'example' is existing word with the same possible forms (endings) as your word.
 # Example: deduplicate: duplicate
 abstractize
-autoloader
 auto-transpiling
+autoloader
+davidrunger
 Influxer
 mycoolgem
-sources't
-tracing't
-Zeitwerk
-Steepfile
+palkan
 prev
+sources't
+Steepfile
+tracing't
 unprefixed
+Zeitwerk
