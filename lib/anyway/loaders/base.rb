@@ -6,8 +6,8 @@ module Anyway
       include Tracing
 
       class << self
-        def call(local: Anyway::Settings.use_local_files, **opts)
-          new(local:).call(**opts)
+        def call(local: Anyway::Settings.use_local_files, **)
+          new(local:).call(**)
         end
       end
 
@@ -15,7 +15,7 @@ module Anyway
         @local = local
       end
 
-      def use_local?() = @local == true
+      def use_local? = @local == true
     end
   end
 end

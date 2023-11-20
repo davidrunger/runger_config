@@ -20,28 +20,3 @@ jobs:
     - name: Lint Ruby code with RuboCop
       run: |
         bundle exec rubocop
-  steep:
-    runs-on: ubuntu-latest
-    env:
-      BUNDLE_JOBS: 4
-      BUNDLE_RETRY: 3
-      BUNDLE_FORCE_RUBY_PLATFORM: 1
-      CI: true
-    strategy:
-      matrix:
-        ruby: ["3.2"]
-    steps:
-    - uses: actions/checkout@v3
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby }}
-        bundler-cache: true
-    - name: Install RBS collection
-      run: |
-        bundle exec rbs collection install
-    - name: Generate RBS for test config
-      run: |
-        bundle exec rake rbs:generate
-    - name: Run Steep
-      run: |
-        bundle exec rake steep

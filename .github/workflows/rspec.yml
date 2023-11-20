@@ -18,39 +18,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ["3.0"]
-        gemfile: [
-          "gemfiles/rails6.gemfile"
-        ]
-        rbs: ['false']
         include:
         - ruby: "3.2"
           gemfile: "Gemfile"
           rbs: 'true'
-        - ruby: "3.2"
-          gemfile: "gemfiles/rails7.gemfile"
-          rbs: 'false'
-        - ruby: "3.2"
-          gemfile: "gemfiles/railsmaster.gemfile"
-          rbs: 'false'
-        - ruby: "3.1"
-          gemfile: "Gemfile"
-          rbs: 'true'
-        - ruby: "3.1"
-          gemfile: "gemfiles/rails7.gemfile"
-          rbs: 'false'
-        - ruby: "3.1"
-          gemfile: "gemfiles/railsmaster.gemfile"
-          rbs: 'false'
-        - ruby: "2.5"
-          gemfile: "gemfiles/rails5.gemfile"
-          rbs: 'false'
-        - ruby: "2.7"
-          gemfile: "gemfiles/rails5.gemfile"
-          rbs: 'false'
-        - ruby: "2.6"
-          gemfile: "gemfiles/rails6.gemfile"
-          rbs: 'false'
     steps:
     - uses: actions/checkout@v3
     - uses: ruby/setup-ruby@v1
@@ -58,8 +29,6 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
         bundler: 2.2.15
         bundler-cache: true
-    - name: Run Ruby Next
-      run: bundle exec rake nextify
     - name: Run RSpec
       run: |
         bundle exec rake spec

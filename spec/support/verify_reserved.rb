@@ -2,8 +2,6 @@
 
 return unless ENV["VERIFY_RESERVED"] == "1"
 
-require "set"
-
 called_methods = Set.new
 lib_path = File.realpath(File.join(File.dirname(__FILE__), "..", "..", "lib"))
 

@@ -20,35 +20,26 @@ Gem::Specification.new do |s|
     "documentation_uri" => "http://github.com/davidrunger/runger_config",
     "funding_uri" => "https://github.com/sponsors/davidrunger",
     "homepage_uri" => "http://github.com/davidrunger/runger_config",
-    "source_code_uri" => "http://github.com/davidrunger/runger_config",
+    "source_code_uri" => "http://github.com/davidrunger/runger_config"
   }
 
   s.metadata.merge!({
-    "rubygems_mfa_required" => "true",
+    "rubygems_mfa_required" => "true"
   })
 
   s.license = "MIT"
 
-  s.files = Dir.glob("lib/**/*") + Dir.glob("lib/.rbnext/**/*") +
+  s.files = Dir.glob("lib/**/*") +
     Dir.glob("bin/**/*") + %w[sig/anyway_config.rbs sig/manifest.yml] +
     %w[README.md LICENSE.txt CHANGELOG.md]
   s.require_paths = ["lib"]
-  s.required_ruby_version = ">= 2.5"
-
-  # When gem is installed from source, we add `ruby-next` as a dependency
-  # to auto-transpile source files during the first load
-  if ENV["RELEASING_ANYWAY"].nil? && File.directory?(File.join(__dir__, ".git"))
-    s.add_runtime_dependency "ruby-next", ">= 0.14.0"
-  else
-    s.add_runtime_dependency "ruby-next-core", ">= 0.14.0"
-  end
+  s.required_ruby_version = ">= 3.2.2"
 
   s.add_runtime_dependency "activesupport", ">= 7.1.2"
 
   s.add_development_dependency "ammeter", "~> 1.1.3"
   s.add_development_dependency "rake", ">= 13.0"
   s.add_development_dependency "rspec", ">= 3.8"
-  s.add_development_dependency "ruby-next", ">= 0.14.0"
   s.add_development_dependency "webmock", "~> 3.18"
   s.add_development_dependency "ejson", ">= 1.3.1"
 end

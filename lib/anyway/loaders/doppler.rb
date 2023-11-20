@@ -5,8 +5,6 @@ require "net/http"
 require "json"
 
 module Anyway
-  using RubyNext
-
   module Loaders
     class Doppler < Base
       class RequestError < StandardError; end

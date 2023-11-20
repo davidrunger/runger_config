@@ -37,7 +37,6 @@ Gemfile.local*
 *.gem
 
 tmp/
-.rbnext/
 gemfiles/*.lock
 
 .gem_rbs_collection/

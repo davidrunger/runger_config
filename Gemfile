@@ -2,9 +2,8 @@
 
 source 'https://rubygems.org'
 
-gem "debug", platform: :mri unless ENV["CI"]
-
 group :development do
+  gem 'pry-byebug'
   gem 'runger_release_assistant', require: false
 end
 

@@ -5,7 +5,6 @@ require "anyway/optparse_config"
 require "anyway/dynamic_config"
 
 module Anyway # :nodoc:
-  using RubyNext
   using Anyway::Ext::DeepDup
   using Anyway::Ext::DeepFreeze
   using Anyway::Ext::Hash
@@ -13,7 +12,7 @@ module Anyway # :nodoc:
 
   using(Module.new do
     refine Object do
-      def vm_object_id() = (object_id << 1).to_s(16)
+      def vm_object_id = (object_id << 1).to_s(16)
     end
   end)
 
@@ -186,7 +185,7 @@ module Anyway # :nodoc:
           end
       end
 
-      def explicit_config_name?() = !explicit_config_name.nil?
+      def explicit_config_name? = !explicit_config_name.nil?
 
       def env_prefix(val = nil)
         return (@env_prefix = val.to_s.upcase) unless val.nil?
@@ -212,7 +211,7 @@ module Anyway # :nodoc:
         end
       end
 
-      def new_empty_config() = {}
+      def new_empty_config = {}
 
       def coerce_types(mapping)
         Utils.deep_merge!(coercion_mapping, mapping)
@@ -386,16 +385,16 @@ module Anyway # :nodoc:
       self
     end
 
-    def load_from_sources(base_config, **options)
+    def load_from_sources(base_config, **)
       Anyway.loaders.each do |(_id, loader)|
-        Utils.deep_merge!(base_config, loader.call(**options))
+        Utils.deep_merge!(base_config, loader.call(**))
       end
       base_config
     end
 
-    def dig(*keys) = values.dig(*keys)
+    def dig(*) = values.dig(*)
 
-    def to_h() = values.deep_dup.deep_freeze
+    def to_h = values.deep_dup.deep_freeze
 
     def dup
       self.class.allocate.tap do |new_config|
@@ -412,7 +411,7 @@ module Anyway # :nodoc:
 
     def deconstruct_keys(keys) = values.deconstruct_keys(keys)
 
-    def to_source_trace() = __trace__&.to_h
+    def to_source_trace = __trace__&.to_h
 
     def inspect
       "#<#{self.class}:0x#{vm_object_id.rjust(16, "0")} config_name=\"#{config_name}\" env_prefix=\"#{env_prefix}\" " \

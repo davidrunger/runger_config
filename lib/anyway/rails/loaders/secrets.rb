@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 module Anyway
-  using RubyNext
-
   module Rails
     module Loaders
       class Secrets < Anyway::Loaders::Base

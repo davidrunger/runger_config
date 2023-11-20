@@ -4,8 +4,6 @@
 # when Anyway Config is loaded before Rails (e.g., in config/puma.rb).
 module Anyway
   module Rails
-    using RubyNext
-
     class << self
       attr_reader :tracer, :name_method
       attr_accessor :disable_postponed_load_warning
