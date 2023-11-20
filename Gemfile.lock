@@ -92,6 +92,8 @@ GEM
     base64 (0.2.0)
     bigdecimal (3.1.4)
     builder (3.2.4)
+    byebug (11.1.3)
+    coderay (1.1.3)
     concurrent-ruby (1.2.2)
     connection_pool (2.4.1)
     crack (0.4.5)
@@ -99,9 +101,6 @@ GEM
     crass (1.0.6)
     csv (3.2.8)
     date (3.3.4)
-    debug (1.8.0)
-      irb (>= 1.5.0)
-      reline (>= 0.3.1)
     diff-lcs (1.5.0)
     drb (2.2.0)
       ruby2_keywords
@@ -135,6 +134,7 @@ GEM
       net-smtp
     marcel (1.0.2)
     memo_wise (1.8.0)
+    method_source (1.0.0)
     mini_mime (1.1.5)
     mini_portile2 (2.8.5)
     minitest (5.20.0)
@@ -156,6 +156,12 @@ GEM
     parser (3.2.2.4)
       ast (~> 2.4.1)
       racc
+    pry (0.14.2)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
+    pry-byebug (3.10.1)
+      byebug (~> 11.0)
+      pry (>= 0.13, < 0.15)
     psych (5.1.1.1)
       stringio
     public_suffix (5.0.4)
@@ -317,8 +323,8 @@ PLATFORMS
 
 DEPENDENCIES
   ammeter (~> 1.1.3)
-  debug
   ejson (>= 1.3.1)
+  pry-byebug
   rails (~> 7.0)
   rake (>= 13.0)
   rbs (~> 3.0)!
