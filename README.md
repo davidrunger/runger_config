@@ -368,7 +368,7 @@ development:
   port: 3000
 ```
 
-**NOTE:** You can override the environment name for configuration files via the `ANYWAY_ENV` environment variable or by setting it explicitly in the code: `Runger::Settings.current_environment = "some_other_env"`.
+**NOTE:** You can override the environment name for configuration files via the `RUNGER_ENV` environment variable or by setting it explicitly in the code: `Runger::Settings.current_environment = "some_other_env"`.
 
 ### Multi-env configuration
 
@@ -572,7 +572,7 @@ If you want to enable this feature you must specify `Runger::Settings.current_en
 Runger::Settings.current_environment = "development"
 ```
 
-You can also specify the `ANYWAY_ENV=development` environment variable to set the current environment for configuration.
+You can also specify the `RUNGER_ENV=development` environment variable to set the current environment for configuration.
 
 YAML files should be in this format:
 
@@ -768,7 +768,7 @@ Runger::Loaders::Doppler.download_url = "https://api.doppler.com/v3/configs/conf
 Runger::Loaders::Doppler.token = ENV["DOPPLER_TOKEN"]
 ```
 
-**NOTE:** You can opt-out from Doppler loader by specifying the`ANYWAY_CONFIG_DISABLE_DOPPLER=true` env var (in case you have the `DOPPLER_TOKEN` env var, but don't want to use it with Runger Config).
+**NOTE:** You can opt-out from Doppler loader by specifying the`RUNGER_CONFIG_DISABLE_DOPPLER=true` env var (in case you have the `DOPPLER_TOKEN` env var, but don't want to use it with Runger Config).
 
 ### EJSON support
 

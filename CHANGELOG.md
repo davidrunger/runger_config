@@ -54,7 +54,7 @@ Fixes [#134](https://github.com/palkan/runger_config/issues/134).
 
 ## 2.4.2 (2023-06-07)
 
-- Use ANYWAY_ENV as the current environment if defined. ([@palkan][])
+- Use RUNGER_ENV as the current environment if defined. ([@palkan][])
 
 It can be used to specify environment for configs independently of Rails environment.
 

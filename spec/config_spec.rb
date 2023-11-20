@@ -338,7 +338,7 @@ describe Runger::Config, type: :config do
     let(:conf) { RungerTest::Config.new }
 
     around do |ex|
-      with_env("ANYWAY_TEST_CONF" => File.join(File.dirname(__FILE__), "runger.yml"), &ex)
+      with_env("RUNGER_TEST_CONF" => File.join(File.dirname(__FILE__), "runger.yml"), &ex)
     end
 
     it "has getters", :aggregate_failures do
@@ -350,10 +350,10 @@ describe Runger::Config, type: :config do
 
     it "works", :aggregate_failures do
       with_env(
-        "ANYWAY_TEST_API__KEY" => "test1",
-        "ANYWAY_TEST_TEST" => "test",
-        "ANYWAY_TEST_LOG__FORMAT__COLOR" => "t",
-        "ANYWAY_TEST_LOG_LEVELS" => "debug,warning,info"
+        "RUNGER_TEST_API__KEY" => "test1",
+        "RUNGER_TEST_TEST" => "test",
+        "RUNGER_TEST_LOG__FORMAT__COLOR" => "t",
+        "RUNGER_TEST_LOG_LEVELS" => "debug,warning,info"
       ) do
         expect(conf.api["key"]).to eq "test1"
         expect(conf.api["endpoint"]).to eq "localhost"
@@ -370,10 +370,10 @@ describe Runger::Config, type: :config do
       expect { conf.log["format"]["color"] }.to raise_error(NoMethodError)
 
       with_env(
-        "ANYWAY_TEST_API__KEY" => "test1",
-        "ANYWAY_TEST_API__SSL" => "yes",
-        "ANYWAY_TEST_TEST" => "test",
-        "ANYWAY_TEST_LOG__FORMAT__COLOR" => "t"
+        "RUNGER_TEST_API__KEY" => "test1",
+        "RUNGER_TEST_API__SSL" => "yes",
+        "RUNGER_TEST_TEST" => "test",
+        "RUNGER_TEST_LOG__FORMAT__COLOR" => "t"
       ) do
         conf.reload
         expect(conf.api["key"]).to eq "test1"
@@ -398,10 +398,10 @@ describe Runger::Config, type: :config do
         expect(conf.log["format"]["color"]).to eq true
 
         with_env(
-          "ANYWAY_TEST_API__KEY" => "test1",
-          "ANYWAY_TEST_API__SSL" => "yes",
-          "ANYWAY_TEST_TEST" => "test",
-          "ANYWAY_TEST_LOG__FORMAT__COLOR" => "t"
+          "RUNGER_TEST_API__KEY" => "test1",
+          "RUNGER_TEST_API__SSL" => "yes",
+          "RUNGER_TEST_TEST" => "test",
+          "RUNGER_TEST_LOG__FORMAT__COLOR" => "t"
         ) do
           conf.reload
           expect(conf.api["key"]).to eq "test1"
@@ -435,7 +435,7 @@ describe Runger::Config, type: :config do
       end
 
       it "handle ENV in YML thru ERB" do
-        with_env("ANYWAY_COOL_PORT" => "1957") do
+        with_env("RUNGER_COOL_PORT" => "1957") do
           expect(conf.port).to eq 1957
         end
       end
@@ -641,7 +641,7 @@ describe Runger::Config, type: :config do
   describe ".config_name" do
     specify "<SomeModule>::Config", :aggregate_failures do
       expect(RungerTest::Config.config_name).to eq "runger_test"
-      expect(RungerTest::Config.env_prefix).to eq "ANYWAY_TEST"
+      expect(RungerTest::Config.env_prefix).to eq "RUNGER_TEST"
     end
 
     specify "<Some>Config" do

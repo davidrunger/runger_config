@@ -34,7 +34,7 @@ describe Runger::Loaders::YAML do
             "name" => "root",
             "password" => "root"
           },
-          "port" => "<%= ENV['ANYWAY_COOL_PORT'] || 9292 %>"
+          "port" => "<%= ENV['RUNGER_COOL_PORT'] || 9292 %>"
         }
       )
     end

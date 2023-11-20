@@ -35,7 +35,7 @@ module Runger # :nodoc:
   loaders.append :ejson, Loaders::EJSON if Utils.which("ejson")
   loaders.append :env, Loaders::Env
 
-  if ENV.key?("DOPPLER_TOKEN") && ENV["ANYWAY_CONFIG_DISABLE_DOPPLER"] != "true"
+  if ENV.key?("DOPPLER_TOKEN") && ENV["RUNGER_CONFIG_DISABLE_DOPPLER"] != "true"
     loaders.append :doppler, Loaders::Doppler
   end
 end
