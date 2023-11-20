@@ -1,6 +1,7 @@
 ## Unreleased
 
-- Rename from Anyway Config to Runger Config
+- [BREAKING] Rename from Anyway Config to Runger Config
+  - You will now need to `require 'runger_config'`, rather than `require 'anyway_config'`
 
 ## v3.0.1 (2023-11-19)
 
