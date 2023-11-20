@@ -1,3 +1,5 @@
+# Changelog
+
 ## Unreleased
 
 - [BREAKING] Remove ruby-next and support for older Ruby versions
