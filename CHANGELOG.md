@@ -1,5 +1,6 @@
 ## Unreleased
-[no unreleased changes yet]
+
+- [BREAKING] Remove ruby-next and support for older Ruby versions
 
 ## v2.7.0 (2023-11-19)
 
