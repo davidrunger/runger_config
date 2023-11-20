@@ -1,3 +1,6 @@
+## Unreleased
+[no unreleased changes yet]
+
 # Changelog
 
 ## v3.0.0 (2023-11-19)
