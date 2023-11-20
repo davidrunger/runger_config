@@ -2,8 +2,8 @@
 
 require "spec_helper"
 
-describe "Anyway::Rails::Loaders::Secrets", :rails, :secrets, skip: (NORAILS || !Rails.application.respond_to?(:secrets)) do
-  subject { Anyway::Rails::Loaders::Secrets.call(**options) }
+describe "Runger::Rails::Loaders::Secrets", :rails, :secrets, skip: (NORAILS || !Rails.application.respond_to?(:secrets)) do
+  subject { Runger::Rails::Loaders::Secrets.call(**options) }
 
   let(:options) { {name: "cool", some_other: "value"} }
 

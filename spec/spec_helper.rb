@@ -16,7 +16,7 @@ begin
 
     require "anyway_config"
 
-    Anyway::Settings.use_local_files = false
+    Runger::Settings.use_local_files = false
   else
     ENV["RAILS_ENV"] = "test"
 

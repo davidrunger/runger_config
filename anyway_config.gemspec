@@ -4,7 +4,7 @@ require_relative "lib/anyway/version"
 
 Gem::Specification.new do |s|
   s.name = "runger_config"
-  s.version = Anyway::VERSION
+  s.version = Runger::VERSION
   s.authors = ["Vladimir Dementyev"]
   s.email = ["dementiev.vm@gmail.com"]
   s.homepage = "http://github.com/davidrunger/runger_config"

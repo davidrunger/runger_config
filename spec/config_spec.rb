@@ -2,9 +2,9 @@
 
 require "spec_helper"
 
-describe Anyway::Config, type: :config do
+describe Runger::Config, type: :config do
   let(:conf) { CoolConfig.new }
-  let(:test_conf) { Anyway::TestConfig.new }
+  let(:test_conf) { Runger::TestConfig.new }
 
   context "config with explicit name", :rails do
     specify { expect(CoolConfig.config_name).to eq "cool" }
@@ -73,7 +73,7 @@ describe Anyway::Config, type: :config do
 
     context "instance variables" do
       it "populates instance variables in < 2.1.0" do
-        if Gem::Version.new(Anyway::VERSION) >= Gem::Version.new("2.1.0")
+        if Gem::Version.new(Runger::VERSION) >= Gem::Version.new("2.1.0")
           expect(conf.host).not_to be_nil
           expect(conf.instance_variable_get(:@host)).to be_nil
         else
@@ -255,7 +255,7 @@ describe Anyway::Config, type: :config do
 
         context "with config class as a type" do
           let(:subconf) do
-            Class.new(AnywayTest::Config) do
+            Class.new(RungerTest::Config) do
               config_name "test"
               env_prefix "COOL_TEST"
             end
@@ -335,7 +335,7 @@ describe Anyway::Config, type: :config do
   end
 
   context "without Rails", :norails do
-    let(:conf) { AnywayTest::Config.new }
+    let(:conf) { RungerTest::Config.new }
 
     around do |ex|
       with_env("ANYWAY_TEST_CONF" => File.join(File.dirname(__FILE__), "anyway.yml"), &ex)
@@ -386,9 +386,9 @@ describe Anyway::Config, type: :config do
 
     context "when using local files" do
       around do |ex|
-        Anyway::Settings.use_local_files = true
+        Runger::Settings.use_local_files = true
         ex.run
-        Anyway::Settings.use_local_files = false
+        Runger::Settings.use_local_files = false
       end
 
       it "load config local from local file" do
@@ -414,7 +414,7 @@ describe Anyway::Config, type: :config do
     end
 
     context "config without keys" do
-      let(:empty_config_class) { Class.new(Anyway::Config) }
+      let(:empty_config_class) { Class.new(Runger::Config) }
 
       it "raises error" do
         expect { empty_config_class.new }.to raise_error(/specify config name explicitly/)
@@ -442,9 +442,9 @@ describe Anyway::Config, type: :config do
 
       context "when using local files" do
         around do |ex|
-          Anyway::Settings.use_local_files = true
+          Runger::Settings.use_local_files = true
           ex.run
-          Anyway::Settings.use_local_files = false
+          Runger::Settings.use_local_files = false
         end
 
         it "load config local from local file" do
@@ -517,9 +517,9 @@ describe Anyway::Config, type: :config do
 
       context "when tracing is disabled" do
         around do |ex|
-          Anyway::Settings.tracing_enabled = false
+          Runger::Settings.tracing_enabled = false
           ex.run
-          Anyway::Settings.tracing_enabled = true
+          Runger::Settings.tracing_enabled = true
         end
 
         it "returns nil" do
@@ -627,7 +627,7 @@ describe Anyway::Config, type: :config do
                 values:
                   port => 3334 (type=load),
                   host => "test.host" (type=yml path=./config/cool.yml),
-                  user => { 
+                  user => {
                     name => "john" (type=env key=COOL_USER__NAME),
                     password => "root" (type=yml path=./config/cool.yml)
                   }>
@@ -640,8 +640,8 @@ describe Anyway::Config, type: :config do
 
   describe ".config_name" do
     specify "<SomeModule>::Config", :aggregate_failures do
-      expect(AnywayTest::Config.config_name).to eq "anyway_test"
-      expect(AnywayTest::Config.env_prefix).to eq "ANYWAY_TEST"
+      expect(RungerTest::Config.config_name).to eq "anyway_test"
+      expect(RungerTest::Config.env_prefix).to eq "ANYWAY_TEST"
     end
 
     specify "<Some>Config" do
@@ -780,12 +780,12 @@ describe Anyway::Config, type: :config do
       subject { config.new(values) }
 
       it "raises ValidationError" do
-        expect { subject }.to raise_error(Anyway::Config::ValidationError, %r{missing or empty: test, ldap.user_dn})
+        expect { subject }.to raise_error(Runger::Config::ValidationError, %r{missing or empty: test, ldap.user_dn})
       end
     end
 
     context "with variety of required attributes combinations with env option" do
-      before { allow(Anyway::Settings).to receive(:current_environment).and_return("production") }
+      before { allow(Runger::Settings).to receive(:current_environment).and_return("production") }
 
       let(:app_config) do
         Class.new(described_class) do
@@ -829,7 +829,7 @@ describe Anyway::Config, type: :config do
 
       shared_examples "raises ValidationError" do
         it "raises ValidationError" do
-          expect { subject }.to raise_error(Anyway::Config::ValidationError, error_msg)
+          expect { subject }.to raise_error(Runger::Config::ValidationError, error_msg)
         end
       end
 
@@ -884,7 +884,7 @@ describe Anyway::Config, type: :config do
       end
 
       context "when current env match env option under except key" do
-        before { allow(Anyway::Settings).to receive(:current_environment).and_return("test") }
+        before { allow(Runger::Settings).to receive(:current_environment).and_return("test") }
 
         let(:missed_keys) { [:redis_host] }
 
@@ -894,17 +894,17 @@ describe Anyway::Config, type: :config do
       end
 
       context "when env value under except key mismatched" do
-        before { allow(Anyway::Settings).to receive(:current_environment).and_return("demo") }
+        before { allow(Runger::Settings).to receive(:current_environment).and_return("demo") }
 
         let(:missed_keys) { [:sentry_api_key] }
 
         it "raises ValidationError" do
-          expect { demo_config.new }.to raise_error(Anyway::Config::ValidationError, error_msg)
+          expect { demo_config.new }.to raise_error(Runger::Config::ValidationError, error_msg)
         end
       end
 
       context "when current env is not specified" do
-        before { allow(Anyway::Settings).to receive(:current_environment).and_return(nil) }
+        before { allow(Runger::Settings).to receive(:current_environment).and_return(nil) }
 
         it "not to raise ValidationError" do
           expect { subject }.to_not raise_error
@@ -918,12 +918,12 @@ describe Anyway::Config, type: :config do
 
     it "raises ValidationError if value is not provided" do
       expect { config.new }
-        .to raise_error(Anyway::Config::ValidationError, /missing or empty: test, secret/)
+        .to raise_error(Runger::Config::ValidationError, /missing or empty: test, secret/)
     end
 
     it "raises ValidationError if value is empty string" do
       expect { config.new(secret: "", test: 1) }
-        .to raise_error(Anyway::Config::ValidationError, /missing or empty: secret/)
+        .to raise_error(Runger::Config::ValidationError, /missing or empty: secret/)
     end
 
     it "raises ArgumentError if required is called with unknown param" do
@@ -935,7 +935,7 @@ describe Anyway::Config, type: :config do
       subconfig = Class.new(config) { required :debug }
 
       expect { subconfig.new }
-        .to raise_error(Anyway::Config::ValidationError, /missing or empty: test, secret/)
+        .to raise_error(Runger::Config::ValidationError, /missing or empty: test, secret/)
     end
   end
 
@@ -953,7 +953,7 @@ describe Anyway::Config, type: :config do
 
     it "accepts blocks" do
       expect { config.new(test: "nan") }
-        .to raise_error(Anyway::Config::ValidationError, /test must be a number/i)
+        .to raise_error(Runger::Config::ValidationError, /test must be a number/i)
       expect { config.new(test: 12) }
         .not_to raise_error
     end
@@ -977,7 +977,7 @@ describe Anyway::Config, type: :config do
 
       specify do
         expect { subconfig.new(test: "nan") }
-          .to raise_error(Anyway::Config::ValidationError, /test must be a number/i)
+          .to raise_error(Runger::Config::ValidationError, /test must be a number/i)
       end
     end
   end

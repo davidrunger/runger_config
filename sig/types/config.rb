@@ -4,7 +4,7 @@ require "anyway_config"
 
 module RBS; end
 
-class RBS::Config < Anyway::Config
+class RBS::Config < Runger::Config
   config_name :rbs
 
   env_prefix "RBS_TEST"

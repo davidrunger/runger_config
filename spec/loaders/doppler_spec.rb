@@ -2,8 +2,8 @@
 
 require "spec_helper"
 
-describe Anyway::Loaders::Doppler do
-  include Anyway::Testing::Helpers
+describe Runger::Loaders::Doppler do
+  include Runger::Testing::Helpers
 
   subject { described_class.call(**options) }
 
@@ -58,7 +58,7 @@ describe Anyway::Loaders::Doppler do
       with_env(
         "DOPPLER_TOKEN" => invalid_doppler_token
       ) do
-        expect { subject }.to raise_error(Anyway::Loaders::Doppler::RequestError, "401 Unauthorized")
+        expect { subject }.to raise_error(Runger::Loaders::Doppler::RequestError, "401 Unauthorized")
       end
     end
   end

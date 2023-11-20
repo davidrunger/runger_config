@@ -2,8 +2,8 @@
 
 require "spec_helper"
 
-describe Anyway::Ext::FlattenNames do
-  using Anyway::Ext::FlattenNames
+describe Runger::Ext::FlattenNames do
+  using Runger::Ext::FlattenNames
 
   describe "#flatten_names" do
     specify do

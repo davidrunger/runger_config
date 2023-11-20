@@ -21,4 +21,4 @@ assignees: palkan
 
 **Framework Version (Rails, whatever):**
 
-**Anyway Config Version:**
+**Runger Config Version:**

@@ -94,7 +94,7 @@ namespace :spec do
     sh <<~COMMAND
       RACK_ENV=test \
       RBS_TEST_LOGLEVEL=error \
-      RBS_TEST_TARGET="Anyway::*" \
+      RBS_TEST_TARGET="Runger::*" \
       rspec -rrbs/test/setup \
       #{rspec_args}
     COMMAND

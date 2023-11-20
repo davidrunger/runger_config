@@ -3,10 +3,10 @@
 require "spec_helper"
 require "generators/anyway/install/install_generator"
 
-describe Anyway::Generators::InstallGenerator, :rails, type: :generator do
+describe Runger::Generators::InstallGenerator, :rails, type: :generator do
   before(:all) { destination File.join(__dir__, "../../tmp/basic_rails_app") }
 
-  let(:configs_root) { Anyway::Settings.autoload_static_config_path }
+  let(:configs_root) { Runger::Settings.autoload_static_config_path }
   let(:args) { [] }
 
   before do
@@ -27,7 +27,7 @@ describe Anyway::Generators::InstallGenerator, :rails, type: :generator do
 
     specify do
       is_expected.to exist
-      is_expected.to contain(/class ApplicationConfig < Anyway::Config/)
+      is_expected.to contain(/class ApplicationConfig < Runger::Config/)
       is_expected.to contain(/delegate_missing_to :instance/)
       is_expected.to contain(/def instance/)
     end
@@ -65,7 +65,7 @@ describe Anyway::Generators::InstallGenerator, :rails, type: :generator do
     context "when autoload_static_config_path is set" do
       let(:target_file) { file("config/settings/application_config.rb") }
 
-      before { allow(Anyway::Settings).to receive(:autoload_static_config_path) { file("config/settings") } }
+      before { allow(Runger::Settings).to receive(:autoload_static_config_path) { file("config/settings") } }
 
       it "creates application config in this path" do
         is_expected.to exist

@@ -1,4 +1,4 @@
-module Anyway
+module Runger
   def self.env: -> Env
   def self.loaders: -> Loaders::Registry
 

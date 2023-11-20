@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe Anyway::EJSONParser do
+describe Runger::EJSONParser do
   subject { described_class.new.call(file_path) }
 
   let(:app_root) { File.join(__dir__, "dummy") }

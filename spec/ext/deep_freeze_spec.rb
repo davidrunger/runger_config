@@ -3,8 +3,8 @@
 require "spec_helper"
 require "anyway/ext/deep_freeze"
 
-describe Anyway::Ext::DeepFreeze do
-  using Anyway::Ext::DeepFreeze
+describe Runger::Ext::DeepFreeze do
+  using Runger::Ext::DeepFreeze
 
   it "freezes nested arrays and hashes", :aggregate_failures do
     source = {

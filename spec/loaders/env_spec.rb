@@ -2,8 +2,8 @@
 
 require "spec_helper"
 
-describe Anyway::Loaders::Env do
-  include Anyway::Testing::Helpers
+describe Runger::Loaders::Env do
+  include Runger::Testing::Helpers
 
   subject { described_class.call(**options) }
 

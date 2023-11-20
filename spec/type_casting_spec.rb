@@ -2,8 +2,8 @@
 
 require "spec_helper"
 
-describe Anyway::TypeRegistry do
-  let(:casting) { Anyway::TypeRegistry.default.dup }
+describe Runger::TypeRegistry do
+  let(:casting) { Runger::TypeRegistry.default.dup }
 
   specify "default types" do
     expect(casting.deserialize("12", :string)).to eq("12")
@@ -39,7 +39,7 @@ describe Anyway::TypeRegistry do
     expect(casting.deserialize("TEST", klass)).to eq("test")
   end
 
-  describe Anyway::TypeCaster do
+  describe Runger::TypeCaster do
     let(:colorName) do
       lambda do |raw|
         case raw
@@ -65,7 +65,7 @@ describe Anyway::TypeRegistry do
         },
         color: colorName
       },
-        fallback: ::Anyway::AutoCast)
+        fallback: ::Runger::AutoCast)
     end
 
     it "uses mapping", :aggregate_failures do

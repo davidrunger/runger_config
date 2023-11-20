@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe Anyway::Loaders::YAML do
+describe Runger::Loaders::YAML do
   subject { described_class.call(**options) }
 
   let(:path) { File.join(__dir__, "../config/cool.yml") }
@@ -10,7 +10,7 @@ describe Anyway::Loaders::YAML do
   let(:options) { {config_path: path, local: false, some_other: "value"} }
 
   context "for apps without environments" do
-    before { allow(Anyway::Settings).to receive(:current_environment).and_return(nil) }
+    before { allow(Runger::Settings).to receive(:current_environment).and_return(nil) }
 
     it "parses YAML" do
       expect(subject).to eq(
@@ -76,7 +76,7 @@ describe Anyway::Loaders::YAML do
   context "with environment" do
     let(:path) { File.join(__dir__, "../config/cool.env.yml") }
 
-    before { allow(Anyway::Settings).to receive(:current_environment).and_return("development") }
+    before { allow(Runger::Settings).to receive(:current_environment).and_return("development") }
 
     context "loads all keys under current environment section" do
       specify do

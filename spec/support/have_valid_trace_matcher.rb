@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-using Anyway::Ext::Hash
+using Runger::Ext::Hash
 
 RSpec::Matchers.define :have_valid_trace do
   match do |conf|

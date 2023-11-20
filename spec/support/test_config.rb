@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module AnywayTest
-  class Config < Anyway::Config # :nodoc:
+module RungerTest
+  class Config < Runger::Config # :nodoc:
     attr_config :test,
       api: {key: ""},
       log: {

@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe Anyway::Settings do
+describe Runger::Settings do
   describe "#default_config_path" do
     around do |example|
       was_val = described_class.default_config_path

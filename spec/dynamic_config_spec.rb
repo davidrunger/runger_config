@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe Anyway::Config, type: :config do
+describe Runger::Config, type: :config do
   around do |ex|
     with_env(
       "MY_APP_TEST" => "1",
@@ -12,7 +12,7 @@ describe Anyway::Config, type: :config do
   end
 
   it "loads data by config name", :aggregate_failures, :rails do
-    data = Anyway::Config.for(:my_app)
+    data = Runger::Config.for(:my_app)
     expect(data[:test]).to eq 1
     expect(data[:name]).to eq "my_app"
     unless NOSECRETS
@@ -22,7 +22,7 @@ describe Anyway::Config, type: :config do
   end
 
   it "loads data by config name", :aggregate_failures, :norails do
-    data = Anyway::Config.for(:my_app)
+    data = Runger::Config.for(:my_app)
     expect(data["test"]).to eq 1
     expect(data["name"]).to eq "my_app"
   end
@@ -32,7 +32,7 @@ describe Anyway::Config, type: :config do
       "MYAPP_TEST" => "2",
       "MYAPP_NAME" => "myapp"
     ) do
-      data = Anyway::Config.for(:my_app, env_prefix: "MYAPP")
+      data = Runger::Config.for(:my_app, env_prefix: "MYAPP")
       expect(data["test"]).to eq 2
       expect(data["name"]).to eq "myapp"
     end
@@ -40,13 +40,13 @@ describe Anyway::Config, type: :config do
 
   context "when using local files" do
     around do |ex|
-      Anyway::Settings.use_local_files = true
+      Runger::Settings.use_local_files = true
       ex.run
-      Anyway::Settings.use_local_files = false
+      Runger::Settings.use_local_files = false
     end
 
     it "load config local credentials too", :rails do
-      data = Anyway::Config.for(:my_app)
+      data = Runger::Config.for(:my_app)
       expect(data[:test]).to eq 1
       expect(data[:name]).to eq "my_app"
       expect(data[:secret]).to eq "my_secret" unless NOSECRETS

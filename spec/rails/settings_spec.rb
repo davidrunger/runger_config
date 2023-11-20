@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe Anyway::Settings, :rails do
+describe Runger::Settings, :rails do
   describe "#config_autoload_paths" do
     # see spec/dummy/config/application.rb
     specify do

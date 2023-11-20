@@ -1,4 +1,4 @@
-class LoadConfig < Anyway::Config
+class LoadConfig < Runger::Config
   interface _Config
     def revision: () -> untyped
     def version=: (untyped) -> void
@@ -8,5 +8,5 @@ class LoadConfig < Anyway::Config
 end
 
 # Custom loader
-class CustomConfigLoader < Anyway::Loaders::Base
+class CustomConfigLoader < Runger::Loaders::Base
 end
