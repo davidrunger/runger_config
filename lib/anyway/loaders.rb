@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 module Anyway
-  using RubyNext
-
   module Loaders
     class Registry
       attr_reader :registry

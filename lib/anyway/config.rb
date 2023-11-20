@@ -5,7 +5,6 @@ require "anyway/optparse_config"
 require "anyway/dynamic_config"
 
 module Anyway # :nodoc:
-  using RubyNext
   using Anyway::Ext::DeepDup
   using Anyway::Ext::DeepFreeze
   using Anyway::Ext::Hash

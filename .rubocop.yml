@@ -1,6 +1,5 @@
 require:
   - standard/cop/block_single_line_braces
-  - ruby-next/rubocop
 
 inherit_gem:
   standard: config/base.yml

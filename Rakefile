@@ -37,11 +37,6 @@ RSpec::Core::RakeTask.new("spec:autoload") do |task|
   task.verbose = false
 end
 
-desc "Run Ruby Next nextify"
-task :nextify do
-  sh "bundle exec ruby-next nextify -V"
-end
-
 begin
   require "rubocop/rake_task"
   RuboCop::RakeTask.new

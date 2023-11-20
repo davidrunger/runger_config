@@ -20,8 +20,6 @@ jobs:
       with:
         ruby-version: jruby
         bundler-cache: true
-    - name: Run Ruby Next
-      run: bundle exec rake nextify
     - name: Run RSpec
       run: |
         bundle exec rake spec

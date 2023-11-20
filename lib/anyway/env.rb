@@ -4,7 +4,6 @@ module Anyway
   # Parses environment variables and provides
   # method-like access
   class Env
-    using RubyNext
     using Anyway::Ext::DeepDup
     using Anyway::Ext::Hash
 
