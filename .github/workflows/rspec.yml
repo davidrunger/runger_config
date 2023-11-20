@@ -18,9 +18,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: "3.2"
-        gemfile: "Gemfile"
-        rbs: 'true'
+        include:
+        - ruby: "3.2"
+          gemfile: "Gemfile"
+          rbs: 'true'
     steps:
     - uses: actions/checkout@v3
     - uses: ruby/setup-ruby@v1
