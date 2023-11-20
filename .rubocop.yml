@@ -14,12 +14,11 @@ AllCops:
     - 'Gemfile'
     - 'vendor/**/*'
     - 'gemfiles/**/*'
-    - 'lib/.rbnext/**/*'
     - 'lib/generators/**/templates/*.rb'
   DisplayCopNames: true
   SuggestExtensions: false
   NewCops: disable
-  TargetRubyVersion: next
+  TargetRubyVersion: 3.2
 
 Standard/BlockSingleLineBraces:
   Enabled: false

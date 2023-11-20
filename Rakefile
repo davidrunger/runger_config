@@ -51,7 +51,7 @@ end
 
 namespace :rbs do
   desc "Generate an RBS file from config class"
-  task generate: :nextify do
+  task :generate do
     require "anyway_config"
     require_relative "sig/types/config"
 
@@ -63,7 +63,7 @@ namespace :rbs do
   end
 
   desc "Typeprof"
-  task typeprof: :nextify do
+  task :typeprof do
     Bundler.with_unbundled_env do
       sh "typeprof -I./lib -I./lib/.rbnext/1995.next sig/types/*.rb"
     end
