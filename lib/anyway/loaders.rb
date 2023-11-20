@@ -53,7 +53,7 @@ module Anyway
         registry.each(&block)
       end
 
-      def freeze() = registry.freeze
+      def freeze = registry.freeze
 
       private
 

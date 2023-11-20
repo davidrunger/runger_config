@@ -20,11 +20,11 @@ Gem::Specification.new do |s|
     "documentation_uri" => "http://github.com/davidrunger/runger_config",
     "funding_uri" => "https://github.com/sponsors/davidrunger",
     "homepage_uri" => "http://github.com/davidrunger/runger_config",
-    "source_code_uri" => "http://github.com/davidrunger/runger_config",
+    "source_code_uri" => "http://github.com/davidrunger/runger_config"
   }
 
   s.metadata.merge!({
-    "rubygems_mfa_required" => "true",
+    "rubygems_mfa_required" => "true"
   })
 
   s.license = "MIT"
