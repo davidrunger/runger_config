@@ -5,8 +5,8 @@ require_relative "lib/anyway/version"
 Gem::Specification.new do |s|
   s.name = "runger_config"
   s.version = Runger::VERSION
-  s.authors = ["Vladimir Dementyev"]
-  s.email = ["dementiev.vm@gmail.com"]
+  s.authors = ["David Runger"]
+  s.email = ["davidjrunger@gmail.com"]
   s.homepage = "http://github.com/davidrunger/runger_config"
   s.summary = "Configuration DSL for Ruby libraries and applications"
   s.description = %{
