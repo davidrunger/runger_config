@@ -1,7 +1,8 @@
 ## Unreleased
-[no unreleased changes yet]
 
-# Changelog
+- Fix specs broken by 3.0 release
+
+- Suppress linting errors in docs
 
 ## v3.0.0 (2023-11-19)
 
