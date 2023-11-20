@@ -1,5 +1,6 @@
 ## Unreleased
-[no unreleased changes yet]
+
+- Rename from Anyway Config to Runger Config
 
 ## v3.0.1 (2023-11-19)
 
@@ -41,19 +42,19 @@
 
 - Fix Rails detection. ([@palkan][])
 
-Fixes [#134](https://github.com/palkan/anyway_config/issues/134).
+Fixes [#134](https://github.com/palkan/runger_config/issues/134).
 
 ## 2.5.0 (2023-07-24)
 
 - Generators: Add `config_name` to generated classes if name contains underscore. ([@palkan][])
 
-- Load Rails extensions even if Rails was loaded after Anyway Config. ([@palkan][])
+- Load Rails extensions even if Rails was loaded after Runger Config. ([@palkan][])
 
 - Fix handling `config.credentials.content_path` provided as String. ([@palkan][])
 
 ## 2.4.2 (2023-06-07)
 
-- Use ANYWAY_ENV as the current environment if defined. ([@palkan][])
+- Use RUNGER_ENV as the current environment if defined. ([@palkan][])
 
 It can be used to specify environment for configs independently of Rails environment.
 
@@ -70,11 +71,11 @@ It can be used to specify environment for configs independently of Rails environ
 - Added experimental support for sub-configs via coercion. ([@palkan][])
 
 ```ruby
-class AnotherConfig < Anyway::Config
+class AnotherConfig < Runger::Config
   attr_config foo: "bar"
 end
 
-class MyConfig < Anyway::Config
+class MyConfig < Runger::Config
   attr_config :another_config
 
   coerce_types another_config: "AnotherConfig"
@@ -93,7 +94,7 @@ MyConfig.new.another_config.foo #=> "baz"
 The API is inspired by Rails permitted params:
 
 ```ruby
-class AppConfig < Anyway::Config
+class AppConfig < Runger::Config
   attr_config :assets_host, database: {host: nil, port: nil}
 
   required :assets_host, database: [:host, :port]
@@ -102,7 +103,7 @@ end
 
 - Add support for using `env_prefix ""` to load from unprefixed env vars. ([@palkan][])
 
-See [#118](https://github.com/palkan/anyway_config/issues/118).
+See [#118](https://github.com/palkan/runger_config/issues/118).
 
 - Added EJSON support. ([@inner-whisper])
 
@@ -110,7 +111,7 @@ See [#118](https://github.com/palkan/anyway_config/issues/118).
 
 ## 2.3.1 (2023-01-17)
 
-- [Fixes [#110](https://github.com/palkan/anyway_config/issues/110)] Fix setting up autoloader for the same folder. ([@palkan][])
+- [Fixes [#110](https://github.com/palkan/runger_config/issues/110)] Fix setting up autoloader for the same folder. ([@palkan][])
 
 - RBS: Now `.on_load` automatically pass block context type (instance), so no need to add annotations! ([@palkan][])
 
@@ -122,10 +123,10 @@ Steep 1.2+ is required. Read more about the [feature](https://hackmd.io/xLrYaqUt
 
 - Add ability to load configurations under specific environments in pure Ruby apps. ([@fargelus][]).
 
-Before loading environment configurations you need to specify variable `Anyway::Settings.current_environment`. In Rails apps this variable is same as `Rails.env` value.
+Before loading environment configurations you need to specify variable `Runger::Settings.current_environment`. In Rails apps this variable is same as `Rails.env` value.
 After adding yaml loader will try to load params under this environment.
 
-Also required env option was added to `Anyway::Config`.
+Also required env option was added to `Runger::Config`.
 
 ## 2.2.3 (2022-01-21)
 
@@ -133,8 +134,8 @@ Also required env option was added to `Anyway::Config`.
 
 - Add ability to set default key for environmental YAML files. ([@skryukov])
 
-Define a key for environmental yaml files to read default values from with `config.anyway_config.default_environmental_key = "default"`.
-This way Anyway Config will try to read settings under the `"default"` key and then merge environmental settings into them.
+Define a key for environmental yaml files to read default values from with `config.runger_config.default_environmental_key = "default"`.
+This way Runger Config will try to read settings under the `"default"` key and then merge environmental settings into them.
 
 ## 2.2.2 (2020-10-26)
 
@@ -148,7 +149,7 @@ This way Anyway Config will try to read settings under the `"default"` key and t
 
 - Add RBS signatures and generator. ([@palkan][])
 
-Anyway Config now ships with the basic RBS support. To use config types with Steep, add `library "anyway_config"` to your Steepfile.
+Runger Config now ships with the basic RBS support. To use config types with Steep, add `library "runger_config"` to your Steepfile.
 
 We also provide an API to generate a signature for you config class: `MyConfig.to_rbs`. You can use this method to generate a scaffold for your config class.
 
@@ -157,7 +158,7 @@ We also provide an API to generate a signature for you config class: `MyConfig.t
 Example:
 
 ```ruby
-class CoolConfig < Anyway::Config
+class CoolConfig < Runger::Config
   attr_config :port, :user
 
   coerce_types port: :string, user: {dob: :date}
@@ -184,28 +185,28 @@ You can also add `.disable_auto_cast!` to your config class to disable automatic
 
 Config setters no longer write instance variables.
 
-- Add `config.anyway_config.future` to allow enabling upcoming features. ([@palkan][])
+- Add `config.runger_config.future` to allow enabling upcoming features. ([@palkan][])
 
 For smoother upgrades, we provide a mechanism to opt-out to the new defaults beforehand.
 Currently, only `:unwrap_known_environments` feature could be enabled (see below):
 
 ```ruby
-config.anyway_config.future.use :unwrap_known_environments
+config.runger_config.future.use :unwrap_known_environments
 ```
 
 - Allow to skip environment keys completely (e.g., `development:`, `test:`) in a config YML when used with Rails. In that case same config is loaded in all known environments (same mechanism as for non-Rails applications)
 
-- Add the `known_environments` property to Anyway::Settings under Rails. Use `config.anyway_config.known_environments << "staging"` to make the gem aware of custom environments. ([@progapandist][])
+- Add the `known_environments` property to Runger::Settings under Rails. Use `config.runger_config.known_environments << "staging"` to make the gem aware of custom environments. ([@progapandist][])
 
 - Make it possible to specify default YML configs directory. ([@palkan][])
 
 For example:
 
 ```ruby
-Anyway::Settings.default_config_path = "path/to/configs"
+Runger::Settings.default_config_path = "path/to/configs"
 
 # or in Rails
-config.anyway_config.default_config_path = Rails.root.join("my/configs")
+config.runger_config.default_config_path = Rails.root.join("my/configs")
 ```
 
 ## 2.0.6 (2020-07-7)
@@ -228,13 +229,13 @@ config.anyway_config.default_config_path = Rails.root.join("my/configs")
 
 - Make sure configs are eager loaded in Rails when `config.eager_load = true`. ([@palkan][])
 
-Fixes [#58](https://github.com/palkan/anyway_config/issues/58).
+Fixes [#58](https://github.com/palkan/runger_config/issues/58).
 
 ## 2.0.1 (2020-04-15)
 
 - Fix loading Railtie when application has been already initialized. ([@palkan][])
 
-Fixes [#56](https://github.com/palkan/anyway_config/issues/56).
+Fixes [#56](https://github.com/palkan/runger_config/issues/56).
 
 ## 2.0.0 (2020-04-14)
 
@@ -247,7 +248,7 @@ Fixes [#56](https://github.com/palkan/anyway_config/issues/56).
 For example:
 
 ```ruby
-class MyConfig < Anyway::Config
+class MyConfig < Runger::Config
   attr_config :key, :secret, debug: false
 end
 
@@ -320,13 +321,13 @@ _dynamic_ (runtime) configs.
 you can set static configs path to `app/configs`:
 
 ```ruby
-config.anyway_config.autoload_static_config_path = "app/configs"
+config.runger_config.autoload_static_config_path = "app/configs"
 ```
 
 You can do this by running the generator:
 
 ```sh
-rails g anyway:install --configs-path=app/configs
+rails g runger:install --configs-path=app/configs
 ```
 
 - Add Rails generators. ([@palkan][])
@@ -384,20 +385,20 @@ You can specify some params as required, and the validation
 error would be raised if they're missing or empty (only for strings):
 
 ```ruby
-class MyConfig < Anyway::Config
+class MyConfig < Runger::Config
   attr_config :api_key, :api_secret, :debug
 
   required :api_key, :api_secret
 end
 
-MyConfig.new(api_secret: "") #=> raises Anyway::Config::ValidationError
+MyConfig.new(api_secret: "") #=> raises Runger::Config::ValidationError
 ```
 
 You can change the validation behaviour by overriding the `#validate!` method in your config class.
 
 - Validate config attribute names. ([@palkan][])
 
-Do not allow using reserved names (`Anyway::Config` method names).
+Do not allow using reserved names (`Runger::Config` method names).
 Allow only alphanumeric names (matching `/^[a-z_]([\w]+)?$/`).
 
 - Add Loaders API. ([@palkan][])
@@ -423,7 +424,7 @@ Config.new(data)
 
 - Add Railtie. ([@palkan][])
 
-`Anyway::Railtie` provides `Anyway::Settings` access via `Rails.applicaiton.configuration.anyway_config`.
+`Runger::Railtie` provides `Runger::Settings` access via `Rails.applicaiton.configuration.runger_config`.
 
 It also adds `app/configs` path to autoload paths (low-level, `ActiveSupport::Dependencies`) to
 make it possible to use configs in the app configuration files.
@@ -444,7 +445,7 @@ Now users can store their personal configurations in _local_ files:
 - `config/credentials/local.yml.enc` (for Rails 6).
 
 Local configs are meant for using in development and only loaded if
-`Anyway::Settings.use_local_files` is `true` (which is true by default if
+`Runger::Settings.use_local_files` is `true` (which is true by default if
 `RACK_ENV` or `RAILS_ENV` env variable is equal to `"development"`).
 
 - Add Rails credentials support. ([@palkan][])
@@ -484,14 +485,14 @@ Now it's possible to extend config classes without breaking the original classes
 
 - Add OptionParse integration ([@jastkand][])
 
-See more [PR#18](https://github.com/palkan/anyway_config/pull/18).
+See more [PR#18](https://github.com/palkan/runger_config/pull/18).
 
 - Use underscored config name as an env prefix. ([@palkan][])
 
 For a config class:
 
 ```ruby
-class MyApp < Anyway::Config
+class MyApp < Runger::Config
 end
 ```
 
@@ -500,7 +501,7 @@ Before this change we use `MYAPP_` prefix, now it's `MY_APP_`.
 You can specify the prefix explicitly:
 
 ```ruby
-class MyApp < Anyway::Config
+class MyApp < Runger::Config
   env_prefix "MYAPP_"
 end
 ```
@@ -509,7 +510,7 @@ end
 
 - Ruby 2.2 is no longer supported.
 
-- `Anyway::Config.env_prefix` method is introduced. ([@charlie-wasp][])
+- `Runger::Config.env_prefix` method is introduced. ([@charlie-wasp][])
 
 ## 1.2.0 (2018-02-19)
 
@@ -530,7 +531,7 @@ Sniffer::Config.new(
 )
 ```
 
-See more [PR#10](https://github.com/palkan/anyway_config/pull/10).
+See more [PR#10](https://github.com/palkan/runger_config/pull/10).
 
 ## 1.1.2 (2017-11-19)
 
@@ -544,7 +545,7 @@ See more [PR#10](https://github.com/palkan/anyway_config/pull/10).
 
 - Add `#to_h` method. ([@palkan][])
 
-See [#4](https://github.com/palkan/anyway_config/issues/4).
+See [#4](https://github.com/palkan/runger_config/issues/4).
 
 - Make it possible to extend configuration parameters. ([@palkan][])
 

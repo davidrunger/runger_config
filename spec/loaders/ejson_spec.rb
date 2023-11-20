@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe Anyway::Loaders::EJSON do
+describe Runger::Loaders::EJSON do
   subject { described_class.call(**options) }
 
   let(:options) { {name: name, ejson_parser: ejson_parser, local: local} }
@@ -10,14 +10,14 @@ describe Anyway::Loaders::EJSON do
   let(:local) { false }
 
   let(:ejson_parser) do
-    parser = instance_double(Anyway::EJSONParser)
+    parser = instance_double(Runger::EJSONParser)
     allow(parser).to receive(:call).with(config_path).and_return(ejson_parsed_result)
     allow(parser).to receive(:call).with(local_config_path).and_return(local_ejson_parsed_result)
     allow(parser).to receive(:call).with(development_config_path).and_return(development_ejson_parsed_result)
     parser
   end
 
-  let(:config_path) { "#{Anyway::Settings.app_root}/config/secrets.ejson" }
+  let(:config_path) { "#{Runger::Settings.app_root}/config/secrets.ejson" }
   let(:ejson_parsed_result) do
     {
       "_public_key" => "any_public_key",
@@ -41,7 +41,7 @@ describe Anyway::Loaders::EJSON do
     }
   end
 
-  let(:local_config_path) { "#{Anyway::Settings.app_root}/config/secrets.local.ejson" }
+  let(:local_config_path) { "#{Runger::Settings.app_root}/config/secrets.local.ejson" }
   let(:local_ejson_parsed_result) do
     {
       "public_key" => "any_public_key",
@@ -57,7 +57,7 @@ describe Anyway::Loaders::EJSON do
     }
   end
 
-  let(:development_config_path) { "#{Anyway::Settings.app_root}/config/development/secrets.ejson" }
+  let(:development_config_path) { "#{Runger::Settings.app_root}/config/development/secrets.ejson" }
   let(:development_ejson_parsed_result) do
     {
       "public_key" => "any_public_key",
@@ -75,7 +75,7 @@ describe Anyway::Loaders::EJSON do
   end
 
   context "for apps without environments" do
-    before { allow(Anyway::Settings).to receive(:current_environment).and_return(nil) }
+    before { allow(Runger::Settings).to receive(:current_environment).and_return(nil) }
 
     it "parses default EJSON" do
       expect(subject).to eq(default_parsed_data)
@@ -89,7 +89,7 @@ describe Anyway::Loaders::EJSON do
       end
       let(:options) { {name: name, ejson_parser: ejson_parser, ejson_namespace: false} }
       let(:ejson_parser) do
-        parser = instance_double(Anyway::EJSONParser)
+        parser = instance_double(Runger::EJSONParser)
         allow(parser).to receive(:call).with(config_path).and_return(ejson_parsed_result)
         parser
       end
@@ -150,7 +150,7 @@ describe Anyway::Loaders::EJSON do
   end
 
   context "with environment" do
-    before { allow(Anyway::Settings).to receive(:current_environment).and_return("development") }
+    before { allow(Runger::Settings).to receive(:current_environment).and_return("development") }
 
     specify do
       expect(subject).to eq(

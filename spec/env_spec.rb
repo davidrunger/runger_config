@@ -2,8 +2,8 @@
 
 require "spec_helper"
 
-describe Anyway::Env, type: :config do
-  let(:env) { Anyway.env }
+describe Runger::Env, type: :config do
+  let(:env) { Runger.env }
 
   it "loads simple key/values", :aggregate_failures do
     with_env("TESTO_KEY" => "a", "MY_TEST_KEY" => "b", "TESTOS" => "c") do

@@ -2,8 +2,8 @@
 
 require "spec_helper"
 
-describe "Anyway::Rails::Loaders::Credentials", :rails, skip: (NORAILS || !Rails.application.respond_to?(:credentials)) do
-  subject { Anyway::Rails::Loaders::Credentials.call(**options) }
+describe "Runger::Rails::Loaders::Credentials", :rails, skip: (NORAILS || !Rails.application.respond_to?(:credentials)) do
+  subject { Runger::Rails::Loaders::Credentials.call(**options) }
 
   let(:options) { {name: "cool", some_other: "value"} }
 

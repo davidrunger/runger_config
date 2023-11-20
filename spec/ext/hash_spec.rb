@@ -2,8 +2,8 @@
 
 require "spec_helper"
 
-describe Anyway::Ext::Hash do
-  using Anyway::Ext::Hash
+describe Runger::Ext::Hash do
+  using Runger::Ext::Hash
 
   describe "#stringify_keys!" do
     let(:source) do

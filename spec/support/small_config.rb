@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SmallConfig < Anyway::Config # :nodoc:
+class SmallConfig < Runger::Config # :nodoc:
   attr_config :meta,
     :data
 end

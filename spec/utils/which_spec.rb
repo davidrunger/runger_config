@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Anyway::Utils do
+describe Runger::Utils do
   describe ".which" do
     subject { described_class.which("ejson") }
 

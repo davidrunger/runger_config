@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe Anyway::Loaders::Registry do
+describe Runger::Loaders::Registry do
   let(:loader_a) { ->(**hargs) { {} } }
   let(:loader_b) { ->(**hargs) { {} } }
   let(:loader_c) { ->(**hargs) { {} } }

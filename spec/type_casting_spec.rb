@@ -2,8 +2,8 @@
 
 require "spec_helper"
 
-describe Anyway::TypeRegistry do
-  let(:casting) { Anyway::TypeRegistry.default.dup }
+describe Runger::TypeRegistry do
+  let(:casting) { Runger::TypeRegistry.default.dup }
 
   specify "default types" do
     expect(casting.deserialize("12", :string)).to eq("12")
@@ -12,7 +12,7 @@ describe Anyway::TypeRegistry do
     expect(casting.deserialize("2020-08-30 17:01:03", :date)).to eq(Date.parse("2020-08-30"))
     expect(casting.deserialize(Time.local(2020, 8, 30, 11, 44, 22), :date)).to eq(Date.parse("2020-08-30"))
     expect(casting.deserialize("2020-08-30 17:01:03", :datetime)).to eq(DateTime.parse("2020-08-30 17:01:03"))
-    expect(casting.deserialize("https://github.com/palkan/anyway_config", :uri)).to eq(URI.parse("https://github.com/palkan/anyway_config"))
+    expect(casting.deserialize("https://github.com/palkan/runger_config", :uri)).to eq(URI.parse("https://github.com/palkan/runger_config"))
     expect(casting.deserialize("f", :boolean)).to eq(false)
     expect(casting.deserialize(1, :boolean)).to eq(true)
     expect(casting.deserialize("1,2, 3", :integer, array: true)).to eq([1, 2, 3])
@@ -39,7 +39,7 @@ describe Anyway::TypeRegistry do
     expect(casting.deserialize("TEST", klass)).to eq("test")
   end
 
-  describe Anyway::TypeCaster do
+  describe Runger::TypeCaster do
     let(:colorName) do
       lambda do |raw|
         case raw
@@ -65,7 +65,7 @@ describe Anyway::TypeRegistry do
         },
         color: colorName
       },
-        fallback: ::Anyway::AutoCast)
+        fallback: ::Runger::AutoCast)
     end
 
     it "uses mapping", :aggregate_failures do

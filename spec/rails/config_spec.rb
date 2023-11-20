@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe Anyway::Config, :rails, type: :config do
+describe Runger::Config, :rails, type: :config do
   let(:conf) { CoolConfig.new }
 
   describe "load_from_sources in Rails" do
@@ -45,9 +45,9 @@ describe Anyway::Config, :rails, type: :config do
 
         context "when using local files" do
           around do |ex|
-            Anyway::Settings.use_local_files = true
+            Runger::Settings.use_local_files = true
             ex.run
-            Anyway::Settings.use_local_files = false
+            Runger::Settings.use_local_files = false
           end
 
           it "load config local credentials too" do
@@ -111,7 +111,7 @@ describe Anyway::Config, :rails, type: :config do
   context "validation" do
     specify do
       expect { MyAppConfig.new }
-        .to raise_error(Anyway::Config::ValidationError, /missing or empty: name, mode/)
+        .to raise_error(Runger::Config::ValidationError, /missing or empty: name, mode/)
     end
   end
 end

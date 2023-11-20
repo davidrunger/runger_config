@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "generators/anyway/config/config_generator"
+require "generators/runger/config/config_generator"
 
-describe Anyway::Generators::ConfigGenerator, :rails, type: :generator do
+describe Runger::Generators::ConfigGenerator, :rails, type: :generator do
   before(:all) { destination File.join(__dir__, "../../tmp/basic_rails_app") }
 
-  let(:configs_root) { Anyway::Settings.autoload_static_config_path }
+  let(:configs_root) { Runger::Settings.autoload_static_config_path }
 
   let(:args) { %w[api_service api_key secret mode --no-yml] }
 
@@ -75,7 +75,7 @@ describe Anyway::Generators::ConfigGenerator, :rails, type: :generator do
       let(:target_file) { file("config/settings/api_service_config.rb") }
 
       before do
-        allow(Anyway::Settings).to receive(:autoload_static_config_path) { file("config/settings") }
+        allow(Runger::Settings).to receive(:autoload_static_config_path) { file("config/settings") }
       end
 
       it "creates config in this path" do

@@ -19,7 +19,7 @@ module RBS
     def debug?: () -> bool?
   end
 
-  class Config < Anyway::Config
+  class Config < Runger::Config
     include _Config
   end
 end

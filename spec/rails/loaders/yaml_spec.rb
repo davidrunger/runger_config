@@ -2,8 +2,8 @@
 
 require "spec_helper"
 
-describe "Anyway::Rails::Loaders::YAML", :rails do
-  subject { Anyway::Rails::Loaders::YAML.call(**options) }
+describe "Runger::Rails::Loaders::YAML", :rails do
+  subject { Runger::Rails::Loaders::YAML.call(**options) }
 
   let(:path) { Rails.root.join("config/cool.yml") }
 
@@ -30,11 +30,11 @@ describe "Anyway::Rails::Loaders::YAML", :rails do
   end
 
   context "when known environments enabled" do
-    before { Anyway::Settings.future.use :unwrap_known_environments }
+    before { Runger::Settings.future.use :unwrap_known_environments }
 
     after do
       Rails.env = "test"
-      Anyway::Settings.future.use []
+      Runger::Settings.future.use []
     end
 
     context "when the environmental key doesn't match the current environment" do
@@ -86,7 +86,7 @@ describe "Anyway::Rails::Loaders::YAML", :rails do
 
     context "when new known_environment is added to config and used as top-level key" do
       let(:options) { {config_path: Rails.root.join("config/cool_staging_environment.yml"), some_other: "value"} }
-      let(:config) { Rails.application.config.anyway_config }
+      let(:config) { Rails.application.config.runger_config }
 
       it "does not leak settings into other environments" do
         config.known_environments << "staging"
@@ -115,10 +115,10 @@ describe "Anyway::Rails::Loaders::YAML", :rails do
 
   context "default environmental key is set" do
     around do |ex|
-      Anyway::Settings.default_environmental_key = "defaults"
+      Runger::Settings.default_environmental_key = "defaults"
       ex.run
       Rails.env = "test"
-      Anyway::Settings.default_environmental_key = nil
+      Runger::Settings.default_environmental_key = nil
     end
 
     context "when only default key is presented" do
@@ -138,9 +138,9 @@ describe "Anyway::Rails::Loaders::YAML", :rails do
 
       context "when known environments enabled" do
         around do |ex|
-          Anyway::Settings.future.use :unwrap_known_environments
+          Runger::Settings.future.use :unwrap_known_environments
           ex.run
-          Anyway::Settings.future.use []
+          Runger::Settings.future.use []
         end
 
         it "loads defaults" do
@@ -160,7 +160,7 @@ describe "Anyway::Rails::Loaders::YAML", :rails do
     context "when only default environmental key is one of environments" do
       let(:options) { {config_path: Rails.root.join("config/cool_unmatched_environment.yml"), some_other: "value"} }
 
-      before { Anyway::Settings.default_environmental_key = "production" }
+      before { Runger::Settings.default_environmental_key = "production" }
 
       it "loads production as default" do
         expect(subject).to eq(

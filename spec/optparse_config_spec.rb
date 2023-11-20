@@ -3,7 +3,7 @@
 require "spec_helper"
 require "json"
 
-describe Anyway::Config do
+describe Runger::Config do
   describe "#parse_options!" do
     let(:config_instance) { config.new }
 

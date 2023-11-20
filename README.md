@@ -1,20 +1,20 @@
-[![Cult Of Martians](http://cultofmartians.com/assets/badges/badge.svg)](https://cultofmartians.com/tasks/anyway-config-options-parse.html#task)
+[![Cult Of Martians](http://cultofmartians.com/assets/badges/badge.svg)](https://cultofmartians.com/tasks/runger-config-options-parse.html#task)
 [![Gem Version](https://badge.fury.io/rb/runger_config.svg)](https://rubygems.org/gems/runger_config) [![Build](https://github.com/davidrunger/runger_config/workflows/Build/badge.svg)](https://github.com/davidrunger/runger_config/actions)
 [![JRuby Build](https://github.com/davidrunger/runger_config/workflows/JRuby%20Build/badge.svg)](https://github.com/davidrunger/runger_config/actions)
 [![TruffleRuby Build](https://github.com/davidrunger/runger_config/workflows/TruffleRuby%20Build/badge.svg)](https://github.com/davidrunger/runger_config/actions)
 
-# Anyway Config
+# Runger Config
 
 > One configuration to rule all data sources
 
-Anyway Config is a configuration library for Ruby gems and applications.
+Runger Config is a configuration library for Ruby gems and applications.
 
-As a library author, you can benefit from using Anyway Config by providing a better UX for your end-users:
+As a library author, you can benefit from using Runger Config by providing a better UX for your end-users:
 
 - **Zero-code configuration** — no more boilerplate initializers.
 - **Per-environment and local** settings support out-of-the-box.
 
-For application developers, Anyway Config could be useful to:
+For application developers, Runger Config could be useful to:
 
 - **Keep configuration organized** and use _named configs_ instead of bloated `.env`/`settings.yml`/whatever.
 - **Free code of ENV/credentials/secrets dependency** and use configuration classes instead—your code should not rely on configuration data sources.
@@ -27,7 +27,7 @@ For version 1.x see the [1-4-stable branch](https://github.com/davidrunger/runge
 
 ## Links
 
-- [Anyway Config: Keep your Ruby configuration sane](https://evilmartians.com/chronicles/anyway-config-keep-your-ruby-configuration-sane?utm_source=runger_config)
+- [Runger Config: Keep your Ruby configuration sane](https://evilmartians.com/chronicles/runger-config-keep-your-ruby-configuration-sane?utm_source=runger_config)
 
 ## Table of contents
 
@@ -57,11 +57,11 @@ For version 1.x see the [1-4-stable branch](https://github.com/davidrunger/runge
 
 ## Main concepts
 
-Anyway Config abstractize the configuration layer by introducing **configuration classes** which describe available parameters and their defaults. For [example](https://github.com/palkan/influxer/blob/master/lib/influxer/config.rb):
+Runger Config abstractize the configuration layer by introducing **configuration classes** which describe available parameters and their defaults. For [example](https://github.com/palkan/influxer/blob/master/lib/influxer/config.rb):
 
 ```ruby
 module Influxer
-  class Config < Anyway::Config
+  class Config < Runger::Config
     attr_config(
       host: "localhost",
       username: "root",
@@ -75,7 +75,7 @@ Using Ruby classes to represent configuration allows you to add helper methods a
 
 The `runger_config` gem takes care of loading parameters from **different sources** (YAML, credentials/secrets, environment variables, etc.). Internally, we use a _pipeline pattern_ and provide the [Loaders API](#data-loaders) to manage and [extend](#custom-loaders) its functionality.
 
-Check out the libraries using Anyway Config for more examples:
+Check out the libraries using Runger Config for more examples:
 
 - [Influxer](https://github.com/palkan/influxer)
 - [AnyCable](https://github.com/anycable/anycable)
@@ -115,13 +115,13 @@ gem "runger_config", "~> 2.0"
 Using configuration classes allows you to make configuration data a bit more than a bag of values:
 you can define a schema for your configuration, provide defaults, add validations and additional helper methods.
 
-Anyway Config provides a base class to inherit from with a few DSL methods:
+Runger Config provides a base class to inherit from with a few DSL methods:
 
 ```ruby
 require "runger_config"
 
 module MyCoolGem
-  class Config < Anyway::Config
+  class Config < Runger::Config
     attr_config user: "root", password: "root", host: "localhost"
   end
 end
@@ -141,7 +141,7 @@ Then, create an instance of the config class and use it:
 MyCoolGem::Config.new.user #=> "root"
 ```
 
-**Bonus:**: if you define attributes with boolean default values (`false` or `true`), Anyway Config would automatically add a corresponding predicate method. For example:
+**Bonus:**: if you define attributes with boolean default values (`false` or `true`), Runger Config would automatically add a corresponding predicate method. For example:
 
 ```ruby
 attr_config :user, :password, debug: false
@@ -153,7 +153,7 @@ MyCoolGem::Config.new(debug: true).debug? #=> true
 **NOTE**: since v2.0 accessors created by `attr_config` are not `attr_accessor`, i.e. they do not populate instance variables. If you used instance variables before to override readers, you must switch to using `super` or `values` store:
 
 ```ruby
-class MyConfig < Anyway::Config
+class MyConfig < Runger::Config
   attr_config :host, :port, :url, :meta
 
   # override writer to handle type coercion
@@ -191,9 +191,9 @@ end
 
 #### Config name
 
-Anyway Config relies on the notion of _config name_ to populate data.
+Runger Config relies on the notion of _config name_ to populate data.
 
-By default, Anyway Config uses the config class name to infer the config name using the following rules:
+By default, Runger Config uses the config class name to infer the config name using the following rules:
 
 - if the class name has a form of `<Module>::Config` then use the module name (`SomeModule::Config => "somemodule"`)
 - if the class name has a form of `<Something>Config` then use the class name prefix (`SomeConfig => "some"`)
@@ -204,7 +204,7 @@ You can also specify the config name explicitly (it's required in cases when you
 
 ```ruby
 module MyCoolGem
-  class Config < Anyway::Config
+  class Config < Runger::Config
     config_name :cool
     attr_config user: "root", password: "root", host: "localhost", options: {}
   end
@@ -213,14 +213,14 @@ end
 
 #### Customize env variable names prefix
 
-By default, Anyway Config uses upper-cased config name as a prefix for env variable names (e.g.
+By default, Runger Config uses upper-cased config name as a prefix for env variable names (e.g.
 `config_name :my_app` will result to parsing `MY_APP_` prefix).
 
 You can set env prefix explicitly:
 
 ```ruby
 module MyCoolGem
-  class Config < Anyway::Config
+  class Config < Runger::Config
     config_name :cool_gem
     env_prefix :really_cool # now variables, starting wih `REALLY_COOL_`, will be parsed
     attr_config user: "root", password: "root", host: "localhost", options: {}
@@ -258,16 +258,16 @@ You can also fetch configuration without pre-defined schema:
 # credentials.my_app, secrets.my_app (if using Rails), ENV["MY_APP_*"]
 #
 # Given MY_APP_VALUE=42
-config = Anyway::Config.for(:my_app)
+config = Runger::Config.for(:my_app)
 config["value"] #=> 42
 
 # you can specify the config file path or env prefix
-config = Anyway::Config.for(:my_app, config_path: "my_config.yml", env_prefix: "MYAPP")
+config = Runger::Config.for(:my_app, config_path: "my_config.yml", env_prefix: "MYAPP")
 ```
 
 This feature is similar to `Rails.application.config_for` but more powerful:
 
-| Feature | Rails | Anyway Config |
+| Feature | Rails | Runger Config |
 | ------------- |-------------:| -----:|
 | Load data from `config/app.yml` | ✅ | ✅ |
 | Load data from `secrets` | ❌ | ✅ |
@@ -286,26 +286,26 @@ This feature is similar to `Rails.application.config_for` but more powerful:
 
 ### Validation and callbacks
 
-Anyway Config provides basic ways of ensuring that the configuration is valid.
+Runger Config provides basic ways of ensuring that the configuration is valid.
 
 There is a built-in `required` class method to define the list of parameters that must be present in the
 configuration after loading (where present means non-`nil` and non-empty for strings):
 
 ```ruby
-class MyConfig < Anyway::Config
+class MyConfig < Runger::Config
   attr_config :api_key, :api_secret, :debug
 
   required :api_key, :api_secret
 end
 
-MyConfig.new(api_secret: "") #=> raises Anyway::Config::ValidationError
+MyConfig.new(api_secret: "") #=> raises Runger::Config::ValidationError
 ```
 
 `Required` method supports additional `env` parameter which indicates necessity to run validations under specified
 environments. `Env` parameter could be present in symbol, string, array or hash formats:
 
 ```ruby
-class EnvConfig < Anyway::Config
+class EnvConfig < Runger::Config
   required :password, env: "production"
   required :maps_api_key, env: :production
   required :smtp_host, env: %i[production staging]
@@ -316,13 +316,13 @@ class EnvConfig < Anyway::Config
 end
 ```
 
-If your current `Anyway::Settings.current_environment` is mismatch keys that specified
-`Anyway::Config::ValidationError` error will be raised.
+If your current `Runger::Settings.current_environment` is mismatch keys that specified
+`Runger::Config::ValidationError` error will be raised.
 
 If you need more complex validation or need to manipulate with config state right after it has been loaded, you can use _on load callbacks_ and `#raise_validation_error` method:
 
 ```ruby
-class MyConfig < Anyway::Config
+class MyConfig < Runger::Config
   attr_config :api_key, :api_secret, :mode
 
   # on_load macro accepts symbol method names
@@ -348,7 +348,7 @@ end
 **NOTE:** version 2.x supports Rails >= 5.0; for Rails 4.x use version 1.x of the gem.
 
 We recommend going through [Data population](#data-population) and [Organizing configs](#organizing-configs) sections first,
-and then use [Rails generators](#generators) to make your application Anyway Config-ready.
+and then use [Rails generators](#generators) to make your application Runger Config-ready.
 
 ### Data population
 
@@ -368,7 +368,7 @@ development:
   port: 3000
 ```
 
-**NOTE:** You can override the environment name for configuration files via the `ANYWAY_ENV` environment variable or by setting it explicitly in the code: `Anyway::Settings.current_environment = "some_other_env"`.
+**NOTE:** You can override the environment name for configuration files via the `RUNGER_ENV` environment variable or by setting it explicitly in the code: `Runger::Settings.current_environment = "some_other_env"`.
 
 ### Multi-env configuration
 
@@ -397,13 +397,13 @@ staging:
 port: 3002 # This value will not be loaded at all
 ```
 
-To provide default values you can use YAML anchors, but they do not deep-merge settings, so Anyway Config provides a way to define a special top-level key for default values like this:
+To provide default values you can use YAML anchors, but they do not deep-merge settings, so Runger Config provides a way to define a special top-level key for default values like this:
 
 ```ruby
 config.runger_config.default_environmental_key = "default"
 ```
 
-After that, Anyway Config will start reading settings under the `"default"` key and then merge environmental settings into them.
+After that, Runger Config will start reading settings under the `"default"` key and then merge environmental settings into them.
 
 ```yml
 default:
@@ -443,7 +443,7 @@ development:
     port: 4444
 ```
 
-**NOTE:** If you want to use secrets with Rails 7.1 (still supported, but deprecated) you must add the corresponding loader manually: `Anyway.loaders.insert_after :yml, :secrets, Anyway::Rails::Loaders::Secrets`.
+**NOTE:** If you want to use secrets with Rails 7.1 (still supported, but deprecated) you must add the corresponding loader manually: `Runger.loaders.insert_after :yml, :secrets, Runger::Rails::Loaders::Secrets`.
 
 3) **Rails credentials**: `Rails.application.credentials.my_cool_gem` (if supported):
 
@@ -473,7 +473,7 @@ We have the following config to fetch the Heroku provided [metadata](https://dev
 
 ```ruby
 # This data is provided by Heroku Dyno Metadadata add-on.
-class HerokuConfig < Anyway::Config
+class HerokuConfig < Runger::Config
   attr_config :app_id, :app_name,
     :dyno_id, :release_version,
     :slug_commit
@@ -518,28 +518,28 @@ end
 
 ### Generators
 
-Anyway Config provides Rails generators to create new config classes:
+Runger Config provides Rails generators to create new config classes:
 
-- `rails g anyway:install`—creates an `ApplicationConfig` class (the base class for all config classes) and updates `.gitignore`
+- `rails g runger:install`—creates an `ApplicationConfig` class (the base class for all config classes) and updates `.gitignore`
 
 You can specify the static configs path via the `--configs-path` option:
 
 ```sh
-rails g anyway:install --configs-path=config/settings
+rails g runger:install --configs-path=config/settings
 
 # or to keep everything in app/configs
-rails g anyway:install --configs-path=app/configs
+rails g runger:install --configs-path=app/configs
 ```
 
-- `rails g anyway:config <name> param1 param2 ...`—creates a named configuration class and optionally the corresponding YAML file; creates `application_config.rb` is missing.
+- `rails g runger:config <name> param1 param2 ...`—creates a named configuration class and optionally the corresponding YAML file; creates `application_config.rb` is missing.
 
 The generator command for the Heroku example above would be:
 
 ```sh
-$ rails g anyway:config heroku app_id app_name dyno_id release_version slug_commit
+$ rails g runger:config heroku app_id app_name dyno_id release_version slug_commit
 
-    generate  anyway:install
-       rails  generate anyway:install
+    generate  runger:install
+       rails  generate runger:install
       create  config/configs/application_config.rb
       append  .gitignore
       create  config/configs/heroku_config.rb
@@ -547,17 +547,17 @@ Would you like to generate a heroku.yml file? (Y/n) n
 ```
 
 You can also specify the `--app` option to put the newly created class into `app/configs` folder.
-Alternatively, you can call `rails g anyway:app_config name param1 param2 ...`.
+Alternatively, you can call `rails g runger:app_config name param1 param2 ...`.
 
-**NOTE:** The generated `ApplicationConfig` class uses a singleton pattern along with `delegate_missing_to` to re-use the same instance across the application. However, the delegation can lead to unexpected behaviour and break Anyway Config internals if you have attributes named as `Anyway::Config` class methods. See [#120](https://github.com/davidrunger/runger_config/issues/120).
+**NOTE:** The generated `ApplicationConfig` class uses a singleton pattern along with `delegate_missing_to` to re-use the same instance across the application. However, the delegation can lead to unexpected behaviour and break Runger Config internals if you have attributes named as `Runger::Config` class methods. See [#120](https://github.com/davidrunger/runger_config/issues/120).
 
-### Loading Anyway Config before Rails
+### Loading Runger Config before Rails
 
-Anyway Config activates Rails-specific features automatically on the gem load only if Rails has been already required (we check for the `Rails::VERSION` constant presence). However, in some cases you may want to use Anyway Config before Rails initialization (e.g., in `config/puma.rb` when starting a Puma web server).
+Runger Config activates Rails-specific features automatically on the gem load only if Rails has been already required (we check for the `Rails::VERSION` constant presence). However, in some cases you may want to use Runger Config before Rails initialization (e.g., in `config/puma.rb` when starting a Puma web server).
 
-By default, Anyway Config sets up a hook (via TracePoint API) and waits for Rails to be loaded to require the Rails extensions (`require "anyway/rails"`). In case you load Rails after Anyway Config, you will see a warning telling you about that. Note that config classes loaded before Rails are not populated from Rails-specific data sources (e.g., credentials).
+By default, Runger Config sets up a hook (via TracePoint API) and waits for Rails to be loaded to require the Rails extensions (`require "runger/rails"`). In case you load Rails after Runger Config, you will see a warning telling you about that. Note that config classes loaded before Rails are not populated from Rails-specific data sources (e.g., credentials).
 
-You can disable the warning by setting `Anyway::Rails.disable_postponed_load_warning = true` in your application. Also, you can disable the _hook_ completely by calling `Anyway::Rails.tracer.disable`.
+You can disable the warning by setting `Runger::Rails.disable_postponed_load_warning = true` in your application. Also, you can disable the _hook_ completely by calling `Runger::Rails.tracer.disable`.
 
 ## Using with Ruby
 
@@ -566,13 +566,13 @@ The default data loading mechanism for non-Rails applications is the following (
 1) **YAML configuration files**: `./config/<config-name>.yml`.
 
 In pure Ruby apps, we also can load data under specific _environments_ (`test`, `development`, `production`, etc.).
-If you want to enable this feature you must specify `Anyway::Settings.current_environment` variable for load config under specific environment.
+If you want to enable this feature you must specify `Runger::Settings.current_environment` variable for load config under specific environment.
 
 ```ruby
-Anyway::Settings.current_environment = "development"
+Runger::Settings.current_environment = "development"
 ```
 
-You can also specify the `ANYWAY_ENV=development` environment variable to set the current environment for configuration.
+You can also specify the `RUNGER_ENV=development` environment variable to set the current environment for configuration.
 
 YAML files should be in this format:
 
@@ -582,7 +582,7 @@ development:
   port: 3000
 ```
 
-If `Anyway::Settings.current_environment` is missed we assume that the YAML contains values for a single environment:
+If `Runger::Settings.current_environment` is missed we assume that the YAML contains values for a single environment:
 
 ```yml
 host: localhost
@@ -593,16 +593,16 @@ port: 3000
 
 You can specify the lookup path for YAML files in one of the following ways:
 
-- By setting `Anyway::Settings.default_config_path` to a target directory path:
+- By setting `Runger::Settings.default_config_path` to a target directory path:
 
 ```ruby
-Anyway::Settings.default_config_path = "/etc/configs"
+Runger::Settings.default_config_path = "/etc/configs"
 ```
 
-- By setting `Anyway::Settings.default_config_path` to a Proc, which accepts a config name and returns the path:
+- By setting `Runger::Settings.default_config_path` to a Proc, which accepts a config name and returns the path:
 
 ```ruby
-Anyway::Settings.default_config_path = ->(name) { Rails.root.join("data", "configs", "#{name}.yml") }
+Runger::Settings.default_config_path = ->(name) { Rails.root.join("data", "configs", "#{name}.yml") }
 ```
 
 - By overriding a specific config YML file path via the `<NAME>_CONF` env variable, e.g., `MYCOOLGEM_CONF=path/to/cool.yml`
@@ -626,7 +626,7 @@ By default, environment variables are automatically type cast (rules are case-in
 
 Type coercion can be [customized or disabled](#type-coercion).
 
-*Anyway Config* supports nested (_hashed_) env variables—just separate keys with double-underscore.
+*Runger Config* supports nested (_hashed_) env variables—just separate keys with double-underscore.
 
 For example, "MYCOOLGEM_OPTIONS__VERBOSE" is parsed as `config.options["verbose"]`.
 
@@ -650,7 +650,7 @@ MYCOOLGEM = "Nif-Nif, Naf-Naf and Nouf-Nouf"
 You can define custom type coercion rules to convert string data to config values. To do that, use `.coerce_types` method:
 
 ```ruby
-class CoolConfig < Anyway::Config
+class CoolConfig < Runger::Config
   config_name :cool
   attr_config port: 8080,
     host: "localhost",
@@ -691,7 +691,7 @@ coerce_types non_list: :string
 Finally, it's possible to disable auto-casting for a particular config completely:
 
 ```ruby
-class CoolConfig < Anyway::Config
+class CoolConfig < Runger::Config
   attr_config port: 8080,
     host: "localhost",
     user: {name: "admin", password: "admin"}
@@ -722,7 +722,7 @@ COLOR_TO_HEX = lambda do |raw|
   end
 end
 
-class CoolConfig < Anyway::Config
+class CoolConfig < Runger::Config
   attr_config :color
 
   coerce_types color: COLOR_TO_HEX
@@ -743,7 +743,7 @@ We support this by looking at _local_ files when loading the configuration data:
 \* If the YAML config path is not a default one (i.e., set via `<CONFIG_NAME>_CONF`), we look up the local
 config at this location, too.
 
-Local configs are meant for using in development and only loaded if `Anyway::Settings.use_local_files` is `true` (which is true by default if `RACK_ENV` or `RAILS_ENV` env variable is equal to `"development"`).
+Local configs are meant for using in development and only loaded if `Runger::Settings.use_local_files` is `true` (which is true by default if `RACK_ENV` or `RAILS_ENV` env variable is equal to `"development"`).
 
 **NOTE:** in Rails apps you can use `Rails.application.configuration.runger_config.use_local_files`.
 
@@ -755,24 +755,24 @@ Don't forget to add `*.local.yml` (and `config/credentials/local.*`) to your `.g
 
 ### Doppler integration
 
-Anyway Config can pull configuration data from [Doppler](https://www.doppler.com/). All you need is to specify the `DOPPLER_TOKEN` environment variable with the **service token**, associated with the specific content (read more about [service tokens](https://docs.doppler.com/docs/service-tokens)).
+Runger Config can pull configuration data from [Doppler](https://www.doppler.com/). All you need is to specify the `DOPPLER_TOKEN` environment variable with the **service token**, associated with the specific content (read more about [service tokens](https://docs.doppler.com/docs/service-tokens)).
 
 You can also configure Doppler loader manually if needed:
 
 ```ruby
 # Add loader
-Anyway.loaders.append :Doppler, Anyway::Loaders::Doppler
+Runger.loaders.append :Doppler, Runger::Loaders::Doppler
 
 # Configure API URL and token (defaults are shown)
-Anyway::Loaders::Doppler.download_url = "https://api.doppler.com/v3/configs/config/secrets/download"
-Anyway::Loaders::Doppler.token = ENV["DOPPLER_TOKEN"]
+Runger::Loaders::Doppler.download_url = "https://api.doppler.com/v3/configs/config/secrets/download"
+Runger::Loaders::Doppler.token = ENV["DOPPLER_TOKEN"]
 ```
 
-**NOTE:** You can opt-out from Doppler loader by specifying the`ANYWAY_CONFIG_DISABLE_DOPPLER=true` env var (in case you have the `DOPPLER_TOKEN` env var, but don't want to use it with Anyway Config).
+**NOTE:** You can opt-out from Doppler loader by specifying the`RUNGER_CONFIG_DISABLE_DOPPLER=true` env var (in case you have the `DOPPLER_TOKEN` env var, but don't want to use it with Runger Config).
 
 ### EJSON support
 
-Anyway Config allows you to keep your configuration also in encrypted `.ejson` files. More information
+Runger Config allows you to keep your configuration also in encrypted `.ejson` files. More information
 about EJSON format you can read [here](https://github.com/Shopify/ejson).
 
 Configuration will be loaded only if you have `ejson` executable in your PATH. Easiest way to do this - install `ejson` as a gem into project:
@@ -810,7 +810,7 @@ ejson decrypt config/secrets.ejson
 You can customize the JSON namespace under which a loader searches for configuration via `loader_options`:
 
 ```ruby
-class MyConfig < Anyway::Config
+class MyConfig < Runger::Config
   # To look under the key "foo" instead of the default key of "my"
   loader_options ejson_namespace: "foo"
 
@@ -825,10 +825,10 @@ You can provide your own data loaders or change the existing ones using the Load
 
 ```ruby
 # remove env loader => do not load params from ENV
-Anyway.loaders.delete :env
+Runger.loaders.delete :env
 
 # add custom loader before :env (it's better to keep the ENV loader the last one)
-Anyway.loaders.insert_before :env, :my_loader, MyLoader
+Runger.loaders.insert_before :env, :my_loader, MyLoader
 ```
 
 Loader is a _callable_ Ruby object (module/class responding to `.call` or lambda/proc), which `call` method
@@ -840,13 +840,13 @@ def call(
   env_prefix:, # prefix for env vars if any
   config_path:, # path to YML config
   local:, # true|false, whether to load local configuration
-  **options # custom options can be passed via Anyway::Config.loader_options example: "custom", option: "blah"
+  **options # custom options can be passed via Runger::Config.loader_options example: "custom", option: "blah"
 )
   #=> must return Hash with configuration data
 end
 ```
 
-You can use `Anyway::Loaders::Base` as a base class for your loader and define a `#call` method.
+You can use `Runger::Loaders::Base` as a base class for your loader and define a `#call` method.
 For example, the [Chamber](https://github.com/thekompanee/chamber) loader could be written as follows:
 
 ```ruby
@@ -860,7 +860,7 @@ class ChamberConfigLoader < Base
 end
 
 # Don't forget to register it
-Anyway.loaders.insert_before :env, :chamber, ChamberConfigLoader
+Runger.loaders.insert_before :env, :chamber, ChamberConfigLoader
 ```
 
 In order to support [source tracing](#tracing), you need to wrap the resulting Hash via the `#trace!` method with metadata:
@@ -878,9 +878,9 @@ end
 
 ## Tracing
 
-Since Anyway Config loads data from multiple source, it could be useful to know where a particular value came from.
+Since Runger Config loads data from multiple source, it could be useful to know where a particular value came from.
 
-Each `Anyway::Config` instance contains _tracing information_ which you can access via `#to_source_trace` method:
+Each `Runger::Config` instance contains _tracing information_ which you can access via `#to_source_trace` method:
 
 ```ruby
 conf = ExampleConfig.new
@@ -899,12 +899,12 @@ conf.to_source_trace
 # if you change the value manually in your code,
 # that would be reflected in the trace
 
-conf.host = "anyway.host"
+conf.host = "runger.host"
 conf.to_source_trace["host"]
 #=> {type: :user, called_from: "/path/to/caller.rb:15"}
 ```
 
-You can disable tracing functionality by setting `Anyway::Settings.tracing_enabled = false` or `config.runger_config.tracing_enabled = false` in Rails.
+You can disable tracing functionality by setting `Runger::Settings.tracing_enabled = false` or `config.runger_config.tracing_enabled = false` in Rails.
 
 ### Pretty print
 
@@ -986,7 +986,7 @@ If you want to delete the env var, pass `nil` as the value.
 
 This helper is automatically included to RSpec if `RAILS_ENV` or `RACK_ENV` env variable is equal to "test". It's only available for the example with the tag `type: :config` or with the path `spec/configs/...`.
 
-You can add it manually by requiring `"anyway/testing/helpers"` and including the `Anyway::Testing::Helpers` module (into RSpec configuration or Minitest test class).
+You can add it manually by requiring `"runger/testing/helpers"` and including the `Runger::Testing::Helpers` module (into RSpec configuration or Minitest test class).
 
 ## OptionParser integration
 
@@ -996,7 +996,7 @@ It's possible to use config as option parser (e.g., for CLI apps/libraries). It 
 Example usage:
 
 ```ruby
-class MyConfig < Anyway::Config
+class MyConfig < Runger::Config
   attr_config :host, :log_level, :concurrency, :debug, server_args: {}
 
   # specify which options shouldn't be handled by option parser
@@ -1052,7 +1052,7 @@ describe_options(
 
 ## RBS support
 
-Anyway Config comes with Ruby type signatures (RBS).
+Runger Config comes with Ruby type signatures (RBS).
 
 To use them with Steep, add the following your `Steepfile`:
 
@@ -1065,7 +1065,7 @@ library "runger_config"
 We also provide an API to generate a type signature for your config class:
 
 ```ruby
-class MyGem::Config < Anyway::Config
+class MyGem::Config < Runger::Config
   attr_config :host, port: 8080, tags: [], debug: false
 
   coerce_types host: :string, port: :integer,
@@ -1091,7 +1091,7 @@ module MyGem
     def debug=: (bool) -> void
   end
 
-  class Config < Anyway::Config
+  class Config < Runger::Config
     include _Config
   end
 end
@@ -1102,7 +1102,7 @@ end
 When we use `on_load` callback with a block, we switch the context (via `instance_eval`), and we need to provide type hints for the type checker. Here is an example:
 
 ```ruby
-class MyConfig < Anyway::Config
+class MyConfig < Runger::Config
   on_load do
     # @type self : MyConfig
     raise_validation_error("host is invalid") if host.start_with?("localhost")

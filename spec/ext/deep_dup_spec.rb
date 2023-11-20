@@ -2,8 +2,8 @@
 
 require "spec_helper"
 
-describe Anyway::Ext::DeepDup do
-  using Anyway::Ext::DeepDup
+describe Runger::Ext::DeepDup do
+  using Runger::Ext::DeepDup
 
   it "duplicates nested arrays and hashes", :aggregate_failures do
     source = {
@@ -43,7 +43,7 @@ describe Anyway::Ext::DeepDup do
       end
     end
 
-    Anyway::Ext::DeepDup::TestClass = klass # rubocop:disable Naming/ConstantName
+    Runger::Ext::DeepDup::TestClass = klass # rubocop:disable Naming/ConstantName
 
     expect(klass.deep_dup.lazy_name).to eq(klass.lazy_name)
   end

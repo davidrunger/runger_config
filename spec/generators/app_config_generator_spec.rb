@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "generators/anyway/app_config/app_config_generator"
+require "generators/runger/app_config/app_config_generator"
 
-describe Anyway::Generators::AppConfigGenerator, :rails, type: :generator do
+describe Runger::Generators::AppConfigGenerator, :rails, type: :generator do
   before(:all) { destination File.join(__dir__, "../../tmp/basic_rails_app") }
 
   let(:args) { %w[api_service api_key secret mode --no-yml] }
