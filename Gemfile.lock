@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    runger_config (3.0.2.alpha)
+    runger_config (4.0.0)
       activesupport (>= 7.1.2)
 
 GEM
