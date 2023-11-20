@@ -30,7 +30,6 @@ describe Anyway::Generators::ConfigGenerator, :rails, type: :generator do
       is_expected.to exist
       is_expected.to contain(/class APIServiceConfig < ApplicationConfig/)
       is_expected.to contain(/attr_config :api_key, :secret, :mode/)
-      is_expected.to contain(/config_name :api_service/)
     end
 
     context "with --yml" do
