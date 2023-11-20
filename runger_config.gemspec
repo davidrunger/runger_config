@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "lib/anyway/version"
+require_relative "lib/runger/version"
 
 Gem::Specification.new do |s|
   s.name = "runger_config"
@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   s.license = "MIT"
 
   s.files = Dir.glob("lib/**/*") +
-    Dir.glob("bin/**/*") + %w[sig/anyway_config.rbs sig/manifest.yml] +
+    Dir.glob("bin/**/*") + %w[sig/runger_config.rbs sig/manifest.yml] +
     %w[README.md LICENSE.txt CHANGELOG.md]
   s.require_paths = ["lib"]
   s.required_ruby_version = ">= 3.2.2"

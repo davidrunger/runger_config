@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "anyway/option_parser_builder"
+require "runger/option_parser_builder"
 
-require "anyway/ext/deep_dup"
+require "runger/ext/deep_dup"
 
 module Runger
   using Runger::Ext::DeepDup

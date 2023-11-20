@@ -143,7 +143,7 @@ module Runger
       end
 
       def trace_stack
-        (Thread.current[:__anyway__trace_stack__] ||= [])
+        (Thread.current[:__runger__trace_stack__] ||= [])
       end
 
       def current_trace = trace_stack.last
@@ -151,7 +151,7 @@ module Runger
       alias_method :tracing?, :current_trace
 
       def source_stack
-        (Thread.current[:__anyway__trace_source_stack__] ||= [])
+        (Thread.current[:__runger__trace_source_stack__] ||= [])
       end
 
       def current_trace_source

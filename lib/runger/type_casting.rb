@@ -91,7 +91,7 @@ module Runger
   end
 
   unless "".respond_to?(:safe_constantize)
-    require "anyway/ext/string_constantize"
+    require "runger/ext/string_constantize"
     using Runger::Ext::StringConstantize
   end
 

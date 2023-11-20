@@ -5,7 +5,7 @@ require File.expand_path("../boot", __FILE__)
 require "rails"
 
 require "action_controller/railtie"
-require "anyway_config"
+require "runger_config"
 
 Bundler.require(*Rails.groups)
 

@@ -15,7 +15,7 @@ module Runger
 
       def run_install_if_needed
         return if ::Rails.root.join(static_config_root, "application_config.rb").exist?
-        generate "anyway:install"
+        generate "runger:install"
       end
 
       def create_config

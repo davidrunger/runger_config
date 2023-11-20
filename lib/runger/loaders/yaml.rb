@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "pathname"
-require "anyway/ext/hash"
+require "runger/ext/hash"
 
 using Runger::Ext::Hash
 

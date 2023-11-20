@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "anyway/ext/deep_freeze"
+require "runger/ext/deep_freeze"
 
 describe Runger::Ext::DeepFreeze do
   using Runger::Ext::DeepFreeze

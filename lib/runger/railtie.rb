@@ -5,11 +5,11 @@ module Runger # :nodoc:
 
   class Railtie < ::Rails::Railtie # :nodoc:
     # Add settings to Rails config
-    config.anyway_config = Runger::Settings
+    config.runger_config = Runger::Settings
 
     config.before_configuration do
       next if ::Rails.application.initialized?
-      config.anyway_config.autoload_static_config_path = DEFAULT_CONFIGS_PATH
+      config.runger_config.autoload_static_config_path = DEFAULT_CONFIGS_PATH
     end
 
     config.before_eager_load do
@@ -18,7 +18,7 @@ module Runger # :nodoc:
 
     # Remove `autoload_static_config_path` from Rails `autoload_paths`
     # since we use our own autoloading mechanism
-    initializer "anyway_config.cleanup_autoload" do
+    initializer "runger_config.cleanup_autoload" do
       Runger::Settings.cleanup_autoload_paths
     end
 

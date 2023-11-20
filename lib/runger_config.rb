@@ -1,23 +1,23 @@
 # frozen_string_literal: true
 
-require "anyway/version"
+require "runger/version"
 
-require "anyway/ext/deep_dup"
-require "anyway/ext/deep_freeze"
-require "anyway/ext/hash"
-require "anyway/ext/flatten_names"
+require "runger/ext/deep_dup"
+require "runger/ext/deep_freeze"
+require "runger/ext/hash"
+require "runger/ext/flatten_names"
 
-require "anyway/utils/deep_merge"
-require "anyway/utils/which"
+require "runger/utils/deep_merge"
+require "runger/utils/which"
 
-require "anyway/settings"
-require "anyway/tracing"
-require "anyway/config"
-require "anyway/auto_cast"
-require "anyway/type_casting"
-require "anyway/env"
-require "anyway/loaders"
-require "anyway/rbs"
+require "runger/settings"
+require "runger/tracing"
+require "runger/config"
+require "runger/auto_cast"
+require "runger/type_casting"
+require "runger/env"
+require "runger/loaders"
+require "runger/rbs"
 
 module Runger # :nodoc:
   class << self
@@ -41,9 +41,9 @@ module Runger # :nodoc:
 end
 
 if defined?(::Rails::VERSION)
-  require "anyway/rails"
+  require "runger/rails"
 else
-  require "anyway/rails/autoload"
+  require "runger/rails/autoload"
 end
 
-require "anyway/testing" if ENV["RACK_ENV"] == "test" || ENV["RAILS_ENV"] == "test"
+require "runger/testing" if ENV["RACK_ENV"] == "test" || ENV["RAILS_ENV"] == "test"

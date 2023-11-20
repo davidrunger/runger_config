@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "anyway/testing/helpers"
+require "runger/testing/helpers"
 
 if defined?(RSpec::Core) && RSpec.respond_to?(:configure)
   RSpec.configure do |config|

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "anyway/ejson_parser"
+require "runger/ejson_parser"
 
 module Runger
   module Loaders

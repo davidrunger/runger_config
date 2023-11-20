@@ -70,8 +70,8 @@ module Runger
   end
 end
 
-require "anyway/loaders/base"
-require "anyway/loaders/yaml"
-require "anyway/loaders/env"
-require "anyway/loaders/doppler"
-require "anyway/loaders/ejson"
+require "runger/loaders/base"
+require "runger/loaders/yaml"
+require "runger/loaders/env"
+require "runger/loaders/doppler"
+require "runger/loaders/ejson"

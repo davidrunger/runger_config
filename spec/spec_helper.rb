@@ -14,14 +14,14 @@ begin
   if NORAILS
     ENV["RACK_ENV"] = "test"
 
-    require "anyway_config"
+    require "runger_config"
 
     Runger::Settings.use_local_files = false
   else
     ENV["RAILS_ENV"] = "test"
 
-    # Load anyway_config before Rails to test that we can detect Rails app before it's loaded
-    require "anyway_config" unless defined?(TruffleRuby)
+    # Load runger_config before Rails to test that we can detect Rails app before it's loaded
+    require "runger_config" unless defined?(TruffleRuby)
 
     require "ammeter"
 

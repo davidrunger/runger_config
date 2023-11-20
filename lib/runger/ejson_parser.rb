@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "open3"
-require "anyway/ext/hash"
+require "runger/ext/hash"
 
 using Runger::Ext::Hash
 

@@ -5,9 +5,9 @@ module Runger
   end
 end
 
-require "anyway/rails/settings"
-require "anyway/rails/config"
-require "anyway/rails/loaders"
+require "runger/rails/settings"
+require "runger/rails/config"
+require "runger/rails/loaders"
 
 # Configure Rails loaders
 Runger.loaders.override :yml, Runger::Rails::Loaders::YAML
@@ -21,4 +21,4 @@ end
 
 # Load Railties after configuring loaders.
 # The application could be already initialized, and that would make `Runger.loaders` frozen
-require "anyway/railtie"
+require "runger/railtie"

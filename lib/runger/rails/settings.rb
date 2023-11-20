@@ -28,7 +28,7 @@ module Runger
           # See Rails 6 https://github.com/rails/rails/blob/8ab4fd12f18203b83d0f252db96d10731485ff6a/railties/lib/rails/autoloaders.rb#L10
           # and Rails 7 https://github.com/rails/rails/blob/5462fbd5de1900c1b1ce1c9dc11c1a2d8cdcd809/railties/lib/rails/autoloaders.rb#L15
           @autoloader = Zeitwerk::Loader.new.tap do |loader|
-            loader.tag = "anyway.config"
+            loader.tag = "runger.config"
 
             if defined?(ActiveSupport::Dependencies::ZeitwerkIntegration::Inflector)
               loader.inflector = ActiveSupport::Dependencies::ZeitwerkIntegration::Inflector

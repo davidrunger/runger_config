@@ -52,7 +52,7 @@ end
 namespace :rbs do
   desc "Generate an RBS file from config class"
   task :generate do
-    require "anyway_config"
+    require "runger_config"
     require_relative "sig/types/config"
 
     File.write("./sig/types/config.rbs", RBS::Config.to_rbs)

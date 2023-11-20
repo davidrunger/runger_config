@@ -86,7 +86,7 @@ describe "Runger::Rails::Loaders::YAML", :rails do
 
     context "when new known_environment is added to config and used as top-level key" do
       let(:options) { {config_path: Rails.root.join("config/cool_staging_environment.yml"), some_other: "value"} }
-      let(:config) { Rails.application.config.anyway_config }
+      let(:config) { Rails.application.config.runger_config }
 
       it "does not leak settings into other environments" do
         config.known_environments << "staging"

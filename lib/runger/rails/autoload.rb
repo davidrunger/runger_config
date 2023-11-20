@@ -15,7 +15,7 @@ module Runger
         return if event.self.singleton_class?
 
         # We wait till `rails/application/configuration.rb` has been loaded, since we rely on it
-        # See https://github.com/palkan/anyway_config/issues/134
+        # See https://github.com/palkan/runger_config/issues/134
         return unless name_method.bind_call(event.self) == "Rails::Application::Configuration"
 
         tracer.disable
@@ -25,7 +25,7 @@ module Runger
                 "NOTE: Already loaded configs were provisioned without Rails-specific sources."
         end
 
-        require "anyway/rails"
+        require "runger/rails"
       end
     end
 

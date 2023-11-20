@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require "active_support/all"
-require "anyway/optparse_config"
-require "anyway/dynamic_config"
+require "runger/optparse_config"
+require "runger/dynamic_config"
 
 module Runger # :nodoc:
   using Runger::Ext::DeepDup

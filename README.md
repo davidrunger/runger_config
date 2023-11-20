@@ -1,4 +1,4 @@
-[![Cult Of Martians](http://cultofmartians.com/assets/badges/badge.svg)](https://cultofmartians.com/tasks/anyway-config-options-parse.html#task)
+[![Cult Of Martians](http://cultofmartians.com/assets/badges/badge.svg)](https://cultofmartians.com/tasks/runger-config-options-parse.html#task)
 [![Gem Version](https://badge.fury.io/rb/runger_config.svg)](https://rubygems.org/gems/runger_config) [![Build](https://github.com/davidrunger/runger_config/workflows/Build/badge.svg)](https://github.com/davidrunger/runger_config/actions)
 [![JRuby Build](https://github.com/davidrunger/runger_config/workflows/JRuby%20Build/badge.svg)](https://github.com/davidrunger/runger_config/actions)
 [![TruffleRuby Build](https://github.com/davidrunger/runger_config/workflows/TruffleRuby%20Build/badge.svg)](https://github.com/davidrunger/runger_config/actions)
@@ -27,7 +27,7 @@ For version 1.x see the [1-4-stable branch](https://github.com/davidrunger/runge
 
 ## Links
 
-- [Runger Config: Keep your Ruby configuration sane](https://evilmartians.com/chronicles/anyway-config-keep-your-ruby-configuration-sane?utm_source=runger_config)
+- [Runger Config: Keep your Ruby configuration sane](https://evilmartians.com/chronicles/runger-config-keep-your-ruby-configuration-sane?utm_source=runger_config)
 
 ## Table of contents
 
@@ -520,26 +520,26 @@ end
 
 Runger Config provides Rails generators to create new config classes:
 
-- `rails g anyway:install`—creates an `ApplicationConfig` class (the base class for all config classes) and updates `.gitignore`
+- `rails g runger:install`—creates an `ApplicationConfig` class (the base class for all config classes) and updates `.gitignore`
 
 You can specify the static configs path via the `--configs-path` option:
 
 ```sh
-rails g anyway:install --configs-path=config/settings
+rails g runger:install --configs-path=config/settings
 
 # or to keep everything in app/configs
-rails g anyway:install --configs-path=app/configs
+rails g runger:install --configs-path=app/configs
 ```
 
-- `rails g anyway:config <name> param1 param2 ...`—creates a named configuration class and optionally the corresponding YAML file; creates `application_config.rb` is missing.
+- `rails g runger:config <name> param1 param2 ...`—creates a named configuration class and optionally the corresponding YAML file; creates `application_config.rb` is missing.
 
 The generator command for the Heroku example above would be:
 
 ```sh
-$ rails g anyway:config heroku app_id app_name dyno_id release_version slug_commit
+$ rails g runger:config heroku app_id app_name dyno_id release_version slug_commit
 
-    generate  anyway:install
-       rails  generate anyway:install
+    generate  runger:install
+       rails  generate runger:install
       create  config/configs/application_config.rb
       append  .gitignore
       create  config/configs/heroku_config.rb
@@ -547,7 +547,7 @@ Would you like to generate a heroku.yml file? (Y/n) n
 ```
 
 You can also specify the `--app` option to put the newly created class into `app/configs` folder.
-Alternatively, you can call `rails g anyway:app_config name param1 param2 ...`.
+Alternatively, you can call `rails g runger:app_config name param1 param2 ...`.
 
 **NOTE:** The generated `ApplicationConfig` class uses a singleton pattern along with `delegate_missing_to` to re-use the same instance across the application. However, the delegation can lead to unexpected behaviour and break Runger Config internals if you have attributes named as `Runger::Config` class methods. See [#120](https://github.com/davidrunger/runger_config/issues/120).
 
@@ -555,7 +555,7 @@ Alternatively, you can call `rails g anyway:app_config name param1 param2 ...`.
 
 Runger Config activates Rails-specific features automatically on the gem load only if Rails has been already required (we check for the `Rails::VERSION` constant presence). However, in some cases you may want to use Runger Config before Rails initialization (e.g., in `config/puma.rb` when starting a Puma web server).
 
-By default, Runger Config sets up a hook (via TracePoint API) and waits for Rails to be loaded to require the Rails extensions (`require "anyway/rails"`). In case you load Rails after Runger Config, you will see a warning telling you about that. Note that config classes loaded before Rails are not populated from Rails-specific data sources (e.g., credentials).
+By default, Runger Config sets up a hook (via TracePoint API) and waits for Rails to be loaded to require the Rails extensions (`require "runger/rails"`). In case you load Rails after Runger Config, you will see a warning telling you about that. Note that config classes loaded before Rails are not populated from Rails-specific data sources (e.g., credentials).
 
 You can disable the warning by setting `Runger::Rails.disable_postponed_load_warning = true` in your application. Also, you can disable the _hook_ completely by calling `Runger::Rails.tracer.disable`.
 
@@ -899,7 +899,7 @@ conf.to_source_trace
 # if you change the value manually in your code,
 # that would be reflected in the trace
 
-conf.host = "anyway.host"
+conf.host = "runger.host"
 conf.to_source_trace["host"]
 #=> {type: :user, called_from: "/path/to/caller.rb:15"}
 ```
@@ -986,7 +986,7 @@ If you want to delete the env var, pass `nil` as the value.
 
 This helper is automatically included to RSpec if `RAILS_ENV` or `RACK_ENV` env variable is equal to "test". It's only available for the example with the tag `type: :config` or with the path `spec/configs/...`.
 
-You can add it manually by requiring `"anyway/testing/helpers"` and including the `Runger::Testing::Helpers` module (into RSpec configuration or Minitest test class).
+You can add it manually by requiring `"runger/testing/helpers"` and including the `Runger::Testing::Helpers` module (into RSpec configuration or Minitest test class).
 
 ## OptionParser integration
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "generators/anyway/install/install_generator"
+require "generators/runger/install/install_generator"
 
 describe Runger::Generators::InstallGenerator, :rails, type: :generator do
   before(:all) { destination File.join(__dir__, "../../tmp/basic_rails_app") }
@@ -37,7 +37,7 @@ describe Runger::Generators::InstallGenerator, :rails, type: :generator do
 
       it "contains autoload_static_config_path" do
         is_expected.to exist
-        is_expected.to contain("    # config.anyway_config.autoload_static_config_path = \"#{configs_root}\"\n    #\n")
+        is_expected.to contain("    # config.runger_config.autoload_static_config_path = \"#{configs_root}\"\n    #\n")
       end
 
       context "with --configs-path" do
@@ -45,7 +45,7 @@ describe Runger::Generators::InstallGenerator, :rails, type: :generator do
 
         it "configures autoload_static_config_path" do
           is_expected.to exist
-          is_expected.to contain("    config.anyway_config.autoload_static_config_path = \"config/settings\"\n\n")
+          is_expected.to contain("    config.runger_config.autoload_static_config_path = \"config/settings\"\n\n")
 
           expect(file("config/settings/application_config.rb")).to exist
         end

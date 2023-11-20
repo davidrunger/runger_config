@@ -4,7 +4,7 @@ require File.expand_path("../boot", __FILE__)
 
 require "rails"
 require "action_controller/railtie"
-require "anyway_config"
+require "runger_config"
 
 Bundler.require(*Rails.groups)
 
@@ -19,9 +19,9 @@ module Dummy
 
     config.autoloader = :zeitwerk if defined?(::Zeitwerk)
 
-    config.anyway_config.use_local_files = false
+    config.runger_config.use_local_files = false
     if ENV["USE_APP_CONFIGS"] == "1"
-      config.anyway_config.autoload_static_config_path = "app/configs"
+      config.runger_config.autoload_static_config_path = "app/configs"
     end
 
     config.heroku = HerokuConfig.instance

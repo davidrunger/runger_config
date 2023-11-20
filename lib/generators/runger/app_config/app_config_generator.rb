@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "generators/anyway/config/config_generator"
+require "generators/runger/config/config_generator"
 
 module Runger
   module Generators

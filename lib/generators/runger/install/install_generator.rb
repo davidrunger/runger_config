@@ -26,7 +26,7 @@ module Runger
           <<-RUBY
     # Configure the path for configuration classes that should be used before initialization
     # NOTE: path should be relative to the project root (Rails.root)
-#{maybe_comment_indented}config.anyway_config.autoload_static_config_path = "#{static_config_root}"
+#{maybe_comment_indented}config.runger_config.autoload_static_config_path = "#{static_config_root}"
 #{maybe_comment_indented.sub(/\s+$/, "")}
           RUBY
         end

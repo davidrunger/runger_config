@@ -338,7 +338,7 @@ describe Runger::Config, type: :config do
     let(:conf) { RungerTest::Config.new }
 
     around do |ex|
-      with_env("ANYWAY_TEST_CONF" => File.join(File.dirname(__FILE__), "anyway.yml"), &ex)
+      with_env("ANYWAY_TEST_CONF" => File.join(File.dirname(__FILE__), "runger.yml"), &ex)
     end
 
     it "has getters", :aggregate_failures do
@@ -640,7 +640,7 @@ describe Runger::Config, type: :config do
 
   describe ".config_name" do
     specify "<SomeModule>::Config", :aggregate_failures do
-      expect(RungerTest::Config.config_name).to eq "anyway_test"
+      expect(RungerTest::Config.config_name).to eq "runger_test"
       expect(RungerTest::Config.env_prefix).to eq "ANYWAY_TEST"
     end
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "anyway_config"
+require "runger_config"
 
 module RBS; end
 

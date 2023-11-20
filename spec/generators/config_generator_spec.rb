@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "generators/anyway/config/config_generator"
+require "generators/runger/config/config_generator"
 
 describe Runger::Generators::ConfigGenerator, :rails, type: :generator do
   before(:all) { destination File.join(__dir__, "../../tmp/basic_rails_app") }
