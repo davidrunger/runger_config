@@ -619,6 +619,7 @@ describe Runger::Config, type: :config do
         with_env(
           "COOL_USER__NAME" => "john"
         ) do
+          # rubocop:disable Style/StringLiteralsInInterpolation
           expect { pp conf }.to output(
             <<~STR
               #<CoolConfig
@@ -633,6 +634,7 @@ describe Runger::Config, type: :config do
                   }>
             STR
           ).to_stdout
+          # rubocop:enable Style/StringLiteralsInInterpolation
         end
       end
     end
