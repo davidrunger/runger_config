@@ -1,3 +1,6 @@
+## Unreleased
+[no unreleased changes yet]
+
 ## v3.0.1 (2023-11-19)
 
 - Fix specs broken by 3.0 release
