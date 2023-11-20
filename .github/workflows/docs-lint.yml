@@ -23,7 +23,7 @@ jobs:
     - name: Run Markdown linter
       run: |
         gem install mdl
-        mdl *.md -r ~MD002,~MD022
+        mdl *.md
   rubocop:
     runs-on: ubuntu-latest
     steps:
