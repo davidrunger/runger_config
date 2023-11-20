@@ -338,7 +338,7 @@ describe Anyway::Config, type: :config do
     let(:conf) { AnywayTest::Config.new }
 
     around do |ex|
-      with_env("ANYWAYTEST_CONF" => File.join(File.dirname(__FILE__), "anyway.yml"), &ex)
+      with_env("ANYWAY_TEST_CONF" => File.join(File.dirname(__FILE__), "anyway.yml"), &ex)
     end
 
     it "has getters", :aggregate_failures do
@@ -350,10 +350,10 @@ describe Anyway::Config, type: :config do
 
     it "works", :aggregate_failures do
       with_env(
-        "ANYWAYTEST_API__KEY" => "test1",
-        "ANYWAYTEST_TEST" => "test",
-        "ANYWAYTEST_LOG__FORMAT__COLOR" => "t",
-        "ANYWAYTEST_LOG_LEVELS" => "debug,warning,info"
+        "ANYWAY_TEST_API__KEY" => "test1",
+        "ANYWAY_TEST_TEST" => "test",
+        "ANYWAY_TEST_LOG__FORMAT__COLOR" => "t",
+        "ANYWAY_TEST_LOG_LEVELS" => "debug,warning,info"
       ) do
         expect(conf.api["key"]).to eq "test1"
         expect(conf.api["endpoint"]).to eq "localhost"
@@ -364,16 +364,16 @@ describe Anyway::Config, type: :config do
     end
 
     it "reloads config", :aggregate_failures do
-      expect(conf.api["key"]).to eq ""
+      expect(conf.api["key"]).to eq nil
       expect(conf.api["endpoint"]).to eq "localhost"
       expect(conf.test).to be_nil
-      expect(conf.log["format"]["color"]).to eq false
+      expect { conf.log["format"]["color"] }.to raise_error(NoMethodError)
 
       with_env(
-        "ANYWAYTEST_API__KEY" => "test1",
-        "ANYWAYTEST_API__SSL" => "yes",
-        "ANYWAYTEST_TEST" => "test",
-        "ANYWAYTEST_LOG__FORMAT__COLOR" => "t"
+        "ANYWAY_TEST_API__KEY" => "test1",
+        "ANYWAY_TEST_API__SSL" => "yes",
+        "ANYWAY_TEST_TEST" => "test",
+        "ANYWAY_TEST_LOG__FORMAT__COLOR" => "t"
       ) do
         conf.reload
         expect(conf.api["key"]).to eq "test1"
@@ -398,10 +398,10 @@ describe Anyway::Config, type: :config do
         expect(conf.log["format"]["color"]).to eq true
 
         with_env(
-          "ANYWAYTEST_API__KEY" => "test1",
-          "ANYWAYTEST_API__SSL" => "yes",
-          "ANYWAYTEST_TEST" => "test",
-          "ANYWAYTEST_LOG__FORMAT__COLOR" => "t"
+          "ANYWAY_TEST_API__KEY" => "test1",
+          "ANYWAY_TEST_API__SSL" => "yes",
+          "ANYWAY_TEST_TEST" => "test",
+          "ANYWAY_TEST_LOG__FORMAT__COLOR" => "t"
         ) do
           conf.reload
           expect(conf.api["key"]).to eq "test1"
@@ -627,7 +627,7 @@ describe Anyway::Config, type: :config do
                 values:
                   port => 3334 (type=load),
                   host => "test.host" (type=yml path=./config/cool.yml),
-                  user => {
+                  user => { 
                     name => "john" (type=env key=COOL_USER__NAME),
                     password => "root" (type=yml path=./config/cool.yml)
                   }>
