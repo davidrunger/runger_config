@@ -36,25 +36,6 @@ jobs:
         gem install bundler
         bundle install --jobs 4 --retry 3
         bundle exec rubocop -c .rubocop-md.yml
-  forspell:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Install Hunspell
-      run: |
-        sudo apt-get install hunspell
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 3.3
-    - name: Cache installed gems
-      uses: actions/cache@v1
-      with:
-        path: /home/runner/.rubies/ruby-3.3.0/lib/ruby/gems/3.3.0
-        key: gems-cache-${{ runner.os }}
-    - name: Install Forspell
-      run: gem install forspell
-    - name: Run Forspell
-      run: forspell *.md
   lychee:
     runs-on: ubuntu-latest
     steps:
