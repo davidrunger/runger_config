@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
 class EagerConfig
-  def test
-  end
+  def test; end
 end

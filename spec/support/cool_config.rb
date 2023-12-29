@@ -5,8 +5,8 @@ class CoolConfig < Runger::Config # :nodoc:
   attr_config :meta,
     :data,
     port: 8080,
-    host: "localhost",
-    user: {name: "admin", password: "admin"}.stringify_keys
+    host: 'localhost',
+    user: { name: 'admin', password: 'admin' }.stringify_keys
 
-  coerce_types host: :string, user: {dob: :date}
+  coerce_types host: :string, user: { dob: :date }
 end

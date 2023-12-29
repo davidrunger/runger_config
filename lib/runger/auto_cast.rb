@@ -23,11 +23,11 @@ module Runger
         when /\A(nil|null)\z/i
           nil
         when /\A\d+\z/
-          val.to_i
+          Integer(val, 10)
         when /\A\d*\.\d+\z/
-          val.to_f
+          Float(val)
         when /\A['"].*['"]\z/
-          val.gsub(/(\A['"]|['"]\z)/, "")
+          val.gsub(/(\A['"]|['"]\z)/, '')
         else
           val
         end

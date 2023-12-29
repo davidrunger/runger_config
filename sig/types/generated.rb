@@ -4,20 +4,20 @@
 #   bundle exec rake rbs:generate
 #
 
-require_relative "config"
+require_relative 'config'
 
-ENV["RBS_TEST_VERSION"] = "1.0"
+ENV['RBS_TEST_VERSION'] = '1.0'
 
 default = RBS::Config.new
 
 custom = RBS::Config.new(
-  version: "2.1",
-  revision: "x",
-  checker: "steep",
+  version: '2.1',
+  revision: 'x',
+  checker: 'steep',
   strictness: :none,
   logger: nil,
   log_params: {},
-  debug: true
+  debug: true,
 )
 
 custom.debug?
@@ -25,6 +25,6 @@ custom.debug?
 # #reload
 custom.reload
 # #reload with overrides
-default.reload(log_params: {log_level: "debug"})
+default.reload(log_params: { log_level: 'debug' })
 
 default.to_source_trace

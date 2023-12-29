@@ -1,31 +1,31 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
 describe Runger::Ext::DeepDup do
   using Runger::Ext::DeepDup
 
-  it "duplicates nested arrays and hashes", :aggregate_failures do
+  it 'duplicates nested arrays and hashes', :aggregate_failures do
     source = {
       a: 1,
-      b: "hello",
+      b: 'hello',
       c: {
         id: 1,
-        list: [1, 2, {name: "John"}]
+        list: [1, 2, { name: 'John' }],
       },
-      d: [{id: 1}, {id: 2}]
+      d: [{ id: 1 }, { id: 2 }],
     }
 
     dup = source.deep_dup
 
-    expect(dup[:a]).to eq 1
-    expect(dup[:b]).to eq "hello"
+    expect(dup[:a]).to eq(1)
+    expect(dup[:b]).to eq('hello')
     expect(dup[:c]).to eq(
       id: 1,
-      list: [1, 2, {name: "John"}]
+      list: [1, 2, { name: 'John' }],
     )
     expect(dup[:d]).to eq(
-      [{id: 1}, {id: 2}]
+      [{ id: 1 }, { id: 2 }],
     )
 
     expect(dup[:c]).not_to be_equal(source[:c])
@@ -36,20 +36,21 @@ describe Runger::Ext::DeepDup do
     expect(dup[:d].last).not_to be_equal(source[:d].last)
   end
 
-  it "returns self for modules" do
-    klass = Class.new do
-      def self.lazy_name
-        "#{name}Lazy"
+  it 'returns self for modules' do
+    klass =
+      Class.new do
+        def self.lazy_name
+          "#{name}Lazy"
+        end
       end
-    end
 
     Runger::Ext::DeepDup::TestClass = klass # rubocop:disable Naming/ConstantName
 
     expect(klass.deep_dup.lazy_name).to eq(klass.lazy_name)
   end
 
-  it "returns #dup for other objects" do
-    str = "a"
+  it 'returns #dup for other objects' do
+    str = 'a'
     expect(str.deep_dup).not_to be_equal(str)
   end
 end

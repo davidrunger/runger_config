@@ -1,10 +1,15 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-require "generators/runger/install/install_generator"
+require 'generators/runger/install/install_generator'
+require 'spec_helper'
 
 describe Runger::Generators::InstallGenerator, :rails, type: :generator do
-  before(:all) { destination File.join(__dir__, "../../tmp/basic_rails_app") }
+  subject do
+    run_generator(args)
+    target_file
+  end
+
+  before(:all) { destination File.join(__dir__, '../../tmp/basic_rails_app') }
 
   let(:configs_root) { Runger::Settings.autoload_static_config_path }
   let(:args) { [] }
@@ -12,63 +17,62 @@ describe Runger::Generators::InstallGenerator, :rails, type: :generator do
   before do
     prepare_destination
     FileUtils.cp_r(
-      File.join(__dir__, "fixtures/basic_rails_app"),
-      File.join(__dir__, "../../tmp")
+      File.join(__dir__, 'fixtures/basic_rails_app'),
+      File.join(__dir__, '../../tmp'),
     )
   end
 
-  subject do
-    run_generator(args)
-    target_file
-  end
-
-  describe "application config" do
+  describe 'application config' do
     let(:target_file) { file("#{configs_root}/application_config.rb") }
 
     specify do
-      is_expected.to exist
-      is_expected.to contain(/class ApplicationConfig < Runger::Config/)
-      is_expected.to contain(/delegate_missing_to :instance/)
-      is_expected.to contain(/def instance/)
+      expect(subject).to exist
+      expect(subject).to contain(/class ApplicationConfig < Runger::Config/)
+      expect(subject).to contain(/delegate_missing_to :instance/)
+      expect(subject).to contain(/def instance/)
     end
 
-    context "config/application.rb" do
-      let(:target_file) { file("config/application.rb") }
+    context 'config/application.rb' do
+      let(:target_file) { file('config/application.rb') }
 
-      it "contains autoload_static_config_path" do
-        is_expected.to exist
-        is_expected.to contain("    # config.runger_config.autoload_static_config_path = \"#{configs_root}\"\n    #\n")
+      it 'contains autoload_static_config_path' do
+        expect(subject).to exist
+        expect(subject).to contain("    # config.runger_config.autoload_static_config_path = \"#{configs_root}\"\n    #\n")
       end
 
-      context "with --configs-path" do
+      context 'with --configs-path' do
         let(:args) { %w[--configs-path=config/settings] }
 
-        it "configures autoload_static_config_path" do
-          is_expected.to exist
-          is_expected.to contain("    config.runger_config.autoload_static_config_path = \"config/settings\"\n\n")
+        it 'configures autoload_static_config_path' do
+          expect(subject).to exist
+          expect(subject).to contain("    config.runger_config.autoload_static_config_path = \"config/settings\"\n\n")
 
-          expect(file("config/settings/application_config.rb")).to exist
+          expect(file('config/settings/application_config.rb')).to exist
         end
       end
     end
 
-    context ".gitignore" do
-      let(:target_file) { file(".gitignore") }
+    describe '.gitignore' do
+      let(:target_file) { file('.gitignore') }
 
       specify do
-        is_expected.to exist
-        is_expected.to contain("/config/*.local.yml")
-        is_expected.to contain("/config/credentials/local.*")
+        expect(subject).to exist
+        expect(subject).to contain('/config/*.local.yml')
+        expect(subject).to contain('/config/credentials/local.*')
       end
     end
 
-    context "when autoload_static_config_path is set" do
-      let(:target_file) { file("config/settings/application_config.rb") }
+    context 'when autoload_static_config_path is set' do
+      let(:target_file) { file('config/settings/application_config.rb') }
 
-      before { allow(Runger::Settings).to receive(:autoload_static_config_path) { file("config/settings") } }
+      before {
+        allow(Runger::Settings).to receive(:autoload_static_config_path) {
+                                     file('config/settings')
+                                   }
+      }
 
-      it "creates application config in this path" do
-        is_expected.to exist
+      it 'creates application config in this path' do
+        expect(subject).to exist
       end
     end
   end
