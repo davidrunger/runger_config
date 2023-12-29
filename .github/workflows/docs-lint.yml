@@ -34,8 +34,8 @@ jobs:
     - name: Lint Markdown files with RuboCop
       run: |
         gem install bundler
-        bundle install --gemfile gemfiles/rubocop.gemfile --jobs 4 --retry 3
-        bundle exec --gemfile gemfiles/rubocop.gemfile rubocop -c .rubocop-md.yml
+        bundle install --jobs 4 --retry 3
+        bundle exec rubocop -c .rubocop-md.yml
   forspell:
     runs-on: ubuntu-latest
     steps:
