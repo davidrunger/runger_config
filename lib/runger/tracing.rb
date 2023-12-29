@@ -26,12 +26,12 @@ module Runger
         value.dig(...)
       end
 
-      def record_value(val, *path, **)
+      def record_value(val, *path, **options)
         key = path.pop
         trace = if val.is_a?(Hash)
-          Trace.new.tap { _1.merge_values(val, **) }
+          Trace.new.tap { _1.merge_values(val, **options) }
         else
-          Trace.new(:value, val, **)
+          Trace.new(:value, val, **options)
         end
 
         target_trace = path.empty? ? self : value.dig(*path)
@@ -40,14 +40,14 @@ module Runger
         val
       end
 
-      def merge_values(hash, **)
+      def merge_values(hash, **options)
         return hash unless hash
 
         hash.each do |key, val|
           if val.is_a?(Hash)
-            value[key.to_s].merge_values(val, **)
+            value[key.to_s].merge_values(val, **options)
           else
-            value[key.to_s] = Trace.new(:value, val, **)
+            value[key.to_s] = Trace.new(:value, val, **options)
           end
         end
 
@@ -174,13 +174,13 @@ module Runger
 
     module_function
 
-    def trace!(type, *path, **)
+    def trace!(type, *path, **options)
       return yield unless Tracing.tracing?
       val = yield
       if val.is_a?(Hash)
-        Tracing.current_trace.merge_values(val, type:, **)
+        Tracing.current_trace.merge_values(val, type:, **options)
       elsif !path.empty?
-        Tracing.current_trace.record_value(val, *path, type:, **)
+        Tracing.current_trace.record_value(val, *path, type:, **options)
       end
       val
     end

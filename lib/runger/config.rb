@@ -385,9 +385,9 @@ module Runger # :nodoc:
       self
     end
 
-    def load_from_sources(base_config, **)
+    def load_from_sources(base_config, **options)
       Runger.loaders.each do |(_id, loader)|
-        Utils.deep_merge!(base_config, loader.call(**))
+        Utils.deep_merge!(base_config, loader.call(**options))
       end
       base_config
     end
