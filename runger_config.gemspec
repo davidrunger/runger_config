@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
             Dir.glob('bin/**/*') + %w[sig/runger_config.rbs sig/manifest.yml] +
             %w[README.md LICENSE.txt CHANGELOG.md]
   s.require_paths = ['lib']
-  s.required_ruby_version = '>= 3.2.2'
+  s.required_ruby_version = '>= 3.3.0'
 
   s.add_runtime_dependency('activesupport', '>= 7.1.2')
 
