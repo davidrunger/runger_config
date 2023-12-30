@@ -4,8 +4,8 @@ class Runger::Loaders::Base
   include Tracing
 
   class << self
-    def call(local: Runger::Settings.use_local_files, **)
-      new(local:).call(**)
+    def call(local: Runger::Settings.use_local_files, **options)
+      new(local:).call(**options)
     end
   end
 
