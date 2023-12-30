@@ -59,7 +59,7 @@ describe Runger::Config, type: :config do
             port: 3000
 
           def submeta=(val)
-            super(JSON.parse(val)))
+            super(JSON.parse(val))
           end
         end
       end
