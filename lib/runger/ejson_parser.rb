@@ -29,7 +29,9 @@ class Runger::EJSONParser
 
     raw_content.deep_transform_keys do |key|
       if key[0] == '_'
+        # rubocop:disable Performance/ArraySemiInfiniteRangeSlice
         key[1..]
+        # rubocop:enable Performance/ArraySemiInfiniteRangeSlice
       else
         key
       end
