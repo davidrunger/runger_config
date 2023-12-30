@@ -49,8 +49,8 @@ class Runger::Loaders::Registry
     end
   end
 
-  def each(&)
-    registry.each(&)
+  def each(&block)
+    registry.each(&block)
   end
 
   def freeze = registry.freeze
