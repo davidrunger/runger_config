@@ -325,12 +325,13 @@ describe Runger::Config, type: :config do
 
     describe '#as_env' do
       it 'returns ENV-like hash' do
-        expect(conf.as_env).to eq({ 
-'COOL_HOST' => 'test.host',
-                                   'COOL_META__KOT' => 'leta',
-                                   'COOL_PORT' => '8080',
-                                   'COOL_USER__NAME' => 'secret man',
-                                   'COOL_USER__PASSWORD' => 'root' })
+        expect(conf.as_env).to eq({
+          'COOL_HOST' => 'test.host',
+          'COOL_META__KOT' => 'leta',
+          'COOL_PORT' => '8080',
+          'COOL_USER__NAME' => 'secret man',
+          'COOL_USER__PASSWORD' => 'root',
+        })
       end
     end
   end
@@ -620,7 +621,6 @@ describe Runger::Config, type: :config do
         with_env(
           'COOL_USER__NAME' => 'john',
         ) do
-          # rubocop:disable Style/StringLiteralsInInterpolation
           expect { pp(conf) }.to output(
             <<~STR,
               #<CoolConfig
@@ -635,7 +635,6 @@ describe Runger::Config, type: :config do
                   }>
             STR
           ).to_stdout
-          # rubocop:enable Style/StringLiteralsInInterpolation
         end
       end
     end
@@ -752,11 +751,12 @@ describe Runger::Config, type: :config do
 
     context 'with nested required attributes' do
       subject { config.new(values) }
+
       let(:config) do
         Class.new(described_class) do
           config_name 'nesty'
-          attr_config :test, 
-:secret,
+          attr_config :test,
+            :secret,
             ldap: {
               base_dn: nil,
               user_dn: nil,
@@ -782,15 +782,16 @@ describe Runger::Config, type: :config do
         }
       end
 
-
       it 'raises ValidationError' do
         expect {
- subject }.to raise_error(Runger::Config::ValidationError, %r{missing or empty: test, ldap.user_dn})
+          subject
+        }.to raise_error(Runger::Config::ValidationError, %r{missing or empty: test, ldap.user_dn})
       end
     end
 
     context 'with variety of required attributes combinations with env option' do
       subject { app_config.new(config_values) }
+
       before { allow(Runger::Settings).to receive(:current_environment).and_return('production') }
 
       let(:app_config) do
@@ -826,7 +827,6 @@ describe Runger::Config, type: :config do
         }.reject { |k| missed_keys.include?(k) }
       end
       let(:error_msg) { /missing or empty: #{missed_keys.join(', ')}$/ }
-
 
       it 'not to raise ValidationError when all values are presence' do
         expect { subject }.not_to(raise_error)
