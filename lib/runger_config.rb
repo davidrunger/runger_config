@@ -4,6 +4,7 @@ require 'runger/version'
 
 module Runger ; end
 module Runger::Ext ; end
+module Runger::Utils ; end
 
 require 'runger/ext/deep_dup'
 require 'runger/ext/deep_freeze'
