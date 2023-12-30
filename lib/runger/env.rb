@@ -22,11 +22,11 @@ class Runger::Env
     end
   end
 
-  include Tracing
+  include ::Runger::Tracing
 
   attr_reader :data, :traces, :type_cast, :env_container
 
-  def initialize(type_cast: AutoCast, env_container: ENV)
+  def initialize(type_cast: ::Runger::AutoCast, env_container: ENV)
     @type_cast = type_cast
     @data = {}
     @traces = {}
@@ -41,7 +41,7 @@ class Runger::Env
   def fetch(prefix)
     return data[prefix].deep_dup if data.key?(prefix)
 
-    Tracing.capture do
+    ::Runger::Tracing.capture do
       data[prefix] = parse_env(prefix)
     end.then do |trace|
       traces[prefix] = trace

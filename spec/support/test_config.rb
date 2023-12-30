@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+module RungerTest ; end
+
 class RungerTest::Config < Runger::Config # :nodoc:
   attr_config :test,
     api: { key: '' },

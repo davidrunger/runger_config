@@ -5,7 +5,7 @@ require 'runger/ext/hash'
 
 using Runger::Ext::Hash
 
-class Runger::Loaders::YAML < Base
+class Runger::Loaders::YAML < Runger::Loaders::Base
   def call(config_path:, **_options)
     rel_config_path = relative_config_path(config_path).to_s
     base_config =
@@ -21,29 +21,29 @@ class Runger::Loaders::YAML < Base
       trace!(:yml, path: relative_config_path(local_path).to_s) {
         load_local_yml(local_path)
       }
-    Utils.deep_merge!(base_config, local_config)
+    ::Runger::Utils.deep_merge!(base_config, local_config)
   end
 
   private
 
   def environmental?(parsed_yml)
     # strange, but still possible
-    return true if Settings.default_environmental_key? && parsed_yml.key?(Settings.default_environmental_key)
+    return true if ::Runger::Settings.default_environmental_key? && parsed_yml.key?(::Runger::Settings.default_environmental_key)
     # possible
-    return true if !Settings.future.unwrap_known_environments && Settings.current_environment
+    return true if !::Runger::Settings.future.unwrap_known_environments && ::Runger::Settings.current_environment
     # for other environments
-    return true if Settings.known_environments&.any? { parsed_yml.key?(_1) }
+    return true if ::Runger::Settings.known_environments&.any? { parsed_yml.key?(_1) }
 
     # preferred
-    parsed_yml.key?(Settings.current_environment)
+    parsed_yml.key?(::Runger::Settings.current_environment)
   end
 
   def config_with_env(config)
-    env_config = config[Settings.current_environment] || {}
-    return env_config unless Settings.default_environmental_key?
+    env_config = config[::Runger::Settings.current_environment] || {}
+    return env_config unless ::Runger::Settings.default_environmental_key?
 
-    default_config = config[Settings.default_environmental_key] || {}
-    Utils.deep_merge!(default_config, env_config)
+    default_config = config[::Runger::Settings.default_environmental_key] || {}
+    ::Runger::Utils.deep_merge!(default_config, env_config)
   end
 
   def parse_yml(path)
@@ -80,7 +80,7 @@ class Runger::Loaders::YAML < Base
     Pathname.new(path).then do |path|
       return path if path.relative?
 
-      path.relative_path_from(Settings.app_root)
+      path.relative_path_from(::Runger::Settings.app_root)
     end
   end
 end

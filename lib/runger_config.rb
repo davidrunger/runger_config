@@ -5,6 +5,9 @@ require 'runger/version'
 module Runger ; end
 module Runger::Ext ; end
 module Runger::Utils ; end
+module Runger::Tracing ; end
+module Runger::Loaders ; end
+module Runger::Testing ; end
 
 require 'runger/ext/deep_dup'
 require 'runger/ext/deep_freeze'

@@ -2,8 +2,8 @@
 
 require 'generators/runger/config/config_generator'
 
-class Runger::Generators::AppConfigGenerator < ConfigGenerator
-  source_root ConfigGenerator.source_root
+class Runger::Generators::AppConfigGenerator < Runger::Generators::ConfigGenerator
+  source_root ::Runger::Generators::ConfigGenerator.source_root
 
   private
 

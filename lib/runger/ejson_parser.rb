@@ -29,7 +29,7 @@ class Runger::EJSONParser
 
     raw_content.deep_transform_keys do |key|
       if key[0] == '_'
-        key.drop(1)
+        key[1..]
       else
         key
       end

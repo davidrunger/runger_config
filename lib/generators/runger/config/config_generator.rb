@@ -2,6 +2,8 @@
 
 require 'rails/generators'
 
+module Runger::Generators ; end
+
 class Runger::Generators::ConfigGenerator < Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
 

@@ -8,6 +8,8 @@ require 'runger_config'
 
 Bundler.require(*Rails.groups)
 
+module Dummy ; end
+
 class Dummy::Application < Rails::Application
   config.logger = Logger.new('/dev/null')
   config.eager_load = ENV['DO_NOT_INITIALIZE_RAILS'] != '1'

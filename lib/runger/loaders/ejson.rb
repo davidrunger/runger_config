@@ -2,7 +2,7 @@
 
 require 'runger/ejson_parser'
 
-class Runger::Loaders::EJSON < Base
+class Runger::Loaders::EJSON < Runger::Loaders::Base
   class << self
     attr_accessor :bin_path
   end
@@ -12,7 +12,7 @@ class Runger::Loaders::EJSON < Base
   def call(
     name:,
     ejson_namespace: name,
-    ejson_parser: Runger::EJSONParser.new(EJSON.bin_path),
+    ejson_parser: Runger::EJSONParser.new(Runger::Loaders::EJSON.bin_path),
     **_options
   )
     configs = []
@@ -44,7 +44,7 @@ class Runger::Loaders::EJSON < Base
     return {} if configs.empty?
 
     configs.inject do |result_config, next_config|
-      Utils.deep_merge!(result_config, next_config)
+      ::Runger::Utils.deep_merge!(result_config, next_config)
     end
   end
 
@@ -59,10 +59,10 @@ class Runger::Loaders::EJSON < Base
   end
 
   def environmental_rel_config_path
-    if Settings.current_environment
+    if ::Runger::Settings.current_environment
       # if environment file is absent, then take data from the default one
       [
-        "#{Settings.current_environment}/secrets.ejson",
+        "#{::Runger::Settings.current_environment}/secrets.ejson",
         default_rel_config_path,
       ]
     else
@@ -79,7 +79,7 @@ class Runger::Loaders::EJSON < Base
 
     rel_config_path.each do |rel_conf_path|
       rel_path = "config/#{rel_conf_path}"
-      abs_path = "#{Settings.app_root}/#{rel_path}"
+      abs_path = "#{::Runger::Settings.app_root}/#{rel_path}"
 
       result = ejson_parser.call(abs_path)
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Runger::Loaders::Base
-  include Tracing
+  include ::Runger::Tracing
 
   class << self
     def call(local: Runger::Settings.use_local_files, **options)

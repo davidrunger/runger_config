@@ -19,7 +19,7 @@ module Runger::DynamicConfig
       raw_config = config.load_from_sources(new_empty_config, name:, **options)
       return raw_config unless auto_cast
 
-      AutoCast.call(raw_config)
+      ::Runger::AutoCast.call(raw_config)
     end
   end
 

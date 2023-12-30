@@ -2,6 +2,8 @@
 
 require 'active_support/core_ext/hash/indifferent_access'
 
+module Runger::Rails::Config ; end
+
 # Enhance config to be more Railsy-like:
 # – accept hashes with indeferent access
 # - load data from secrets

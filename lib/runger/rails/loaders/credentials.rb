@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+module Runger::Rails::Loaders ; end
+
 class Runger::Rails::Loaders::Credentials < Runger::Loaders::Base
   LOCAL_CONTENT_PATH = 'config/credentials/local.yml.enc'
 
@@ -19,13 +21,13 @@ class Runger::Rails::Loaders::Credentials < Runger::Loaders::Base
     ) do
       ::Rails.application.credentials.config[name.to_sym]
     end.then do |creds|
-      Utils.deep_merge!(config, creds) if creds
+      Runger::Utils.deep_merge!(config, creds) if creds
     end
 
     if use_local?
       trace!(:credentials, store: LOCAL_CONTENT_PATH) do
         local_credentials(name)
-      end.then { |creds| Utils.deep_merge!(config, creds) if creds }
+      end.then { |creds| Runger::Utils.deep_merge!(config, creds) if creds }
     end
 
     config

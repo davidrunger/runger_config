@@ -227,7 +227,7 @@ module Runger # :nodoc:
       def new_empty_config = {}
 
       def coerce_types(mapping)
-        Utils.deep_merge!(coercion_mapping, mapping)
+        ::Runger::Utils.deep_merge!(coercion_mapping, mapping)
 
         mapping.each do |key, val|
           type = val.is_a?(::Hash) ? val[:type] : val
@@ -382,7 +382,7 @@ module Runger # :nodoc:
           if overrides
             Tracing.trace!(:load) { overrides }
 
-            Utils.deep_merge!(base_config, overrides)
+            ::Runger::Utils.deep_merge!(base_config, overrides)
           end
         end
 
@@ -405,7 +405,7 @@ module Runger # :nodoc:
 
     def load_from_sources(base_config, **options)
       Runger.loaders.each do |(_id, loader)|
-        Utils.deep_merge!(base_config, loader.call(**options))
+        ::Runger::Utils.deep_merge!(base_config, loader.call(**options))
       end
       base_config
     end

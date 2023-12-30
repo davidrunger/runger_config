@@ -10,7 +10,7 @@ class Runger::Rails::Loaders::Secrets < Runger::Loaders::Base
     trace!(:secrets) do
       secrets.public_send(name)
     end.then do |secrets|
-      Utils.deep_merge!(config, secrets) if secrets
+      ::Runger::Utils.deep_merge!(config, secrets) if secrets
     end
 
     config

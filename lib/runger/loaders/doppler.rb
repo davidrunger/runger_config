@@ -4,7 +4,7 @@ require 'json'
 require 'net/http'
 require 'uri'
 
-class Runger::Loaders::Doppler < Base
+class Runger::Loaders::Doppler < Runger::Loaders::Base
   class RequestError < StandardError; end
 
   class << self
@@ -19,12 +19,12 @@ class Runger::Loaders::Doppler < Base
   self.download_url = 'https://api.doppler.com/v3/configs/config/secrets/download'
 
   def call(env_prefix:, **_options)
-    env_payload = parse_doppler_response(url: Doppler.download_url, token: Doppler.token)
+    env_payload = parse_doppler_response(url: Runger::Loaders::Doppler.download_url, token: Runger::Loaders::Doppler.token)
 
     env = ::Runger::Env.new(type_cast: ::Runger::NoCast, env_container: env_payload)
 
     env.fetch_with_trace(env_prefix).then do |(conf, trace)|
-      Tracing.current_trace&.merge!(trace)
+      ::Runger::Tracing.current_trace&.merge!(trace)
       conf
     end
   end

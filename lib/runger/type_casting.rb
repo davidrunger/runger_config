@@ -79,7 +79,7 @@ module Runger
 
       next _1.to_datetime if _1.respond_to?(:to_datetime)
 
-      ::Time.parse(_1)
+      ::DateTime.parse(_1)
     end
 
     obj.accept(:uri) do

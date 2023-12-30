@@ -136,7 +136,7 @@ module Runger::Tracing
 
   class << self
     def capture
-      unless Settings.tracing_enabled
+      unless ::Runger::Settings.tracing_enabled
         yield
         return
       end
@@ -182,13 +182,13 @@ module Runger::Tracing
   module_function
 
   def trace!(type, *path, **options)
-    return yield unless Tracing.tracing?
+    return yield unless ::Runger::Tracing.tracing?
 
     val = yield
     if val.is_a?(Hash)
-      Tracing.current_trace.merge_values(val, type:, **options)
+      ::Runger::Tracing.current_trace.merge_values(val, type:, **options)
     elsif !path.empty?
-      Tracing.current_trace.record_value(val, *path, type:, **options)
+      ::Runger::Tracing.current_trace.record_value(val, *path, type:, **options)
     end
     val
   end
