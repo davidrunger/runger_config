@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-module RungerTest
-  class Config < Runger::Config # :nodoc:
-    attr_config :test,
-      api: {key: ""},
-      log: {
-        format: {
-          color: false,
-          max_length: 100
-        },
-        level: :info
+module RungerTest ; end
+
+class RungerTest::Config < Runger::Config # :nodoc:
+  attr_config :test,
+    api: { key: '' },
+    log: {
+      format: {
+        color: false,
+        max_length: 100,
       },
-      log_levels: %i[info fatal]
-  end
+      level: :info,
+    },
+    log_levels: %i[info fatal]
 end

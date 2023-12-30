@@ -1,5 +1,6 @@
 ## Unreleased
-[no unreleased changes yet]
+
+- Don't use anonymous keyword rest arguments in block
 
 ## v4.0.0 (2023-11-19)
 

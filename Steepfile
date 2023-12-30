@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 target :lib do
-  signature "sig"
+  signature 'sig'
 
   # We only check public API
-  check "sig/types"
+  check 'sig/types'
 end

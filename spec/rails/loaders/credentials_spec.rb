@@ -1,46 +1,48 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
-describe "Runger::Rails::Loaders::Credentials", :rails, skip: (NORAILS || !Rails.application.respond_to?(:credentials)) do
+describe 'Runger::Rails::Loaders::Credentials',
+  :rails,
+  skip: (NORAILS || !Rails.application.respond_to?(:credentials)) do
   subject { Runger::Rails::Loaders::Credentials.call(**options) }
 
-  let(:options) { {name: "cool", some_other: "value"} }
+  let(:options) { { name: 'cool', some_other: 'value' } }
 
   specify do
     expect(subject).to eq(
       {
         user: {
-          name: "secret man"
+          name: 'secret man',
         },
-        other_stuff: "no need"
-      }
+        other_stuff: 'no need',
+      },
     )
   end
 
-  context "when local is enabled" do
-    let(:options) { {name: "cool", some_other: "value", local: true} }
+  context 'when local is enabled' do
+    let(:options) { { name: 'cool', some_other: 'value', local: true } }
 
     specify do
       expect(subject).to eq(
         {
           user: {
-            name: "secret man",
-            password: "password"
+            name: 'secret man',
+            password: 'password',
           },
-          other_stuff: "no need",
+          other_stuff: 'no need',
           meta: {
-            kot: "murkot"
-          }
-        }
+            kot: 'murkot',
+          },
+        },
       )
     end
   end
 
-  context "when no credentials" do
-    let(:options) { {name: "cooler"} }
+  context 'when no credentials' do
+    let(:options) { { name: 'cooler' } }
 
-    it "returns empty hash" do
+    it 'returns empty hash' do
       expect(subject).to eq({})
     end
   end

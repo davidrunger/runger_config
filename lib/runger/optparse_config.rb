@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "runger/option_parser_builder"
+require 'runger/option_parser_builder'
 
-require "runger/ext/deep_dup"
+require 'runger/ext/deep_dup'
 
 module Runger
   using Runger::Ext::DeepDup
@@ -19,7 +19,7 @@ module Runger
 
       def describe_options(**hargs)
         hargs.each do |name, desc|
-          if String === desc
+          if desc.is_a?(String)
             option_parser_descriptors[name.to_s][:desc] = desc
           else
             option_parser_descriptors[name.to_s].merge!(desc)
@@ -70,13 +70,14 @@ module Runger
     end
 
     def option_parser
-      @option_parser ||= OptionParserBuilder.call(self.class.option_parser_options) do |key, val|
-                           write_config_attr(key, val)
-                         end.tap do |parser|
-        self.class.option_parser_extensions.map do |extension|
-          extension.call(parser, self)
+      @option_parser ||=
+        OptionParserBuilder.call(self.class.option_parser_options) do |key, val|
+          write_config_attr(key, val)
+        end.tap do |parser|
+          self.class.option_parser_extensions.map do |extension|
+            extension.call(parser, self)
+          end
         end
-      end
     end
 
     def parse_options!(options)
@@ -86,7 +87,7 @@ module Runger
     end
 
     def self.included(base)
-      base.extend ClassMethods
+      base.extend(ClassMethods)
     end
   end
 end

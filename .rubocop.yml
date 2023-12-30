@@ -1,27 +1,7 @@
-require:
-  - standard/cop/block_single_line_braces
+inherit_from: .rubocop_todo.yml
 
 inherit_gem:
-  standard: config/base.yml
-
-inherit_from:
-  - .rubocop/rubocop_rspec.yml
-
-AllCops:
-  Exclude:
-    - 'bin/*'
-    - 'tmp/**/*'
-    - 'Gemfile'
-    - 'vendor/**/*'
-    - 'gemfiles/**/*'
-    - 'lib/generators/**/templates/*.rb'
-  DisplayCopNames: true
-  SuggestExtensions: false
-  NewCops: disable
-  TargetRubyVersion: 3.2
-
-Standard/BlockSingleLineBraces:
-  Enabled: false
-
-Style/FrozenStringLiteralComment:
-  Enabled: true
+  runger_style:
+    - rulesets/default.yml # gem 'rubocop'
+    - rulesets/performance.yml # gem 'rubocop-performance'
+    - rulesets/rspec.yml # gem 'rubocop-rspec'

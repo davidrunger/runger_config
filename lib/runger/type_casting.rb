@@ -15,7 +15,8 @@ module Runger
 
     def accept(name_or_object, &block)
       if !block && !name_or_object.respond_to?(:call)
-        raise ArgumentError, "Please, provide a type casting block or an object implementing #call(val) method"
+        raise(ArgumentError,
+          'Please, provide a type casting block or an object implementing #call(val) method')
       end
 
       registry[name_or_object] = block || name_or_object
@@ -26,9 +27,13 @@ module Runger
 
       caster =
         if type_id.is_a?(Symbol) || type_id.nil?
-          registry.fetch(type_id) { raise ArgumentError, "Unknown type: #{type_id}" }
+          registry.fetch(type_id) { raise(ArgumentError, "Unknown type: #{type_id}") }
         else
-          raise ArgumentError, "Type must implement #call(val): #{type_id}" unless type_id.respond_to?(:call)
+          unless type_id.respond_to?(:call)
+            raise(ArgumentError,
+              "Type must implement #call(val): #{type_id}")
+          end
+
           type_id
         end
 
@@ -58,7 +63,7 @@ module Runger
     obj.accept(:float, &:to_f)
 
     obj.accept(:date) do
-      require "date" unless defined?(::Date)
+      require 'date' unless defined?(::Date)
 
       next _1 if _1.is_a?(::Date)
 
@@ -68,7 +73,7 @@ module Runger
     end
 
     obj.accept(:datetime) do
-      require "date" unless defined?(::Date)
+      require 'date' unless defined?(::Date)
 
       next _1 if _1.is_a?(::DateTime)
 
@@ -78,7 +83,7 @@ module Runger
     end
 
     obj.accept(:uri) do
-      require "uri" unless defined?(::URI)
+      require 'uri' unless defined?(::URI)
 
       next _1 if _1.is_a?(::URI)
 
@@ -90,8 +95,8 @@ module Runger
     end
   end
 
-  unless "".respond_to?(:safe_constantize)
-    require "runger/ext/string_constantize"
+  unless ''.respond_to?(:safe_constantize)
+    require 'runger/ext/string_constantize'
     using Runger::Ext::StringConstantize
   end
 
@@ -115,16 +120,16 @@ module Runger
 
       case caster_config
       in Hash[array:, type:, **nil]
-        registry.deserialize(val, type, array: array)
+        registry.deserialize(val, type, array:)
       in Hash[config: subconfig]
         subconfig = subconfig.safe_constantize if subconfig.is_a?(::String)
-        raise ArgumentError, "Config is not found: #{subconfig}" unless subconfig
+        raise(ArgumentError, "Config is not found: #{subconfig}") unless subconfig
 
         subconfig.new(val)
       in Hash
         return val unless val.is_a?(Hash)
 
-        caster_config.each do |k, v|
+        caster_config.each_key do |k|
           ks = k.to_s
           next unless val.key?(ks)
 

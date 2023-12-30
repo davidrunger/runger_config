@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 describe Runger::Utils do
-  describe ".which" do
-    subject { described_class.which("ejson") }
+  describe '.which' do
+    subject { described_class.which('ejson') }
 
     it { expect(subject).to be_a(String) }
 
-    context "when `ejson` executable is not in the PATH" do
+    context 'when `ejson` executable is not in the PATH' do
       before do
-        stub_const("ENV", ENV.to_hash.merge("PATH" => ""))
+        stub_const('ENV', ENV.to_hash.merge('PATH' => ''))
       end
 
-      it "returns nil" do
+      it 'returns nil' do
         expect(subject).to eq(nil)
       end
     end

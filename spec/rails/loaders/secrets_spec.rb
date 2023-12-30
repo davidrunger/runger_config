@@ -1,39 +1,42 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
-describe "Runger::Rails::Loaders::Secrets", :rails, :secrets, skip: (NORAILS || !Rails.application.respond_to?(:secrets)) do
+describe 'Runger::Rails::Loaders::Secrets',
+  :rails,
+  :secrets,
+  skip: (NORAILS || !Rails.application.respond_to?(:secrets)) do
   subject { Runger::Rails::Loaders::Secrets.call(**options) }
 
-  let(:options) { {name: "cool", some_other: "value"} }
+  let(:options) { { name: 'cool', some_other: 'value' } }
 
   specify do
     expect(subject).to eq(
       {
         user: {
-          name: "test"
+          name: 'test',
         },
-        bull: "mooo",
+        bull: 'mooo',
         meta: {
-          kot: "leta"
-        }
-      }
+          kot: 'leta',
+        },
+      },
     )
   end
 
-  context "when no secrets" do
-    let(:options) { {name: "cooler"} }
+  context 'when no secrets' do
+    let(:options) { { name: 'cooler' } }
 
-    it "returns empty hash" do
+    it 'returns empty hash' do
       expect(subject).to eq({})
     end
   end
 
-  if ENV["DO_NOT_INITIALIZE_RAILS"] == "1"
-    it "reset ::Rails.application.secrets state" do
-      ::Rails.application.secrets.reset = "me"
+  if ENV['DO_NOT_INITIALIZE_RAILS'] == '1'
+    it 'reset ::Rails.application.secrets state' do
+      Rails.application.secrets.reset = 'me'
       subject
-      expect(::Rails.application.secrets.reset).to be_nil
+      expect(Rails.application.secrets.reset).to be_nil
     end
   end
 end

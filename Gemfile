@@ -2,6 +2,14 @@
 
 source 'https://rubygems.org'
 
+group :development, :test do
+  gem 'rubocop'
+  gem 'rubocop-md'
+  gem 'rubocop-performance'
+  gem 'rubocop-rspec'
+  gem 'runger_style', require: false
+end
+
 group :development do
   gem 'pry-byebug'
   gem 'runger_release_assistant', require: false
@@ -9,8 +17,7 @@ end
 
 gemspec
 
-eval_gemfile "gemfiles/rubocop.gemfile"
-eval_gemfile "gemfiles/rbs.gemfile"
+eval_gemfile 'gemfiles/rbs.gemfile'
 
 local_gemfile = "#{File.dirname(__FILE__)}/Gemfile.local"
 

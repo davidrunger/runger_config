@@ -1,54 +1,54 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
 describe Runger::EJSONParser do
   subject { described_class.new.call(file_path) }
 
-  let(:app_root) { File.join(__dir__, "dummy") }
+  let(:app_root) { File.join(__dir__, 'dummy') }
   let(:file_path) { "#{app_root}/ejson/correct.ejson" }
   let(:ejson_keydir) { "#{app_root}/ejson/keys" }
 
   before do
-    ENV["EJSON_KEYDIR"] = ejson_keydir
+    ENV['EJSON_KEYDIR'] = ejson_keydir
   end
 
   after do
-    ENV["EJSON_KEYDIR"] = nil
+    ENV['EJSON_KEYDIR'] = nil
   end
 
-  it "decrypts and parses EJSON file into Hash" do
+  it 'decrypts and parses EJSON file into Hash' do
     expect(subject).to eq(
-      "public_key" => "57f49135636ef90e35a6ea7fed5772a101002c501b0405297d2c2b4fd8db9739",
-      "database_username" => "1234username",
-      "database_password" => "1234password",
-      "my_service" =>
+      'public_key' => '57f49135636ef90e35a6ea7fed5772a101002c501b0405297d2c2b4fd8db9739',
+      'database_username' => '1234username',
+      'database_password' => '1234password',
+      'my_service' =>
         {
-          "username" => "my_username",
-          "password" => "my_password",
-          "config" =>
+          'username' => 'my_username',
+          'password' => 'my_password',
+          'config' =>
             {
-              "host" => "example.com",
-              "port" => 555
-            }
-        }
+              'host' => 'example.com',
+              'port' => 555,
+            },
+        },
     )
   end
 
-  context "when file does not exist" do
+  context 'when file does not exist' do
     let(:file_path) { "#{app_root}/ejson/no.ejson" }
 
-    it "returns nil" do
+    it 'returns nil' do
       expect(subject).to eq(nil)
     end
   end
 
-  context "when file decryption fails" do
+  context 'when file decryption fails' do
     let(:ejson_keydir) { "#{app_root}/ejson" }
 
     before { allow(Kernel).to receive(:warn) }
 
-    it "warns and returns nil" do
+    it 'warns and returns nil' do
       expect(subject).to eq(nil)
       expect(Kernel).to have_received(:warn).with(/decryption failed/i)
     end
