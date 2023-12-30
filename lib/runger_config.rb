@@ -2,6 +2,9 @@
 
 require 'runger/version'
 
+module Runger ; end
+module Runger::Ext ; end
+
 require 'runger/ext/deep_dup'
 require 'runger/ext/deep_freeze'
 require 'runger/ext/flatten_names'
