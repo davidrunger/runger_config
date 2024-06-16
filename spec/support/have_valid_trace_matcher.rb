@@ -12,9 +12,11 @@ RSpec::Matchers.define(:have_valid_trace) do
   end
 
   failure_message do
+    # rubocop:disable Layout/LineEndStringConcatenationIndentation
     "config trace is invalid:\n " \
       "- trace: #{@trace}\n " \
       "- config: #{@values}"
+    # rubocop:enable Layout/LineEndStringConcatenationIndentation
   end
 
   def extract_value(val)
