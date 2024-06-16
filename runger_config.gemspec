@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
 
   s.metadata = {
     'bug_tracker_uri' => 'http://github.com/davidrunger/runger_config/issues',
-    'changelog_uri' => 'https://github.com/davidrunger/runger_config/blob/master/CHANGELOG.md',
+    'changelog_uri' => 'https://github.com/davidrunger/runger_config/blob/main/CHANGELOG.md',
     'documentation_uri' => 'http://github.com/davidrunger/runger_config',
     'funding_uri' => 'https://github.com/sponsors/davidrunger',
     'homepage_uri' => 'http://github.com/davidrunger/runger_config',
