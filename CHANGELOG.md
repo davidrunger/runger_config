@@ -1,5 +1,6 @@
 ## Unreleased
-[no unreleased changes yet]
+
+- Rename primary branch from `master` to `main`
 
 ## v5.0.0 (2023-12-29)
 
