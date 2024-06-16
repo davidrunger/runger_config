@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module Runger # :nodoc:
-  VERSION = '5.0.1.alpha'
+  VERSION = '5.1.0'
 end
