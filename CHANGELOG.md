@@ -1,5 +1,6 @@
 ## Unreleased
-[no unreleased changes yet]
+
+- Source required Ruby version dynamically from .ruby-version
 
 ## v5.1.0 (2024-06-15)
 
