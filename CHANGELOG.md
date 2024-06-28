@@ -1,4 +1,4 @@
-## Unreleased
+## v5.2.0 (2024-06-28)
 
 - Source required Ruby version dynamically from .ruby-version
 
