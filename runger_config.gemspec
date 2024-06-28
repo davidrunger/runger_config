@@ -2,19 +2,19 @@
 
 require_relative 'lib/runger/version'
 
-Gem::Specification.new do |s|
-  s.name = 'runger_config'
-  s.version = Runger::VERSION
-  s.authors = ['David Runger']
-  s.email = ['davidjrunger@gmail.com']
-  s.homepage = 'http://github.com/davidrunger/runger_config'
-  s.summary = 'Configuration DSL for Ruby libraries and applications'
-  s.description = %{
+Gem::Specification.new do |spec|
+  spec.name = 'runger_config'
+  spec.version = Runger::VERSION
+  spec.authors = ['David Runger']
+  spec.email = ['davidjrunger@gmail.com']
+  spec.homepage = 'http://github.com/davidrunger/runger_config'
+  spec.summary = 'Configuration DSL for Ruby libraries and applications'
+  spec.description = %{
     Configuration DSL for Ruby libraries and applications.
     Allows you to easily follow the twelve-factor application principles (https://12factor.net/config).
   }
 
-  s.metadata = {
+  spec.metadata = {
     'bug_tracker_uri' => 'http://github.com/davidrunger/runger_config/issues',
     'changelog_uri' => 'https://github.com/davidrunger/runger_config/blob/main/CHANGELOG.md',
     'documentation_uri' => 'http://github.com/davidrunger/runger_config',
@@ -24,21 +24,22 @@ Gem::Specification.new do |s|
     'rubygems_mfa_required' => 'true',
   }
 
-  s.metadata['rubygems_mfa_required'] = 'true'
+  spec.metadata['rubygems_mfa_required'] = 'true'
 
-  s.license = 'MIT'
+  spec.license = 'MIT'
 
-  s.files = Dir.glob('lib/**/*') +
+  spec.files = Dir.glob('lib/**/*') +
     Dir.glob('bin/**/*') + %w[sig/runger_config.rbs sig/manifest.yml] +
     %w[README.md LICENSE.txt CHANGELOG.md]
-  s.require_paths = ['lib']
-  s.required_ruby_version = '>= 3.3.0'
+  spec.require_paths = ['lib']
+  required_ruby_version = File.read('.ruby-version').rstrip.sub(/\A(\d+\.\d+)\.\d+\z/, '\1.0')
+  spec.required_ruby_version = ">= #{required_ruby_version}"
 
-  s.add_runtime_dependency('activesupport', '>= 7.1.2')
+  spec.add_runtime_dependency('activesupport', '>= 7.1.2')
 
-  s.add_development_dependency('ammeter', '~> 1.1.3')
-  s.add_development_dependency('ejson', '>= 1.3.1')
-  s.add_development_dependency('rake', '>= 13.0')
-  s.add_development_dependency('rspec', '>= 3.8')
-  s.add_development_dependency('webmock', '~> 3.18')
+  spec.add_development_dependency('ammeter', '~> 1.1.3')
+  spec.add_development_dependency('ejson', '>= 1.3.1')
+  spec.add_development_dependency('rake', '>= 13.0')
+  spec.add_development_dependency('rspec', '>= 3.8')
+  spec.add_development_dependency('webmock', '~> 3.18')
 end
