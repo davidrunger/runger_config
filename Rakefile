@@ -76,10 +76,12 @@ task :steep do
   require 'steep'
   require 'steep/cli'
 
-  Steep::CLI.new(argv: ['check', '--severity-level=error'],
+  Steep::CLI.new(
+    argv: ['check', '--severity-level=error'],
     stdout: $stdout,
     stderr: $stderr,
-    stdin: $stdin).run.tap do |exit_code|
+    stdin: $stdin,
+  ).run.tap do |exit_code|
     exit(exit_code) if exit_code.nonzero?
   end
 end

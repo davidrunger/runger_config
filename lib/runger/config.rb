@@ -91,9 +91,11 @@ module Runger # :nodoc:
         new_keys.map!(&:to_sym)
 
         unless (reserved_names = (new_keys & RESERVED_NAMES)).empty?
-          raise(ArgumentError,
+          raise(
+            ArgumentError,
             'Can not use the following reserved names as config attrubutes: ' \
-            "#{reserved_names.sort.map(&:to_s).join(', ')}")
+            "#{reserved_names.sort.map(&:to_s).join(', ')}",
+          )
         end
 
         config_attributes.push(*new_keys)
@@ -134,8 +136,10 @@ module Runger # :nodoc:
       def required(*names, env: nil, **nested)
         unknown_names = names + nested.keys - config_attributes
         if unknown_names.any?
-          raise(ArgumentError,
-            "Unknown config param: #{unknown_names.join(',')}")
+          raise(
+            ArgumentError,
+            "Unknown config param: #{unknown_names.join(',')}",
+          )
         end
 
         return unless Settings.matching_env?(env)
@@ -157,8 +161,10 @@ module Runger # :nodoc:
 
       def on_load(*names, &block)
         if block && !names.empty?
-          raise(ArgumentError,
-            'Either methods or block should be specified, not both')
+          raise(
+            ArgumentError,
+            'Either methods or block should be specified, not both',
+          )
         end
 
         if block
@@ -320,9 +326,11 @@ module Runger # :nodoc:
         invalid_names = names.grep_v(PARAM_NAME)
         return if invalid_names.empty?
 
-        raise(ArgumentError,
+        raise(
+          ArgumentError,
           "Invalid attr_config name: #{invalid_names.join(', ')}.\n" \
-          "Valid names must satisfy /#{PARAM_NAME.source}/.")
+          "Valid names must satisfy /#{PARAM_NAME.source}/.",
+        )
       end
     end
 
@@ -432,8 +440,10 @@ module Runger # :nodoc:
     def to_source_trace = __trace__&.to_h
 
     def inspect
-      "#<#{self.class}:0x#{vm_object_id.rjust(16,
-        '0')} config_name=\"#{config_name}\" env_prefix=\"#{env_prefix}\" " \
+      "#<#{self.class}:0x#{vm_object_id.rjust(
+        16,
+        '0',
+      )} config_name=\"#{config_name}\" env_prefix=\"#{env_prefix}\" " \
         "values=#{values.inspect}>"
     end
 
