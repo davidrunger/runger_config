@@ -80,26 +80,30 @@ describe Runger::Loaders::YAML do
 
     context 'loads all keys under current environment section' do
       specify do
-        expect(subject).to eq('host' => 'localhost',
+        expect(subject).to eq(
+          'host' => 'localhost',
           'user' => 'user',
           'log_level' => 'debug',
           'port' => 80,
           'mailer' => {
             'host' => 'mailhog',
-          })
+          },
+        )
       end
 
       context 'using local file config' do
         before { options.merge!(local: true) }
 
         it 'overrides env config' do
-          expect(subject).to eq('host' => 'localhost',
+          expect(subject).to eq(
+            'host' => 'localhost',
             'user' => 'user',
             'log_level' => 'info',
             'port' => 443,
             'mailer' => {
               'host' => 'mail.google.com',
-            })
+            },
+          )
         end
       end
     end

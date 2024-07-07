@@ -15,8 +15,10 @@ module Runger
 
     def accept(name_or_object, &block)
       if !block && !name_or_object.respond_to?(:call)
-        raise(ArgumentError,
-          'Please, provide a type casting block or an object implementing #call(val) method')
+        raise(
+          ArgumentError,
+          'Please, provide a type casting block or an object implementing #call(val) method',
+        )
       end
 
       registry[name_or_object] = block || name_or_object
@@ -30,8 +32,10 @@ module Runger
           registry.fetch(type_id) { raise(ArgumentError, "Unknown type: #{type_id}") }
         else
           unless type_id.respond_to?(:call)
-            raise(ArgumentError,
-              "Type must implement #call(val): #{type_id}")
+            raise(
+              ArgumentError,
+              "Type must implement #call(val): #{type_id}",
+            )
           end
 
           type_id

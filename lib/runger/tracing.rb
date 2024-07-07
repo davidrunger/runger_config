@@ -62,12 +62,16 @@ module Runger::Tracing
 
     def merge!(another_trace)
       unless trace?
-        raise(ArgumentError,
-          "You can only merge into a :trace type, and this is :#{type}")
+        raise(
+          ArgumentError,
+          "You can only merge into a :trace type, and this is :#{type}",
+        )
       end
       unless another_trace.trace?
-        raise(ArgumentError,
-          "You can only merge a :trace type, but trying :#{type}")
+        raise(
+          ArgumentError,
+          "You can only merge a :trace type, but trying :#{type}",
+        )
       end
 
       another_trace.value.each do |key, sub_trace|

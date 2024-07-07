@@ -10,8 +10,10 @@ describe Runger::TypeRegistry do
     expect(casting.deserialize('12.3', :integer)).to eq(12)
     expect(casting.deserialize('12.3', :float)).to eq(12.3)
     expect(casting.deserialize('2020-08-30 17:01:03', :date)).to eq(Date.parse('2020-08-30'))
-    expect(casting.deserialize(Time.local(2020, 8, 30, 11, 44, 22),
-      :date)).to eq(Date.parse('2020-08-30'))
+    expect(casting.deserialize(
+      Time.local(2020, 8, 30, 11, 44, 22),
+      :date,
+    )).to eq(Date.parse('2020-08-30'))
     # rubocop:disable Style/DateTime
     expect(casting.deserialize('2020-08-30 17:01:03', :datetime)).to eq(DateTime.parse('2020-08-30 17:01:03'))
     # rubocop:enable Style/DateTime
@@ -58,18 +60,20 @@ describe Runger::TypeRegistry do
     end
 
     let(:type_caster) do
-      described_class.new({
-        non_list: :string,
-        hare: {
-          legs: {
-            type: :string,
-            array: true,
+      described_class.new(
+        {
+          non_list: :string,
+          hare: {
+            legs: {
+              type: :string,
+              array: true,
+            },
+            age: :float,
           },
-          age: :float,
+          color: colorName,
         },
-        color: colorName,
-      },
-        fallback: Runger::AutoCast)
+        fallback: Runger::AutoCast,
+      )
     end
 
     it 'uses mapping', :aggregate_failures do

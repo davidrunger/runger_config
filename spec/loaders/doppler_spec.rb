@@ -31,8 +31,10 @@ describe Runger::Loaders::Doppler do
 
     context 'when url and token are specified manually' do
       before do
-        allow(described_class).to receive_messages(download_url: 'http://localhost:4041/env',
-          token: 'my-secret')
+        allow(described_class).to receive_messages(
+          download_url: 'http://localhost:4041/env',
+          token: 'my-secret',
+        )
       end
 
       it 'loads data from custom doppler' do
