@@ -306,13 +306,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  ammeter (~> 1.1.3)
-  ejson (>= 1.3.1)
+  ammeter
+  ejson
   pry-byebug
   rails (~> 7.0)
-  rake (>= 13.0)
+  rake
   rbs (~> 3.0)!
-  rspec (>= 3.8)
+  rspec
   rubocop
   rubocop-md
   rubocop-performance
@@ -321,7 +321,7 @@ DEPENDENCIES
   runger_release_assistant
   runger_style
   steep (~> 1.4)!
-  webmock (~> 3.18)
+  webmock
 
 RUBY VERSION
    ruby 3.3.4p94

@@ -36,10 +36,4 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= #{required_ruby_version}"
 
   spec.add_runtime_dependency('activesupport', '>= 7.1.2')
-
-  spec.add_development_dependency('ammeter', '~> 1.1.3')
-  spec.add_development_dependency('ejson', '>= 1.3.1')
-  spec.add_development_dependency('rake', '>= 13.0')
-  spec.add_development_dependency('rspec', '>= 3.8')
-  spec.add_development_dependency('webmock', '~> 3.18')
 end
