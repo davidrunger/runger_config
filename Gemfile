@@ -5,6 +5,9 @@ ruby file: '.ruby-version'
 source 'https://rubygems.org'
 
 group :development, :test do
+  gem 'ammeter'
+  gem 'ejson'
+  gem 'rake'
   gem 'rubocop'
   gem 'rubocop-md'
   gem 'rubocop-performance'
@@ -15,6 +18,11 @@ end
 group :development do
   gem 'pry-byebug'
   gem 'runger_release_assistant', require: false
+end
+
+group :test do
+  gem 'rspec'
+  gem 'webmock'
 end
 
 gemspec
