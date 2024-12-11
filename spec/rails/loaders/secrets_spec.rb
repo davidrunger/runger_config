@@ -6,37 +6,37 @@ describe 'Runger::Rails::Loaders::Secrets',
   :rails,
   :secrets,
   skip: (NORAILS || !Rails.application.respond_to?(:secrets)) do
-  subject { Runger::Rails::Loaders::Secrets.call(**options) }
+    subject { Runger::Rails::Loaders::Secrets.call(**options) }
 
-  let(:options) { { name: 'cool', some_other: 'value' } }
+    let(:options) { { name: 'cool', some_other: 'value' } }
 
-  specify do
-    expect(subject).to eq(
-      {
-        user: {
-          name: 'test',
+    specify do
+      expect(subject).to eq(
+        {
+          user: {
+            name: 'test',
+          },
+          bull: 'mooo',
+          meta: {
+            kot: 'leta',
+          },
         },
-        bull: 'mooo',
-        meta: {
-          kot: 'leta',
-        },
-      },
-    )
-  end
+      )
+    end
 
-  context 'when no secrets' do
-    let(:options) { { name: 'cooler' } }
+    context 'when no secrets' do
+      let(:options) { { name: 'cooler' } }
 
-    it 'returns empty hash' do
-      expect(subject).to eq({})
+      it 'returns empty hash' do
+        expect(subject).to eq({})
+      end
+    end
+
+    if ENV['DO_NOT_INITIALIZE_RAILS'] == '1'
+      it 'reset ::Rails.application.secrets state' do
+        Rails.application.secrets.reset = 'me'
+        subject
+        expect(Rails.application.secrets.reset).to be_nil
+      end
     end
   end
-
-  if ENV['DO_NOT_INITIALIZE_RAILS'] == '1'
-    it 'reset ::Rails.application.secrets state' do
-      Rails.application.secrets.reset = 'me'
-      subject
-      expect(Rails.application.secrets.reset).to be_nil
-    end
-  end
-end

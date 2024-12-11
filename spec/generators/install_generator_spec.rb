@@ -67,8 +67,8 @@ describe Runger::Generators::InstallGenerator, :rails, type: :generator do
 
       before {
         allow(Runger::Settings).to receive(:autoload_static_config_path) {
-                                     file('config/settings')
-                                   }
+          file('config/settings')
+        }
       }
 
       it 'creates application config in this path' do

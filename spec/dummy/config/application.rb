@@ -11,7 +11,7 @@ Bundler.require(*Rails.groups)
 module Dummy ; end
 
 class Dummy::Application < Rails::Application
-  config.logger = Logger.new('/dev/null')
+  config.logger = Logger.new(File::NULL)
   config.eager_load = ENV['DO_NOT_INITIALIZE_RAILS'] != '1'
 
   ActiveSupport::Inflector.inflections do |inflect|
