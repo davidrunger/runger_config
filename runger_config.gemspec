@@ -32,7 +32,13 @@ Gem::Specification.new do |spec|
     Dir.glob('bin/**/*') + %w[sig/runger_config.rbs sig/manifest.yml] +
     %w[README.md LICENSE.txt CHANGELOG.md]
   spec.require_paths = ['lib']
-  required_ruby_version = File.read('.ruby-version').rstrip.sub(/\A(\d+\.\d+)\.\d+\z/, '\1.0')
+
+  # HACK: Using public_send rather than read works around a Dependabot bug.
+  # rubocop:disable Style/SendWithLiteralMethodName
+  required_ruby_version =
+    File.public_send(:read, '.ruby-version').
+      rstrip.sub(/\A(\d+\.\d+)\.\d+\z/, '\1.0')
+  # rubocop:enable Style/SendWithLiteralMethodName
   spec.required_ruby_version = ">= #{required_ruby_version}"
 
   spec.add_dependency('activesupport', '>= 7.1.2')
