@@ -41,10 +41,12 @@ class Dummy::Application < Rails::Application
 
     # ...but Rails 5.2 doesn't
     FileUtils.cp(
-      File.join(__dir__, 'credentials/test.yml.enc'), File.join(__dir__, 'credentials.yml.enc')
+      File.join(__dir__, 'credentials/test.yml.enc'),
+      File.join(__dir__, 'credentials.yml.enc'),
     )
     FileUtils.cp(
-      File.join(__dir__, 'credentials/test.key'), File.join(__dir__, 'master.key')
+      File.join(__dir__, 'credentials/test.key'),
+      File.join(__dir__, 'master.key'),
     )
 
     Rails.application.encrypted(

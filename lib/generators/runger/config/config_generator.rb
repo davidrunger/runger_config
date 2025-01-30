@@ -25,9 +25,9 @@ class Runger::Generators::ConfigGenerator < Rails::Generators::NamedBase
 
   def create_yml
     create_yml =
-      options.fetch(:yml) {
+      options.fetch(:yml) do
         yes?("Would you like to generate a #{file_name}.yml file?")
-      }
+      end
     return unless create_yml
 
     template('config.yml', File.join('config', "#{file_name}.yml"))
