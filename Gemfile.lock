@@ -261,7 +261,7 @@ GEM
     runger_style (2.18.0)
       prism (>= 0.24.0)
       rubocop (>= 1.38.0)
-    securerandom (0.4.0)
+    securerandom (0.4.1)
     slop (4.10.1)
     steep (1.9.1)
       activesupport (>= 5.1)
@@ -414,7 +414,7 @@ CHECKSUMS
   runger_config (5.2.1.alpha)
   runger_release_assistant (0.13.0) sha256=6274df8512d5256e67b7e23a6cfc7b8d9124d86540003d6941946b6c90dbbb8b
   runger_style (2.18.0) sha256=a6f9bced2265da42a96d0df19d5d00c438daf28c8513dc24d71e3d81f010840b
-  securerandom (0.4.0) sha256=37a844aa4fe4dac8e47c5bc35f91531d4dc636ccee54a1ba1629087dda0a53a8
+  securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
   slop (4.10.1) sha256=844322b5ffcf17ed4815fdb173b04a20dd82b4fd93e3744c88c8fafea696d9c7
   steep (1.9.1) sha256=6ae9423608db49d7c3385e3a4059dba52c061fe3f8db571a1acb7fb8badcf21f
   stringio (3.1.2) sha256=204f1828f85cdb39d57cac4abc6dc44b04505a223f131587f2e20ae3729ba131
