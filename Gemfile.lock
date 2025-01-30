@@ -144,7 +144,7 @@ GEM
     net-smtp (0.5.0)
       net-protocol
     nio4r (2.7.4)
-    nokogiri (1.17.1)
+    nokogiri (1.18.2)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     parallel (1.26.3)
@@ -373,7 +373,7 @@ CHECKSUMS
   net-protocol (0.2.2) sha256=aa73e0cba6a125369de9837b8d8ef82a61849360eba0521900e2c3713aa162a8
   net-smtp (0.5.0) sha256=5fc0415e6ea1cc0b3dfea7270438ec22b278ca8d524986a3ae4e5ae8d087b42a
   nio4r (2.7.4) sha256=d95dee68e0bb251b8ff90ac3423a511e3b784124e5db7ff5f4813a220ae73ca9
-  nokogiri (1.17.1) sha256=910fe0f194db99677f7ddb21b19a1d071ceffc4a0e39d44c08736d9b1e558cfc
+  nokogiri (1.18.2) sha256=93791cfb33186fe077eb9e1b8a6855b5621e328f81f565334572fa398366f8bf
   parallel (1.26.3) sha256=d86babb7a2b814be9f4b81587bf0b6ce2da7d45969fab24d8ae4bf2bb4d4c7ef
   parser (3.3.7.0) sha256=7449011771e3e7881297859b849de26a6f4fccd515bece9520a87e7d2116119b
   prism (1.2.0) sha256=24ff9cd3232346e68052659f14c9a618022ea98935f774df465206aba5c06d2f
