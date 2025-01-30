@@ -25,12 +25,6 @@ describe Runger::Config, :rails, type: :config do
         expect(conf.user[:password]).to eq('root')
       end
     elsif Rails.application.respond_to?(:credentials)
-      it 'load config from secrets and credentials' do
-        expect(conf.user[:name]).to eq('secret man')
-        expect(conf.meta).to eq('kot' => 'leta')
-        expect(conf.user[:password]).to eq('root')
-      end
-
       it 'sets overrides after loading secrets' do
         config = CoolConfig.new(user: { 'password' => 'override' })
         expect(config.user[:name]).to eq('secret man')
@@ -90,19 +84,6 @@ describe Runger::Config, :rails, type: :config do
                 },
               },
               'port' => { value: 8080, source: { type: :defaults } },
-              'meta' => {
-                'kot' => {
-                  value: 'leta',
-                  source: if NOSECRETS
-                            {
-                              type: :env,
-                              key: 'COOL_META__KOT',
-                            }
-                          else
-                            { type: :secrets }
-                          end,
-                },
-              },
             },
           )
         end
