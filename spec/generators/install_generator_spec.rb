@@ -65,11 +65,11 @@ describe Runger::Generators::InstallGenerator, :rails, type: :generator do
     context 'when autoload_static_config_path is set' do
       let(:target_file) { file('config/settings/application_config.rb') }
 
-      before {
+      before do
         allow(Runger::Settings).to receive(:autoload_static_config_path) {
           file('config/settings')
         }
-      }
+      end
 
       it 'creates application config in this path' do
         expect(subject).to exist

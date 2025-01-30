@@ -8,9 +8,9 @@ describe Runger::Loaders::Doppler do
   subject { described_class.call(**options) }
 
   let(:options) { { env_prefix: 'SOME_APP' } }
-  let(:doppler_content) {
+  let(:doppler_content) do
     { 'SOME_APP_TOKEN' => 'token_value', 'ANOTHER_ENV_KEY' => 'another_key' }
-  }
+  end
   let(:doppler_response) { { 'token' => 'token_value' } }
   let(:valid_doppler_token) { 'valid_bearer_token' }
   let(:invalid_doppler_token) { 'invalid_bearer_token' }

@@ -22,9 +22,9 @@ describe 'Runger::Rails::Loaders::YAML', :rails do
   end
 
   context 'when known environments disabled' do
-    let(:options) {
+    let(:options) do
       { config_path: Rails.root.join('config/cool_no_environments.yml'), some_other: 'value' }
-    }
+    end
 
     it 'does not leak settings' do
       expect(subject).to be_empty
@@ -40,12 +40,12 @@ describe 'Runger::Rails::Loaders::YAML', :rails do
     end
 
     context "when the environmental key doesn't match the current environment" do
-      let(:options) {
+      let(:options) do
         {
           config_path: Rails.root.join('config/cool_unmatched_environment.yml'),
           some_other: 'value',
         }
-      }
+      end
 
       it "doesn't load any settings for the current environment" do
         expect(subject).to be_empty
@@ -66,9 +66,9 @@ describe 'Runger::Rails::Loaders::YAML', :rails do
     end
 
     context 'when no top environmental keys present' do
-      let(:options) {
+      let(:options) do
         { config_path: Rails.root.join('config/cool_no_environments.yml'), some_other: 'value' }
-      }
+      end
 
       it 'loads settings for all environments' do
         expect(subject).to eq(
@@ -94,9 +94,9 @@ describe 'Runger::Rails::Loaders::YAML', :rails do
     end
 
     context 'when new known_environment is added to config and used as top-level key' do
-      let(:options) {
+      let(:options) do
         { config_path: Rails.root.join('config/cool_staging_environment.yml'), some_other: 'value' }
-      }
+      end
       let(:config) { Rails.application.config.runger_config }
 
       it 'does not leak settings into other environments' do
@@ -133,12 +133,12 @@ describe 'Runger::Rails::Loaders::YAML', :rails do
     end
 
     context 'when only default key is presented' do
-      let(:options) {
+      let(:options) do
         {
           config_path: Rails.root.join('config/cool_only_default_environment.yml'),
           some_other: 'value',
         }
-      }
+      end
 
       it 'loads defaults' do
         expect(subject).to eq(
@@ -174,12 +174,12 @@ describe 'Runger::Rails::Loaders::YAML', :rails do
     end
 
     context 'when only default environmental key is one of environments' do
-      let(:options) {
+      let(:options) do
         {
           config_path: Rails.root.join('config/cool_unmatched_environment.yml'),
           some_other: 'value',
         }
-      }
+      end
 
       before { Runger::Settings.default_environmental_key = 'production' }
 
@@ -197,12 +197,12 @@ describe 'Runger::Rails::Loaders::YAML', :rails do
     end
 
     context "when the environmental key doesn't match the current environment" do
-      let(:options) {
+      let(:options) do
         {
           config_path: Rails.root.join('config/cool_unmatched_default_environment.yml'),
           some_other: 'value',
         }
-      }
+      end
 
       it 'loads defaults' do
         expect(subject).to eq(

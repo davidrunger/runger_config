@@ -18,9 +18,9 @@ class Runger::Loaders::YAML < Runger::Loaders::Base
 
     local_path = local_config_path(config_path)
     local_config =
-      trace!(:yml, path: relative_config_path(local_path).to_s) {
+      trace!(:yml, path: relative_config_path(local_path).to_s) do
         load_local_yml(local_path)
-      }
+      end
     ::Runger::Utils.deep_merge!(base_config, local_config)
   end
 
