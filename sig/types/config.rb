@@ -19,9 +19,11 @@ class RBS::Config < Runger::Config
   attr_config :logger, log_params: { level: 2, device: nil }, tags: ['test'], debug: false
 
   # type coercion
-  coerce_types version: :string,
+  coerce_types(
+    version: :string,
     log_params: { level: :integer },
-    tags: { type: :string, array: true }
+    tags: { type: :string, array: true },
+  )
   coerce_types tags: { type: nil, array: true }
 
   disable_auto_cast!
