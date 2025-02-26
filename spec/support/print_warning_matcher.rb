@@ -11,7 +11,12 @@ RSpec::Matchers.define(:print_warning) do |message|
   end
 
   description do
-    "write #{(message && "\"#{message}\"") || 'anything'} to standard error"
+    output =
+      if message
+        "\"#{message}\""
+      end
+
+    "write #{output || 'anything'} to standard error"
   end
 
   failure_message do
