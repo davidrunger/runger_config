@@ -7,6 +7,8 @@ source 'https://rubygems.org'
 group :development, :test do
   gem 'ammeter'
   gem 'ejson'
+  # Go back to upstream if/when https://github.com/deivid-rodriguez/pry-byebug/pull/ 428 is merged.
+  gem 'pry-byebug', require: false, github: 'davidrunger/pry-byebug'
   gem 'rake'
   gem 'rubocop'
   gem 'rubocop-md'
@@ -16,7 +18,6 @@ group :development, :test do
 end
 
 group :development do
-  gem 'pry-byebug'
   gem 'runger_release_assistant', require: false
 end
 
