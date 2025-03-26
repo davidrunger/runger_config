@@ -33,7 +33,7 @@ class Runger::Settings
 
     def use(*names)
       store.clear
-      names.each { store[_1] = self.class.settings[_1] }
+      names.each { store[it] = self.class.settings[it] }
     end
 
     setting :unwrap_known_environments, true
