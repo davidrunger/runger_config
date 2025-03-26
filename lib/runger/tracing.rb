@@ -29,7 +29,7 @@ module Runger::Tracing
       key = path.pop
       trace =
         if val.is_a?(Hash)
-          Trace.new.tap { _1.merge_values(val, **options) }
+          Trace.new.tap { it.merge_values(val, **options) }
         else
           Trace.new(:value, val, **options)
         end
@@ -95,7 +95,7 @@ module Runger::Tracing
 
     def to_h
       if trace?
-        value.transform_values(&:to_h).tap { _1.default_proc = nil }
+        value.transform_values(&:to_h).tap { it.default_proc = nil }
       else
         { value:, source: }
       end

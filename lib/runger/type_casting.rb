@@ -43,7 +43,7 @@ module Runger
 
       if array
         raw_arr = raw.is_a?(String) ? raw.split(/\s*,\s*/) : Array(raw)
-        raw_arr.map { caster.call(_1) }
+        raw_arr.map { caster.call(it) }
       else
         caster.call(raw)
       end
@@ -69,33 +69,33 @@ module Runger
     obj.accept(:date) do
       require 'date' unless defined?(::Date)
 
-      next _1 if _1.is_a?(::Date)
+      next it if it.is_a?(::Date)
 
-      next _1.to_date if _1.respond_to?(:to_date)
+      next it.to_date if it.respond_to?(:to_date)
 
-      ::Date.parse(_1)
+      ::Date.parse(it)
     end
 
     obj.accept(:datetime) do
       require 'date' unless defined?(::Date)
 
-      next _1 if _1.is_a?(::DateTime)
+      next it if it.is_a?(::DateTime)
 
-      next _1.to_datetime if _1.respond_to?(:to_datetime)
+      next it.to_datetime if it.respond_to?(:to_datetime)
 
-      ::DateTime.parse(_1)
+      ::DateTime.parse(it)
     end
 
     obj.accept(:uri) do
       require 'uri' unless defined?(::URI)
 
-      next _1 if _1.is_a?(::URI)
+      next it if it.is_a?(::URI)
 
-      ::URI.parse(_1)
+      ::URI.parse(it)
     end
 
     obj.accept(:boolean) do
-      _1.to_s.match?(/\A(true|t|yes|y|1)\z/i)
+      it.to_s.match?(/\A(true|t|yes|y|1)\z/i)
     end
   end
 

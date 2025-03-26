@@ -170,7 +170,7 @@ module Runger # :nodoc:
         if block
           load_callbacks << BlockCallback.new(block)
         else
-          load_callbacks.push(*names.map { NamedCallback.new(_1) })
+          load_callbacks.push(*names.map { NamedCallback.new(it) })
         end
       end
 
@@ -402,7 +402,7 @@ module Runger # :nodoc:
       trace&.keep_if { |key| self.class.config_attributes.include?(key.to_sym) }
 
       # Run on_load callbacks
-      self.class.load_callbacks.each { _1.apply_to(self) }
+      self.class.load_callbacks.each { it.apply_to(self) }
 
       # Set trace after we write all the values to
       # avoid changing the source to accessor

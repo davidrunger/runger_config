@@ -32,7 +32,7 @@ class Runger::Loaders::YAML < Runger::Loaders::Base
     # possible
     return true if !::Runger::Settings.future.unwrap_known_environments && ::Runger::Settings.current_environment
     # for other environments
-    return true if ::Runger::Settings.known_environments&.any? { parsed_yml.key?(_1) }
+    return true if ::Runger::Settings.known_environments&.any? { parsed_yml.key?(it) }
 
     # preferred
     parsed_yml.key?(::Runger::Settings.current_environment)
