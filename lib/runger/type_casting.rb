@@ -66,36 +66,36 @@ module Runger
     obj.accept(:integer, &:to_i)
     obj.accept(:float, &:to_f)
 
-    obj.accept(:date) do
+    obj.accept(:date) do |dateish|
       require 'date' unless defined?(::Date)
 
-      next it if it.is_a?(::Date)
+      next dateish if dateish.is_a?(::Date)
 
-      next it.to_date if it.respond_to?(:to_date)
+      next dateish.to_date if dateish.respond_to?(:to_date)
 
-      ::Date.parse(it)
+      ::Date.parse(dateish)
     end
 
-    obj.accept(:datetime) do
+    obj.accept(:datetime) do |datetimeish|
       require 'date' unless defined?(::Date)
 
-      next it if it.is_a?(::DateTime)
+      next datetimeish if datetimeish.is_a?(::DateTime)
 
-      next it.to_datetime if it.respond_to?(:to_datetime)
+      next datetimeish.to_datetime if datetimeish.respond_to?(:to_datetime)
 
-      ::DateTime.parse(it)
+      ::DateTime.parse(datetimeish)
     end
 
-    obj.accept(:uri) do
+    obj.accept(:uri) do |uriish|
       require 'uri' unless defined?(::URI)
 
-      next it if it.is_a?(::URI)
+      next uriish if uriish.is_a?(::URI)
 
-      ::URI.parse(it)
+      ::URI.parse(uriish)
     end
 
-    obj.accept(:boolean) do
-      it.to_s.match?(/\A(true|t|yes|y|1)\z/i)
+    obj.accept(:boolean) do |booleanish|
+      booleanish.to_s.match?(/\A(true|t|yes|y|1)\z/i)
     end
   end
 
