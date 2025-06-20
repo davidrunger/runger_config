@@ -24,8 +24,6 @@ Gem::Specification.new do |spec|
     'rubygems_mfa_required' => 'true',
   }
 
-  spec.metadata['rubygems_mfa_required'] = 'true'
-
   spec.license = 'MIT'
 
   spec.files = Dir.glob('lib/**/*') +
