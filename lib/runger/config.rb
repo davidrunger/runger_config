@@ -22,6 +22,7 @@ module Runger # :nodoc:
   class Config
     include OptparseConfig
     include DynamicConfig
+
     PARAM_NAME = /^[a-z_](\w+)?$/
 
     # List of names that couldn't be used as config names
