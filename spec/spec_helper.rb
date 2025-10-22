@@ -34,7 +34,7 @@ end
 
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
-NOSECRETS = !NORAILS && Rails::VERSION::MAJOR >= 7 && Rails::VERSION::MINOR >= 1
+NOSECRETS = !NORAILS && Gem::Version.new(Rails.version) >= Gem::Version.new('7.1.0')
 
 RSpec.configure do |config|
   config.mock_with(:rspec)
