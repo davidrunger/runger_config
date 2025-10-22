@@ -25,20 +25,16 @@ describe Runger::Config, :rails, type: :config do
         expect(conf.user[:password]).to eq('root')
       end
     elsif Rails.application.respond_to?(:credentials)
+      it 'load config from secrets and credentials' do
+        expect(conf.user[:name]).to eq('secret man')
+        expect(conf.meta).to eq('kot' => 'leta')
+        expect(conf.user[:password]).to eq('root')
+      end
+
       it 'sets overrides after loading secrets' do
         config = CoolConfig.new(user: { 'password' => 'override' })
         expect(config.user[:name]).to eq('secret man')
         expect(config.user[:password]).to eq('override')
-      end
-
-      context 'with env' do
-        specify 'env overrides credentials' do
-          with_env('COOL_META__KOT' => 'zhmot') do
-            expect(conf.user[:name]).to eq('secret man')
-            expect(conf.meta).to eq('kot' => 'zhmot')
-            expect(conf.user[:password]).to eq('root')
-          end
-        end
       end
 
       context 'when using local files' do
@@ -72,7 +68,10 @@ describe Runger::Config, :rails, type: :config do
           expect(conf).to have_valid_trace
           expect(conf.to_source_trace).to eq(
             {
-              'host' => { value: 'test.host', source: { type: :yml, path: 'config/cool.yml' } },
+              'host' => {
+                value: 'test.host',
+                source: { type: :yml, path: 'config/cool.yml' },
+              },
               'user' => {
                 'name' => {
                   value: 'secret man',
@@ -84,6 +83,19 @@ describe Runger::Config, :rails, type: :config do
                 },
               },
               'port' => { value: 8080, source: { type: :defaults } },
+              'meta' => {
+                'kot' => {
+                  value: 'leta',
+                  source: if NOSECRETS
+                            {
+                              type: :env,
+                              key: 'COOL_META__KOT',
+                            }
+                          else
+                            { type: :secrets }
+                          end,
+                },
+              },
             },
           )
         end
