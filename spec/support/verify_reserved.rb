@@ -25,7 +25,7 @@ RSpec.configure do |config|
     called_methods = called_methods.to_a.grep(Runger::Config::PARAM_NAME)
 
     if (called_methods - Runger::Config::RESERVED_NAMES).empty?
-      next puts "\nRunger::Config::RESERVED is OK"
+      next puts "\nRunger::Config::RESERVED is OK" # rubocop:disable RSpec/Output
     end
 
     raise "Runger::Config::RESERVED is invalid.\n" \
