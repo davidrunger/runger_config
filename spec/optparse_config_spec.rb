@@ -106,7 +106,7 @@ describe Runger::Config do
             end
 
             parser.on_tail('-h', '--help') do
-              puts parser
+              puts parser # rubocop:disable RSpec/Output
             end
           end
         end

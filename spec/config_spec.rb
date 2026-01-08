@@ -621,6 +621,7 @@ describe Runger::Config, type: :config do
         with_env(
           'COOL_USER__NAME' => 'john',
         ) do
+          # rubocop:disable RSpec/Output
           expect { pp(conf) }.to output(
             <<~STR,
               #<CoolConfig
@@ -635,6 +636,7 @@ describe Runger::Config, type: :config do
                   }>
             STR
           ).to_stdout
+          # rubocop:enable RSpec/Output
         end
       end
     end
