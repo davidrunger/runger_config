@@ -13,7 +13,9 @@ TracePoint.new(:call) do |ev|
   # filter out methods called not on Config instances
   next unless ev.self.is_a?(Runger::Config)
   # select only methods defined by the library, not user
+  # rubocop:disable Style/ModuleMemberExistenceCheck
   next unless ev.defined_class == Runger::Config || Runger::Config.included_modules.include?(ev.defined_class)
+  # rubocop:enable Style/ModuleMemberExistenceCheck
   # make sure the method is called from the library code, not tests
   next unless ev.binding.eval('caller').any? { |path| path.start_with?(lib_path) }
 
