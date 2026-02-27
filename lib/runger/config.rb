@@ -95,7 +95,7 @@ module Runger # :nodoc:
           raise(
             ArgumentError,
             'Can not use the following reserved names as config attrubutes: ' \
-            "#{reserved_names.sort.map(&:to_s).join(', ')}",
+            "#{reserved_names.sort.join(', ')}",
           )
         end
 
