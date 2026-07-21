@@ -112,7 +112,7 @@ GEM
     diff-lcs (1.6.2)
     drb (2.2.3)
     ejson (1.5.3)
-    erb (6.0.5)
+    erb (6.0.6)
     erubi (1.13.1)
     ffi (1.17.4)
     ffi (1.17.4-aarch64-linux-gnu)
@@ -423,7 +423,7 @@ CHECKSUMS
   diff-lcs (1.6.2) sha256=9ae0d2cba7d4df3075fe8cd8602a8604993efc0dfa934cff568969efb1909962
   drb (2.2.3) sha256=0b00d6fdb50995fe4a45dea13663493c841112e4068656854646f418fda13373
   ejson (1.5.3) sha256=37f2935c650b846c1860be4b44d74b7983ae315e463aab5a31c9dae86046591d
-  erb (6.0.5) sha256=858e63488cb796c9daba8b6e9ff4b3879c395022049be9a66a8e00980e612eac
+  erb (6.0.6) sha256=a9b24986700f5bf127c4f297c5403c3ca41b83b0a316c0cd09a096b56e644ae5
   erubi (1.13.1) sha256=a082103b0885dbc5ecf1172fede897f9ebdb745a4b97a5e8dc63953db1ee4ad9
   ffi (1.17.4) sha256=bcd1642e06f0d16fc9e09ac6d49c3a7298b9789bcb58127302f934e437d60acf
   ffi (1.17.4-aarch64-linux-gnu) sha256=b208f06f91ffd8f5e1193da3cae3d2ccfc27fc36fba577baf698d26d91c080df
