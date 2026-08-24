@@ -32,7 +32,7 @@ begin
     require File.expand_path('dummy/config/environment', __dir__)
   end
 rescue => err
-  $stdout.puts "Failed to load test env: #{err}\n#{err.backtrace.take(5).join("\n")}"
+  $stdout.puts("Failed to load test env: #{err}\n#{err.backtrace.take(5).join("\n")}")
   exit(1)
 end
 

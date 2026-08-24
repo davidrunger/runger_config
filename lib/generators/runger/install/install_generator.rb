@@ -19,7 +19,7 @@ class Runger::Generators::InstallGenerator < Rails::Generators::Base
     end
   end
 
-  # rubocop:disable Layout/HeredocIndentation
+  # rubocop:disable-next Layout/HeredocIndentation
   def add_setup_autoload_to_config
     maybe_comment_indented = default_configs_path? ? '    # ' : '    '
     inject_into_file('config/application.rb', after: %r{< Rails::Application\n}) do
@@ -31,7 +31,6 @@ class Runger::Generators::InstallGenerator < Rails::Generators::Base
       RUBY
     end
   end
-  # rubocop:enable Layout/HeredocIndentation
 
   private
 

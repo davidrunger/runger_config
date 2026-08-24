@@ -116,28 +116,28 @@ module Runger # :nodoc:
 
       def defaults
         if instance_variable_defined?(:@defaults)
-          return @defaults
+          @defaults
+        else
+          @defaults =
+            if superclass < Runger::Config
+              superclass.defaults.deep_dup
+            else
+              new_empty_config
+            end
         end
-
-        @defaults =
-          if superclass < Runger::Config
-            superclass.defaults.deep_dup
-          else
-            new_empty_config
-          end
       end
 
       def config_attributes
         if instance_variable_defined?(:@config_attributes)
-          return @config_attributes
+          @config_attributes
+        else
+          @config_attributes =
+            if superclass < Runger::Config
+              superclass.config_attributes.dup
+            else
+              []
+            end
         end
-
-        @config_attributes =
-          if superclass < Runger::Config
-            superclass.config_attributes.dup
-          else
-            []
-          end
       end
 
       def required(*names, env: nil, **nested)
@@ -149,25 +149,23 @@ module Runger # :nodoc:
           )
         end
 
-        unless Settings.matching_env?(env)
-          return
+        if Settings.matching_env?(env)
+          required_attributes.push(*names)
+          required_attributes.push(*nested.flatten_names)
         end
-
-        required_attributes.push(*names)
-        required_attributes.push(*nested.flatten_names)
       end
 
       def required_attributes
         if instance_variable_defined?(:@required_attributes)
-          return @required_attributes
+          @required_attributes
+        else
+          @required_attributes =
+            if superclass < Runger::Config
+              superclass.required_attributes.dup
+            else
+              []
+            end
         end
-
-        @required_attributes =
-          if superclass < Runger::Config
-            superclass.required_attributes.dup
-          else
-            []
-          end
       end
 
       def on_load(*names, &block)
@@ -187,74 +185,68 @@ module Runger # :nodoc:
 
       def load_callbacks
         if instance_variable_defined?(:@load_callbacks)
-          return @load_callbacks
+          @load_callbacks
+        else
+          @load_callbacks =
+            if superclass <= Runger::Config
+              superclass.load_callbacks.dup
+            else
+              []
+            end
         end
-
-        @load_callbacks =
-          if superclass <= Runger::Config
-            superclass.load_callbacks.dup
-          else
-            []
-          end
       end
 
       def config_name(val = nil)
-        unless val.nil?
-          return (@explicit_config_name = val.to_s)
+        if !val.nil?
+          @explicit_config_name = val.to_s
+        elsif instance_variable_defined?(:@config_name)
+          @config_name
+        else
+          @config_name = explicit_config_name || build_config_name
         end
-
-        if instance_variable_defined?(:@config_name)
-          return @config_name
-        end
-
-        @config_name = explicit_config_name || build_config_name
       end
 
       def explicit_config_name
         if instance_variable_defined?(:@explicit_config_name)
-          return @explicit_config_name
+          @explicit_config_name
+        else
+          @explicit_config_name =
+            if superclass.respond_to?(:explicit_config_name)
+              superclass.explicit_config_name
+            end
         end
-
-        @explicit_config_name =
-          if superclass.respond_to?(:explicit_config_name)
-            superclass.explicit_config_name
-          end
       end
 
       def explicit_config_name? = !explicit_config_name.nil?
 
       def env_prefix(val = nil)
-        unless val.nil?
-          return (@env_prefix = val.to_s.upcase)
+        if !val.nil?
+          @env_prefix = val.to_s.upcase
+        elsif instance_variable_defined?(:@env_prefix)
+          @env_prefix
+        else
+          @env_prefix =
+            if superclass < Runger::Config && superclass.explicit_config_name?
+              superclass.env_prefix
+            else
+              config_name.upcase
+            end
         end
-
-        if instance_variable_defined?(:@env_prefix)
-          return @env_prefix
-        end
-
-        @env_prefix =
-          if superclass < Runger::Config && superclass.explicit_config_name?
-            superclass.env_prefix
-          else
-            config_name.upcase
-          end
       end
 
       def loader_options(val = nil)
-        unless val.nil?
-          return (@loader_options = val)
+        if !val.nil?
+          @loader_options = val
+        elsif instance_variable_defined?(:@loader_options)
+          @loader_options
+        else
+          @loader_options =
+            if superclass < Runger::Config
+              superclass.loader_options
+            else
+              {}
+            end
         end
-
-        if instance_variable_defined?(:@loader_options)
-          return @loader_options
-        end
-
-        @loader_options =
-          if superclass < Runger::Config
-            superclass.loader_options
-          else
-            {}
-          end
       end
 
       def new_empty_config = {}
@@ -274,45 +266,43 @@ module Runger # :nodoc:
 
       def coercion_mapping
         if instance_variable_defined?(:@coercion_mapping)
-          return @coercion_mapping
+          @coercion_mapping
+        else
+          @coercion_mapping =
+            if superclass < Runger::Config
+              superclass.coercion_mapping.deep_dup
+            else
+              {}
+            end
         end
-
-        @coercion_mapping =
-          if superclass < Runger::Config
-            superclass.coercion_mapping.deep_dup
-          else
-            {}
-          end
       end
 
       def type_caster(val = nil)
-        unless val.nil?
-          return @type_caster
+        if val.nil?
+          @type_caster ||=
+            if coercion_mapping.empty?
+              fallback_type_caster
+            else
+              ::Runger::TypeCaster.new(coercion_mapping, fallback: fallback_type_caster)
+            end
+        else
+          @type_caster
         end
-
-        @type_caster ||=
-          if coercion_mapping.empty?
-            fallback_type_caster
-          else
-            ::Runger::TypeCaster.new(coercion_mapping, fallback: fallback_type_caster)
-          end
       end
 
       def fallback_type_caster(val = nil)
-        unless val.nil?
-          return (@fallback_type_caster = val)
+        if !val.nil?
+          @fallback_type_caster = val
+        elsif instance_variable_defined?(:@fallback_type_caster)
+          @fallback_type_caster
+        else
+          @fallback_type_caster =
+            if superclass < Runger::Config
+              superclass.fallback_type_caster.deep_dup
+            else
+              ::Runger::AutoCast
+            end
         end
-
-        if instance_variable_defined?(:@fallback_type_caster)
-          return @fallback_type_caster
-        end
-
-        @fallback_type_caster =
-          if superclass < Runger::Config
-            superclass.fallback_type_caster.deep_dup
-          else
-            ::Runger::AutoCast
-          end
       end
 
       def disable_auto_cast!
@@ -338,13 +328,13 @@ module Runger # :nodoc:
 
       def accessors_module
         if instance_variable_defined?(:@accessors_module)
-          return @accessors_module
+          @accessors_module
+        else
+          @accessors_module =
+            Module.new.tap do |mod|
+              include(mod)
+            end
         end
-
-        @accessors_module =
-          Module.new.tap do |mod|
-            include mod
-          end
       end
 
       def build_config_name
@@ -363,15 +353,13 @@ module Runger # :nodoc:
 
       def validate_param_names!(names)
         invalid_names = names.grep_v(PARAM_NAME)
-        if invalid_names.empty?
-          return
+        unless invalid_names.empty?
+          raise(
+            ArgumentError,
+            "Invalid attr_config name: #{invalid_names.join(', ')}.\n" \
+            "Valid names must satisfy /#{PARAM_NAME.source}/.",
+          )
         end
-
-        raise(
-          ArgumentError,
-          "Invalid attr_config name: #{invalid_names.join(', ')}.\n" \
-          "Valid names must satisfy /#{PARAM_NAME.source}/.",
-        )
       end
     end
 
@@ -527,12 +515,10 @@ module Runger # :nodoc:
 
     def write_config_attr(key, val)
       key = key.to_sym
-      unless self.class.config_attributes.include?(key)
-        return
+      if self.class.config_attributes.include?(key)
+        val = __type_caster__.coerce(key, val)
+        public_send(:"#{key}=", val)
       end
-
-      val = __type_caster__.coerce(key, val)
-      public_send(:"#{key}=", val)
     end
 
     def raise_validation_error(msg)

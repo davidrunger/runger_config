@@ -7,21 +7,21 @@ module Runger::Ext::StringConstantize
       names = split('::')
 
       if names.empty?
-        return nil
-      end
-
-      # Remove the first blank element in case of '::ClassName' notation.
-      if names.size > 1 && names.first.empty?
-        names.shift
-      end
-
-      names.inject(Object) do |constant, name|
-        if constant.nil?
-          break
+        nil
+      else
+        # Remove the first blank element in case of '::ClassName' notation.
+        if names.size > 1 && names.first.empty?
+          names.shift
         end
 
-        if constant.const_defined?(name, false)
-          constant.const_get(name, false)
+        names.inject(Object) do |constant, name|
+          if constant.nil?
+            break
+          end
+
+          if constant.const_defined?(name, false)
+            constant.const_get(name, false)
+          end
         end
       end
     end
