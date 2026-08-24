@@ -55,7 +55,9 @@ module Runger
           end
 
         getter_type = type
-        getter_type = "#{type}?" unless required_attributes.include?(param)
+        unless required_attributes.include?(param)
+          getter_type = "#{type}?"
+        end
 
         buf << "#{'  ' * indent}def #{param}: () -> #{getter_type}"
         buf << "#{'  ' * indent}def #{param}=: (#{type}) -> void"

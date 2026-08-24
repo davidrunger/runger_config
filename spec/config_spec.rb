@@ -953,7 +953,9 @@ describe Runger::Config, type: :config do
         attr_config :test, debug: false
 
         on_load do
-          raise_validation_error('test must be a number') unless test.is_a?(Numeric)
+          unless test.is_a?(Numeric)
+            raise_validation_error('test must be a number')
+          end
         end
       end
     end
@@ -973,7 +975,9 @@ describe Runger::Config, type: :config do
           private
 
           def calibrate_debug
-            self.debug = false if test > 0
+            if test > 0
+              self.debug = false
+            end
           end
         end
       end

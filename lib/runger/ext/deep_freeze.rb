@@ -6,7 +6,9 @@ module Runger::Ext::DeepFreeze
     def deep_freeze
       freeze
       each_value do |value|
-        value.deep_freeze if value.is_a?(::Hash) || value.is_a?(::Array)
+        if value.is_a?(::Hash) || value.is_a?(::Array)
+          value.deep_freeze
+        end
       end
     end
   end
@@ -15,7 +17,9 @@ module Runger::Ext::DeepFreeze
     def deep_freeze
       freeze
       each do |value|
-        value.deep_freeze if value.is_a?(::Hash) || value.is_a?(::Array)
+        if value.is_a?(::Hash) || value.is_a?(::Array)
+          value.deep_freeze
+        end
       end
     end
   end
@@ -30,7 +34,9 @@ module Runger::Ext::DeepFreeze
       def deep_freeze
         freeze
         each_value do |value|
-          value.deep_freeze if value.is_a?(::Hash) || value.is_a?(::Array)
+          if value.is_a?(::Hash) || value.is_a?(::Array)
+            value.deep_freeze
+          end
         end
       end
     end

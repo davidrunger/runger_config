@@ -8,7 +8,9 @@ module Runger # :nodoc:
     config.runger_config = Runger::Settings
 
     config.before_configuration do
-      next if ::Rails.application.initialized?
+      if ::Rails.application.initialized?
+        next
+      end
 
       config.runger_config.autoload_static_config_path = DEFAULT_CONFIGS_PATH
     end

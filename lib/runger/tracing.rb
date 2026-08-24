@@ -41,7 +41,9 @@ module Runger::Tracing
     end
 
     def merge_values(hash, **options)
-      return hash unless hash
+      unless hash
+        return hash
+      end
 
       hash.each do |key, val|
         if val.is_a?(Hash)
@@ -55,7 +57,9 @@ module Runger::Tracing
     end
 
     def record_key(key, key_trace)
-      @value = Hash.new { |h, k| h[k] = Trace.new(:trace) } unless value.is_a?(::Hash)
+      unless value.is_a?(::Hash)
+        @value = Hash.new { |h, k| h[k] = Trace.new(:trace) }
+      end
 
       value[key] = key_trace
     end
@@ -84,7 +88,9 @@ module Runger::Tracing
     end
 
     def keep_if(...)
-      raise(ArgumentError, "You can only filter :trace type, and this is :#{type}") unless trace?
+      unless trace?
+        raise(ArgumentError, "You can only filter :trace type, and this is :#{type}")
+      end
 
       value.keep_if(...)
     end
@@ -186,7 +192,9 @@ module Runger::Tracing
   module_function
 
   def trace!(type, *path, **options)
-    return yield unless ::Runger::Tracing.tracing?
+    unless ::Runger::Tracing.tracing?
+      return yield
+    end
 
     val = yield
     if val.is_a?(Hash)

@@ -6,11 +6,15 @@ class Runger::Rails::Loaders::Credentials < Runger::Loaders::Base
   LOCAL_CONTENT_PATH = 'config/credentials/local.yml.enc'
 
   def call(name:, **_options)
-    return {} unless ::Rails.application.respond_to?(:credentials)
+    unless ::Rails.application.respond_to?(:credentials)
+      return {}
+    end
 
     # do not load from credentials if we're in the context
     # of the `credentials:edit` command
-    return {} if defined?(::Rails::Command::CredentialsCommand)
+    if defined?(::Rails::Command::CredentialsCommand)
+      return {}
+    end
 
     # Create a new hash cause credentials are mutable!
     config = {}
@@ -21,13 +25,19 @@ class Runger::Rails::Loaders::Credentials < Runger::Loaders::Base
     ) do
       ::Rails.application.credentials.config[name.to_sym]
     end.then do |creds|
-      Runger::Utils.deep_merge!(config, creds) if creds
+      if creds
+        Runger::Utils.deep_merge!(config, creds)
+      end
     end
 
     if use_local?
       trace!(:credentials, store: LOCAL_CONTENT_PATH) do
         local_credentials(name)
-      end.then { |creds| Runger::Utils.deep_merge!(config, creds) if creds }
+      end.then do |creds|
+        if creds
+          Runger::Utils.deep_merge!(config, creds)
+        end
+      end
     end
 
     config
@@ -38,7 +48,9 @@ class Runger::Rails::Loaders::Credentials < Runger::Loaders::Base
   def local_credentials(name)
     local_creds_path = ::Rails.root.join(LOCAL_CONTENT_PATH).to_s
 
-    return unless File.file?(local_creds_path)
+    unless File.file?(local_creds_path)
+      return
+    end
 
     creds = ::Rails.application.encrypted(
       local_creds_path,

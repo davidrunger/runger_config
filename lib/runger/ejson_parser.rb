@@ -13,7 +13,9 @@ class Runger::EJSONParser
   end
 
   def call(file_path)
-    return unless File.exist?(file_path)
+    unless File.exist?(file_path)
+      return
+    end
 
     raw_content = nil
 
@@ -25,7 +27,9 @@ class Runger::EJSONParser
       Kernel.warn("Failed to decrypt #{file_path}: #{stderr}")
     end
 
-    return unless raw_content
+    unless raw_content
+      return
+    end
 
     raw_content.deep_transform_keys do |key|
       if key[0] == '_'

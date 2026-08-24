@@ -43,10 +43,14 @@ class Runger::Loaders::Doppler < Runger::Loaders::Base
 
   def fetch_doppler_config(url, token)
     uri = URI.parse(url)
-    raise('Doppler token is required to load configuration from Doppler') if token.nil?
+    if token.nil?
+      raise('Doppler token is required to load configuration from Doppler')
+    end
 
     http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true if uri.scheme == 'https'
+    if uri.scheme == 'https'
+      http.use_ssl = true
+    end
 
     request = Net::HTTP::Get.new(uri)
     request['Accept'] = 'application/json'

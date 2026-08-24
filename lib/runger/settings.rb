@@ -81,7 +81,9 @@ class Runger::Settings
     end
 
     def matching_env?(env)
-      return true if env.nil? || env.to_s == current_environment
+      if env.nil? || env.to_s == current_environment
+        return true
+      end
 
       if env.is_a?(::Hash)
         envs = env[:except]

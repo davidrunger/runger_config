@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 begin
-  require 'debug' unless ENV['CI']
+  unless ENV['CI']
+    require 'debug'
+  end
 rescue LoadError
 end
 
@@ -21,7 +23,9 @@ begin
     ENV['RAILS_ENV'] = 'test'
 
     # Load runger_config before Rails to test that we can detect Rails app before it's loaded
-    require 'runger_config' unless defined?(TruffleRuby)
+    unless defined?(TruffleRuby)
+      require 'runger_config'
+    end
 
     require 'ammeter'
 
@@ -39,10 +43,16 @@ NOSECRETS = !NORAILS && Gem::Version.new(Rails.version) >= Gem::Version.new('7.1
 RSpec.configure do |config|
   config.mock_with(:rspec)
 
-  config.filter_run_excluding(rails: true) if NORAILS
-  config.filter_run_excluding(norails: true) unless NORAILS
+  if NORAILS
+    config.filter_run_excluding(rails: true)
+  end
+  unless NORAILS
+    config.filter_run_excluding(norails: true)
+  end
   # Igonore specs manually checking for argument types when running RBS runtime tester
-  config.filter_run_excluding(rbs: false) if defined?(RBS::Test)
+  if defined?(RBS::Test)
+    config.filter_run_excluding(rbs: false)
+  end
 
   config.example_status_persistence_file_path = 'tmp/rspec_examples.txt'
   config.filter_run(:focus)

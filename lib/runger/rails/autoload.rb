@@ -11,11 +11,15 @@ module Runger::Rails
 
     def tracepoint_class_callback(event)
       # Ignore singletons
-      return if event.self.singleton_class?
+      if event.self.singleton_class?
+        return
+      end
 
       # We wait till `rails/application/configuration.rb` has been loaded, since we rely on it
       # See https://github.com/palkan/runger_config/issues/134
-      return unless name_method.bind_call(event.self) == 'Rails::Application::Configuration'
+      unless name_method.bind_call(event.self) == 'Rails::Application::Configuration'
+        return
+      end
 
       tracer.disable
 

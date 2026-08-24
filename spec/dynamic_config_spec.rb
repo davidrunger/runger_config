@@ -18,7 +18,9 @@ describe Runger::Config, type: :config do
     unless NOSECRETS
       expect(data[:secret]).to eq('my_secret')
     end
-    expect(data[:credo]).to eq('my_credo') if Rails.application.respond_to?(:credentials)
+    if Rails.application.respond_to?(:credentials)
+      expect(data[:credo]).to eq('my_credo')
+    end
   end
 
   it 'loads data by config name', :aggregate_failures, :norails do
@@ -49,9 +51,15 @@ describe Runger::Config, type: :config do
       data = Runger::Config.for(:my_app)
       expect(data[:test]).to eq(1)
       expect(data[:name]).to eq('my_app')
-      expect(data[:secret]).to eq('my_secret') unless NOSECRETS
-      expect(data[:credo]).to eq('my_credo') if Rails.application.respond_to?(:credentials)
-      expect(data[:credo_local]).to eq('betheone') if Rails.application.respond_to?(:credentials)
+      unless NOSECRETS
+        expect(data[:secret]).to eq('my_secret')
+      end
+      if Rails.application.respond_to?(:credentials)
+        expect(data[:credo]).to eq('my_credo')
+      end
+      if Rails.application.respond_to?(:credentials)
+        expect(data[:credo_local]).to eq('betheone')
+      end
     end
   end
 end

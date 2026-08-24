@@ -14,11 +14,17 @@ class Runger::Settings
 
     def autoload_static_config_path=(val)
       if autoload_via_zeitwerk
-        raise('Cannot setup autoloader after application has been initialized') if ::Rails.application.initialized?
+        if ::Rails.application.initialized?
+          raise('Cannot setup autoloader after application has been initialized')
+        end
 
-        return unless ::Rails.root.join(val).exist?
+        unless ::Rails.root.join(val).exist?
+          return
+        end
 
-        return if val == autoload_static_config_path
+        if val == autoload_static_config_path
+          return
+        end
 
         autoloader&.unload
 
@@ -53,15 +59,21 @@ class Runger::Settings
     end
 
     def cleanup_autoload_paths
-      return unless autoload_via_zeitwerk
+      unless autoload_via_zeitwerk
+        return
+      end
 
-      return unless autoload_static_config_path
+      unless autoload_static_config_path
+        return
+      end
 
       ActiveSupport::Dependencies.autoload_paths.delete(::Rails.root.join(autoload_static_config_path).to_s)
     end
 
     def autoload_via_zeitwerk
-      return @autoload_via_zeitwerk if instance_variable_defined?(:@autoload_via_zeitwerk)
+      if instance_variable_defined?(:@autoload_via_zeitwerk)
+        return @autoload_via_zeitwerk
+      end
 
       @autoload_via_zeitwerk = defined?(::Zeitwerk)
     end

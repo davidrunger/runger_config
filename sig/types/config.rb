@@ -50,7 +50,9 @@ class RBS::Config < Runger::Config
   on_load :normalize_checker
 
   on_load do
-    raise_validation_error('checker is missing') if checker.nil?
+    if checker.nil?
+      raise_validation_error('checker is missing')
+    end
   end
 
   # super is available
@@ -61,6 +63,8 @@ class RBS::Config < Runger::Config
   private
 
   def normalize_checker
-    self.checker = '' unless /steep/i.match?(checker)
+    unless /steep/i.match?(checker)
+      self.checker = ''
+    end
   end
 end

@@ -1,21 +1,33 @@
 # frozen_string_literal: true
 
-return unless ENV['VERIFY_RESERVED'] == '1'
+unless ENV['VERIFY_RESERVED'] == '1'
+  return
+end
 
 called_methods = Set.new
 lib_path = File.realpath(File.join(File.dirname(__FILE__), '..', '..', 'lib'))
 
 TracePoint.new(:call) do |ev|
   # already tracked
-  next if called_methods.include?(ev.method_id)
+  if called_methods.include?(ev.method_id)
+    next
+  end
   # the event could be triggered before we load Runger::Config
-  next unless defined?(Runger::Config)
+  unless defined?(Runger::Config)
+    next
+  end
   # filter out methods called not on Config instances
-  next unless ev.self.is_a?(Runger::Config)
+  unless ev.self.is_a?(Runger::Config)
+    next
+  end
   # select only methods defined by the library, not user
-  next unless ev.defined_class == Runger::Config || Runger::Config.included_modules.include?(ev.defined_class)
+  unless ev.defined_class == Runger::Config || Runger::Config.included_modules.include?(ev.defined_class)
+    next
+  end
   # make sure the method is called from the library code, not tests
-  next unless ev.binding.eval('caller').any? { |path| path.start_with?(lib_path) }
+  unless ev.binding.eval('caller').any? { |path| path.start_with?(lib_path) }
+    next
+  end
 
   called_methods << ev.method_id
 end.enable

@@ -13,7 +13,9 @@ module Runger::Testing::Helpers
 
     data.each do |key, val|
       was_values << [key, ENV.fetch(key, nil)]
-      next ENV.delete(key) if val.nil?
+      if val.nil?
+        next ENV.delete(key)
+      end
 
       ENV[key] = val
     end
@@ -23,7 +25,9 @@ module Runger::Testing::Helpers
     yield
   ensure
     was_values.each do |(key, val)|
-      next ENV.delete(key) if val.nil?
+      if val.nil?
+        next ENV.delete(key)
+      end
 
       ENV[key] = val
     end

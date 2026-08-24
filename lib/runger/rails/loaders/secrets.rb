@@ -2,7 +2,9 @@
 
 class Runger::Rails::Loaders::Secrets < Runger::Loaders::Base
   def call(name:, **_options)
-    return {} unless ::Rails.application.respond_to?(:secrets)
+    unless ::Rails.application.respond_to?(:secrets)
+      return {}
+    end
 
     # Create a new hash cause secrets are mutable!
     config = {}
@@ -10,7 +12,9 @@ class Runger::Rails::Loaders::Secrets < Runger::Loaders::Base
     trace!(:secrets) do
       secrets.public_send(name)
     end.then do |secrets|
-      ::Runger::Utils.deep_merge!(config, secrets) if secrets
+      if secrets
+        ::Runger::Utils.deep_merge!(config, secrets)
+      end
     end
 
     config
@@ -23,7 +27,9 @@ class Runger::Rails::Loaders::Secrets < Runger::Loaders::Base
       ::Rails.application.secrets.tap do |_|
         # Reset secrets state if the app hasn't been initialized
         # See https://github.com/palkan/runger_config/issues/14
-        next if ::Rails.application.initialized?
+        if ::Rails.application.initialized?
+          next
+        end
 
         ::Rails.application.remove_instance_variable(:@secrets)
       end

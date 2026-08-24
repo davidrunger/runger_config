@@ -82,7 +82,9 @@ task :steep do
     stderr: $stderr,
     stdin: $stdin,
   ).run.tap do |exit_code|
-    exit(exit_code) if exit_code.nonzero?
+    if exit_code.nonzero?
+      exit(exit_code)
+    end
   end
 end
 
