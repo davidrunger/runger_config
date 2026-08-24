@@ -18,32 +18,26 @@ class Runger::Settings
           raise('Cannot setup autoloader after application has been initialized')
         end
 
-        unless ::Rails.root.join(val).exist?
-          return
-        end
+        if ::Rails.root.join(val).exist? && val != autoload_static_config_path
+          autoloader&.unload
 
-        if val == autoload_static_config_path
-          return
-        end
+          @autoload_static_config_path = val
 
-        autoloader&.unload
+          # See Rails 6 https://github.com/rails/rails/blob/8ab4fd12f18203b83d0f252db96d10731485ff6a/railties/lib/rails/autoloaders.rb#L10
+          # and Rails 7 https://github.com/rails/rails/blob/5462fbd5de1900c1b1ce1c9dc11c1a2d8cdcd809/railties/lib/rails/autoloaders.rb#L15
+          @autoloader =
+            Zeitwerk::Loader.new.tap do |loader|
+              loader.tag = 'runger.config'
 
-        @autoload_static_config_path = val
-
-        # See Rails 6 https://github.com/rails/rails/blob/8ab4fd12f18203b83d0f252db96d10731485ff6a/railties/lib/rails/autoloaders.rb#L10
-        # and Rails 7 https://github.com/rails/rails/blob/5462fbd5de1900c1b1ce1c9dc11c1a2d8cdcd809/railties/lib/rails/autoloaders.rb#L15
-        @autoloader =
-          Zeitwerk::Loader.new.tap do |loader|
-            loader.tag = 'runger.config'
-
-            if defined?(ActiveSupport::Dependencies::ZeitwerkIntegration::Inflector)
-              loader.inflector = ActiveSupport::Dependencies::ZeitwerkIntegration::Inflector
-            elsif defined?(::Rails::Autoloaders::Inflector)
-              loader.inflector = ::Rails::Autoloaders::Inflector
+              if defined?(ActiveSupport::Dependencies::ZeitwerkIntegration::Inflector)
+                loader.inflector = ActiveSupport::Dependencies::ZeitwerkIntegration::Inflector
+              elsif defined?(::Rails::Autoloaders::Inflector)
+                loader.inflector = ::Rails::Autoloaders::Inflector
+              end
+              loader.push_dir(::Rails.root.join(val))
+              loader.setup
             end
-            loader.push_dir(::Rails.root.join(val))
-            loader.setup
-          end
+        end
       else
         if autoload_static_config_path
           old_path = ::Rails.root.join(autoload_static_config_path).to_s
@@ -59,23 +53,17 @@ class Runger::Settings
     end
 
     def cleanup_autoload_paths
-      unless autoload_via_zeitwerk
-        return
+      if autoload_via_zeitwerk && autoload_static_config_path
+        ActiveSupport::Dependencies.autoload_paths.delete(::Rails.root.join(autoload_static_config_path).to_s)
       end
-
-      unless autoload_static_config_path
-        return
-      end
-
-      ActiveSupport::Dependencies.autoload_paths.delete(::Rails.root.join(autoload_static_config_path).to_s)
     end
 
     def autoload_via_zeitwerk
       if instance_variable_defined?(:@autoload_via_zeitwerk)
-        return @autoload_via_zeitwerk
+        @autoload_via_zeitwerk
+      else
+        @autoload_via_zeitwerk = defined?(::Zeitwerk)
       end
-
-      @autoload_via_zeitwerk = defined?(::Zeitwerk)
     end
 
     def current_environment

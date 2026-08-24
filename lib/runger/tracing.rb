@@ -41,11 +41,7 @@ module Runger::Tracing
     end
 
     def merge_values(hash, **options)
-      unless hash
-        return hash
-      end
-
-      hash.each do |key, val|
+      hash&.each do |key, val|
         if val.is_a?(Hash)
           value[key.to_s].merge_values(val, **options)
         else
@@ -146,15 +142,14 @@ module Runger::Tracing
 
   class << self
     def capture
-      unless ::Runger::Settings.tracing_enabled
+      if ::Runger::Settings.tracing_enabled
+        trace = Trace.new
+        trace_stack.push(trace)
         yield
-        return
+        trace_stack.last
+      else
+        yield
       end
-
-      trace = Trace.new
-      trace_stack.push(trace)
-      yield
-      trace_stack.last
     ensure
       trace_stack.pop
     end
@@ -192,16 +187,16 @@ module Runger::Tracing
   module_function
 
   def trace!(type, *path, **options)
-    unless ::Runger::Tracing.tracing?
-      return yield
+    if ::Runger::Tracing.tracing?
+      val = yield
+      if val.is_a?(Hash)
+        ::Runger::Tracing.current_trace.merge_values(val, type:, **options)
+      elsif !path.empty?
+        ::Runger::Tracing.current_trace.record_value(val, *path, type:, **options)
+      end
+      val
+    else
+      yield
     end
-
-    val = yield
-    if val.is_a?(Hash)
-      ::Runger::Tracing.current_trace.merge_values(val, type:, **options)
-    elsif !path.empty?
-      ::Runger::Tracing.current_trace.record_value(val, *path, type:, **options)
-    end
-    val
   end
 end

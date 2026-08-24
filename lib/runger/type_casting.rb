@@ -25,29 +25,27 @@ module Runger
     end
 
     def deserialize(raw, type_id, array: false)
-      if raw.nil?
-        return
-      end
+      unless raw.nil?
+        caster =
+          if type_id.is_a?(Symbol) || type_id.nil?
+            registry.fetch(type_id) { raise(ArgumentError, "Unknown type: #{type_id}") }
+          else
+            unless type_id.respond_to?(:call)
+              raise(
+                ArgumentError,
+                "Type must implement #call(val): #{type_id}",
+              )
+            end
 
-      caster =
-        if type_id.is_a?(Symbol) || type_id.nil?
-          registry.fetch(type_id) { raise(ArgumentError, "Unknown type: #{type_id}") }
-        else
-          unless type_id.respond_to?(:call)
-            raise(
-              ArgumentError,
-              "Type must implement #call(val): #{type_id}",
-            )
+            type_id
           end
 
-          type_id
+        if array
+          raw_arr = raw.is_a?(String) ? raw.split(/\s*,\s*/) : Array(raw)
+          raw_arr.map { caster.call(it) }
+        else
+          caster.call(raw)
         end
-
-      if array
-        raw_arr = raw.is_a?(String) ? raw.split(/\s*,\s*/) : Array(raw)
-        raw_arr.map { caster.call(it) }
-      else
-        caster.call(raw)
       end
     end
 
@@ -138,43 +136,47 @@ module Runger
     def coerce(key, val, config: mapping)
       caster_config = config[key.to_sym]
 
-      unless caster_config
-        return fallback.coerce(key, val)
-      end
-
-      case caster_config
-      in Hash[array:, type:, **nil]
-        registry.deserialize(val, type, array:)
-      in Hash[config: subconfig]
-        if subconfig.is_a?(::String)
-          subconfig = subconfig.safe_constantize
-        end
-        unless subconfig
-          raise(ArgumentError, "Config is not found: #{subconfig}")
-        end
-
-        subconfig.new(val)
-      in Hash
-        unless val.is_a?(Hash)
-          return val
-        end
-
-        caster_config.each_key do |k|
-          ks = k.to_s
-          unless val.key?(ks)
-            next
+      if caster_config
+        case caster_config
+        in Hash[array:, type:, **nil]
+          registry.deserialize(val, type, array:)
+        in Hash[config: subconfig]
+          if subconfig.is_a?(::String)
+            subconfig = subconfig.safe_constantize
+          end
+          unless subconfig
+            raise(ArgumentError, "Config is not found: #{subconfig}")
           end
 
-          val[ks] = coerce(k, val[ks], config: caster_config)
+          subconfig.new(val)
+        in Hash
+          if val.is_a?(Hash)
+            coerce_hash(val, caster_config)
+          else
+            val
+          end
+        else
+          registry.deserialize(val, caster_config)
         end
-
-        val
       else
-        registry.deserialize(val, caster_config)
+        fallback.coerce(key, val)
       end
     end
 
     private
+
+    def coerce_hash(val, caster_config)
+      caster_config.each_key do |key|
+        key_string = key.to_s
+        unless val.key?(key_string)
+          next
+        end
+
+        val[key_string] = coerce(key, val[key_string], config: caster_config)
+      end
+
+      val
+    end
 
     attr_reader :mapping, :registry, :fallback
   end

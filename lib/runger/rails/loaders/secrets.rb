@@ -2,22 +2,22 @@
 
 class Runger::Rails::Loaders::Secrets < Runger::Loaders::Base
   def call(name:, **_options)
-    unless ::Rails.application.respond_to?(:secrets)
-      return {}
-    end
+    if ::Rails.application.respond_to?(:secrets)
+      # Create a new hash cause secrets are mutable!
+      config = {}
 
-    # Create a new hash cause secrets are mutable!
-    config = {}
-
-    trace!(:secrets) do
-      secrets.public_send(name)
-    end.then do |secrets|
-      if secrets
-        ::Runger::Utils.deep_merge!(config, secrets)
+      trace!(:secrets) do
+        secrets.public_send(name)
+      end.then do |secrets|
+        if secrets
+          ::Runger::Utils.deep_merge!(config, secrets)
+        end
       end
-    end
 
-    config
+      config
+    else
+      {}
+    end
   end
 
   private

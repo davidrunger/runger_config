@@ -7,14 +7,13 @@ module Runger::Ext::FlattenNames
     def flatten_names(prefix, buf)
       if empty?
         buf << :"#{prefix}"
-        return buf
-      end
-
-      each_with_object(buf) do |name, acc|
-        if name.is_a?(::Symbol)
-          acc << :"#{prefix}.#{name}"
-        else
-          name.flatten_names(prefix, acc)
+      else
+        each_with_object(buf) do |name, acc|
+          if name.is_a?(::Symbol)
+            acc << :"#{prefix}.#{name}"
+          else
+            name.flatten_names(prefix, acc)
+          end
         end
       end
     end

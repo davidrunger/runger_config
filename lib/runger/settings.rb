@@ -57,12 +57,11 @@ class Runger::Settings
     def default_config_path=(val)
       if val.is_a?(Proc)
         @default_config_path = val
-        return
+      else
+        val = val.to_s
+
+        @default_config_path = ->(name) { File.join(val, "#{name}.yml") }
       end
-
-      val = val.to_s
-
-      @default_config_path = ->(name) { File.join(val, "#{name}.yml") }
     end
 
     # Enable source tracing
@@ -82,10 +81,8 @@ class Runger::Settings
 
     def matching_env?(env)
       if env.nil? || env.to_s == current_environment
-        return true
-      end
-
-      if env.is_a?(::Hash)
+        true
+      elsif env.is_a?(::Hash)
         envs = env[:except]
         excluded_envs = [envs].flat_map(&:to_s)
         excluded_envs.none?(current_environment)

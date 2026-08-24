@@ -46,11 +46,11 @@ class Runger::Loaders::EJSON < Runger::Loaders::Base
     end
 
     if configs.empty?
-      return {}
-    end
-
-    configs.inject do |result_config, next_config|
-      ::Runger::Utils.deep_merge!(result_config, next_config)
+      {}
+    else
+      configs.inject do |result_config, next_config|
+        ::Runger::Utils.deep_merge!(result_config, next_config)
+      end
     end
   end
 
@@ -84,6 +84,7 @@ class Runger::Loaders::EJSON < Runger::Loaders::Base
 
   def extract_hash_from_rel_config_path(ejson_parser:, rel_config_path:)
     rel_config_path = Array(rel_config_path)
+    extracted = nil
 
     rel_config_path.each do |rel_conf_path|
       rel_path = "config/#{rel_conf_path}"
@@ -92,10 +93,11 @@ class Runger::Loaders::EJSON < Runger::Loaders::Base
       result = ejson_parser.call(abs_path)
 
       if result
-        return [result, rel_path]
+        extracted = [result, rel_path]
+        break
       end
     end
 
-    nil
+    extracted
   end
 end

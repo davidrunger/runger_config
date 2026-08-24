@@ -10,25 +10,16 @@ module Runger::Rails
     private
 
     def tracepoint_class_callback(event)
-      # Ignore singletons
-      if event.self.singleton_class?
-        return
+      if !event.self.singleton_class? && name_method.bind_call(event.self) == 'Rails::Application::Configuration'
+        tracer.disable
+
+        unless disable_postponed_load_warning
+          warn("Runger Config was loaded before Rails. Activating Runger Config Rails plugins now.\n" \
+               'NOTE: Already loaded configs were provisioned without Rails-specific sources.')
+        end
+
+        require 'runger/rails'
       end
-
-      # We wait till `rails/application/configuration.rb` has been loaded, since we rely on it
-      # See https://github.com/palkan/runger_config/issues/134
-      unless name_method.bind_call(event.self) == 'Rails::Application::Configuration'
-        return
-      end
-
-      tracer.disable
-
-      unless disable_postponed_load_warning
-        warn("Runger Config was loaded before Rails. Activating Runger Config Rails plugins now.\n" \
-             'NOTE: Already loaded configs were provisioned without Rails-specific sources.')
-      end
-
-      require 'runger/rails'
     end
   end
 

@@ -39,16 +39,14 @@ class Runger::Env
   end
 
   def fetch(prefix)
-    if data.key?(prefix)
-      return data[prefix].deep_dup
-    end
+    unless data.key?(prefix)
+      ::Runger::Tracing.capture do
+        data[prefix] = parse_env(prefix)
+      end.then do |trace|
+        traces[prefix] = trace
+      end
 
-    ::Runger::Tracing.capture do
-      data[prefix] = parse_env(prefix)
-    end.then do |trace|
-      traces[prefix] = trace
     end
-
     data[prefix].deep_dup
   end
 

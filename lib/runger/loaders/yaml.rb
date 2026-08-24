@@ -14,72 +14,69 @@ class Runger::Loaders::YAML < Runger::Loaders::Base
         environmental?(config) ? config_with_env(config) : config
       end
 
-    unless use_local?
-      return base_config
+    if use_local?
+      local_path = local_config_path(config_path)
+      local_config =
+        trace!(:yml, path: relative_config_path(local_path).to_s) do
+          load_local_yml(local_path)
+        end
+      ::Runger::Utils.deep_merge!(base_config, local_config)
+    else
+      base_config
     end
-
-    local_path = local_config_path(config_path)
-    local_config =
-      trace!(:yml, path: relative_config_path(local_path).to_s) do
-        load_local_yml(local_path)
-      end
-    ::Runger::Utils.deep_merge!(base_config, local_config)
   end
 
   private
 
   def environmental?(parsed_yml)
     # strange, but still possible
-    if ::Runger::Settings.default_environmental_key? && parsed_yml.key?(::Runger::Settings.default_environmental_key)
-      return true
-    end
-    # possible
-    if !::Runger::Settings.future.unwrap_known_environments && ::Runger::Settings.current_environment
-      return true
-    end
-    # for other environments
-    if ::Runger::Settings.known_environments&.any? { parsed_yml.key?(it) }
-      return true
-    end
+    environmental_key_present =
+      (::Runger::Settings.default_environmental_key? && parsed_yml.key?(::Runger::Settings.default_environmental_key)) ||
+      (!::Runger::Settings.future.unwrap_known_environments && ::Runger::Settings.current_environment) ||
+      ::Runger::Settings.known_environments&.any? { parsed_yml.key?(it) }
 
-    # preferred
-    parsed_yml.key?(::Runger::Settings.current_environment)
+    if environmental_key_present
+      true
+    else
+      # preferred
+      parsed_yml.key?(::Runger::Settings.current_environment)
+    end
   end
 
   def config_with_env(config)
     env_config = config[::Runger::Settings.current_environment] || {}
-    unless ::Runger::Settings.default_environmental_key?
-      return env_config
+    if ::Runger::Settings.default_environmental_key?
+      default_config = config[::Runger::Settings.default_environmental_key] || {}
+      ::Runger::Utils.deep_merge!(default_config, env_config)
+    else
+      env_config
     end
-
-    default_config = config[::Runger::Settings.default_environmental_key] || {}
-    ::Runger::Utils.deep_merge!(default_config, env_config)
   end
 
   def parse_yml(path)
-    unless File.file?(path)
-      return {}
-    end
-
-    unless defined?(::YAML)
-      require 'yaml'
-    end
-
-    # By default, YAML load will return `false` when the yaml document is
-    # empty. When this occurs, we return an empty hash instead, to match
-    # the interface when no config file is present.
-    begin
-      if defined?(ERB)
-        ::YAML.load(ERB.new(File.read(path)).result, aliases: true) || {}
-      else
-        ::YAML.load_file(path, aliases: true) || {}
+    if File.file?(path)
+      unless defined?(::YAML)
+        require 'yaml'
       end
-    rescue ArgumentError
-      if defined?(ERB)
-        ::YAML.load(ERB.new(File.read(path)).result) || {}
-      else
-        ::YAML.load_file(path) || {}
+
+      # By default, YAML load will return `false` when the yaml document is
+      # empty. When this occurs, we return an empty hash instead, to match
+      # the interface when no config file is present.
+      begin
+        if defined?(ERB)
+          ::YAML.load(ERB.new(File.read(path)).result, aliases: true) || {}
+        else
+          ::YAML.load_file(path, aliases: true) || {}
+        end
+      rescue ArgumentError
+        if defined?(ERB)
+          ::YAML.load(ERB.new(File.read(path)).result) || {}
+        else
+          ::YAML.load_file(path) || {}
+        end
       end
+    else
+      {}
     end
   end
 
@@ -91,11 +88,10 @@ class Runger::Loaders::YAML < Runger::Loaders::Base
   end
 
   def relative_config_path(path)
-    Pathname.new(path).then do |path|
-      if path.relative?
-        return path
-      end
-
+    path = Pathname.new(path)
+    if path.relative?
+      path
+    else
       path.relative_path_from(::Runger::Settings.app_root)
     end
   end

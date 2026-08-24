@@ -13,31 +13,24 @@ class Runger::EJSONParser
   end
 
   def call(file_path)
-    unless File.exist?(file_path)
-      return
-    end
+    if File.exist?(file_path)
+      raw_content = nil
 
-    raw_content = nil
+      stdout, stderr, status = Open3.capture3("#{bin_path} decrypt #{file_path}")
 
-    stdout, stderr, status = Open3.capture3("#{bin_path} decrypt #{file_path}")
-
-    if status.success?
-      raw_content = JSON.parse(stdout.chomp)
-    else
-      Kernel.warn("Failed to decrypt #{file_path}: #{stderr}")
-    end
-
-    unless raw_content
-      return
-    end
-
-    raw_content.deep_transform_keys do |key|
-      if key[0] == '_'
-        # rubocop:disable Performance/ArraySemiInfiniteRangeSlice
-        key[1..]
-        # rubocop:enable Performance/ArraySemiInfiniteRangeSlice
+      if status.success?
+        raw_content = JSON.parse(stdout.chomp)
       else
-        key
+        Kernel.warn("Failed to decrypt #{file_path}: #{stderr}")
+      end
+
+      raw_content&.deep_transform_keys do |key|
+        if key[0] == '_'
+          # rubocop:disable-next Performance/ArraySemiInfiniteRangeSlice
+          key[1..]
+        else
+          key
+        end
       end
     end
   end

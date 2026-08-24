@@ -14,11 +14,9 @@ class Runger::Generators::ConfigGenerator < Rails::Generators::NamedBase
   # check_class_collision suffix: "Config"
 
   def run_install_if_needed
-    if ::Rails.root.join(static_config_root, 'application_config.rb').exist?
-      return
+    unless ::Rails.root.join(static_config_root, 'application_config.rb').exist?
+      generate('runger:install')
     end
-
-    generate('runger:install')
   end
 
   def create_config
@@ -30,11 +28,9 @@ class Runger::Generators::ConfigGenerator < Rails::Generators::NamedBase
       options.fetch(:yml) do
         yes?("Would you like to generate a #{file_name}.yml file?")
       end
-    unless create_yml
-      return
+    if create_yml
+      template('config.yml', File.join('config', "#{file_name}.yml"))
     end
-
-    template('config.yml', File.join('config', "#{file_name}.yml"))
   end
 
   private

@@ -50,28 +50,28 @@ module Runger
 
       def option_parser_extensions
         if instance_variable_defined?(:@option_parser_extensions)
-          return @option_parser_extensions
+          @option_parser_extensions
+        else
+          @option_parser_extensions =
+            if superclass < Runger::Config
+              superclass.option_parser_extensions.dup
+            else
+              []
+            end
         end
-
-        @option_parser_extensions =
-          if superclass < Runger::Config
-            superclass.option_parser_extensions.dup
-          else
-            []
-          end
       end
 
       def option_parser_descriptors
         if instance_variable_defined?(:@option_parser_descriptors)
-          return @option_parser_descriptors
+          @option_parser_descriptors
+        else
+          @option_parser_descriptors =
+            if superclass < Runger::Config
+              superclass.option_parser_descriptors.deep_dup
+            else
+              Hash.new { |h, k| h[k] = {} }
+            end
         end
-
-        @option_parser_descriptors =
-          if superclass < Runger::Config
-            superclass.option_parser_descriptors.deep_dup
-          else
-            Hash.new { |h, k| h[k] = {} }
-          end
       end
     end
 

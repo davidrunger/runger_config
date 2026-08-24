@@ -9,27 +9,27 @@ module Runger
 
     class << self
       def call(val)
-        unless val.is_a?(::Hash) || val.is_a?(::String)
-          return val
-        end
-
-        case val
-        when Hash
-          val.transform_values { call(it) }
-        when ARRAY_RXP
-          val.split(/\s*,\s*/).map { call(it) }
-        when /\A(true|t|yes|y)\z/i
-          true
-        when /\A(false|f|no|n)\z/i
-          false
-        when /\A(nil|null)\z/i
-          nil
-        when /\A\d+\z/
-          Integer(val, 10)
-        when /\A\d*\.\d+\z/
-          Float(val)
-        when /\A['"].*['"]\z/
-          val.gsub(/(\A['"]|['"]\z)/, '')
+        if val.is_a?(::Hash) || val.is_a?(::String)
+          case val
+          when Hash
+            val.transform_values { call(it) }
+          when ARRAY_RXP
+            val.split(/\s*,\s*/).map { call(it) }
+          when /\A(true|t|yes|y)\z/i
+            true
+          when /\A(false|f|no|n)\z/i
+            false
+          when /\A(nil|null)\z/i
+            nil
+          when /\A\d+\z/
+            Integer(val, 10)
+          when /\A\d*\.\d+\z/
+            Float(val)
+          when /\A['"].*['"]\z/
+            val.gsub(/(\A['"]|['"]\z)/, '')
+          else
+            val
+          end
         else
           val
         end
