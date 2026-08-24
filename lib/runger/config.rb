@@ -106,14 +106,18 @@ module Runger # :nodoc:
         # Define predicate methods ("param?") for attributes
         # having `true` or `false` as default values
         new_defaults.each do |key, val|
-          next unless val.is_a?(TrueClass) || val.is_a?(FalseClass)
+          unless val.is_a?(TrueClass) || val.is_a?(FalseClass)
+            next
+          end
 
           alias_method(:"#{key}?", :"#{key}")
         end
       end
 
       def defaults
-        return @defaults if instance_variable_defined?(:@defaults)
+        if instance_variable_defined?(:@defaults)
+          return @defaults
+        end
 
         @defaults =
           if superclass < Runger::Config
@@ -124,7 +128,9 @@ module Runger # :nodoc:
       end
 
       def config_attributes
-        return @config_attributes if instance_variable_defined?(:@config_attributes)
+        if instance_variable_defined?(:@config_attributes)
+          return @config_attributes
+        end
 
         @config_attributes =
           if superclass < Runger::Config
@@ -143,14 +149,18 @@ module Runger # :nodoc:
           )
         end
 
-        return unless Settings.matching_env?(env)
+        unless Settings.matching_env?(env)
+          return
+        end
 
         required_attributes.push(*names)
         required_attributes.push(*nested.flatten_names)
       end
 
       def required_attributes
-        return @required_attributes if instance_variable_defined?(:@required_attributes)
+        if instance_variable_defined?(:@required_attributes)
+          return @required_attributes
+        end
 
         @required_attributes =
           if superclass < Runger::Config
@@ -176,7 +186,9 @@ module Runger # :nodoc:
       end
 
       def load_callbacks
-        return @load_callbacks if instance_variable_defined?(:@load_callbacks)
+        if instance_variable_defined?(:@load_callbacks)
+          return @load_callbacks
+        end
 
         @load_callbacks =
           if superclass <= Runger::Config
@@ -187,15 +199,21 @@ module Runger # :nodoc:
       end
 
       def config_name(val = nil)
-        return (@explicit_config_name = val.to_s) unless val.nil?
+        unless val.nil?
+          return (@explicit_config_name = val.to_s)
+        end
 
-        return @config_name if instance_variable_defined?(:@config_name)
+        if instance_variable_defined?(:@config_name)
+          return @config_name
+        end
 
         @config_name = explicit_config_name || build_config_name
       end
 
       def explicit_config_name
-        return @explicit_config_name if instance_variable_defined?(:@explicit_config_name)
+        if instance_variable_defined?(:@explicit_config_name)
+          return @explicit_config_name
+        end
 
         @explicit_config_name =
           if superclass.respond_to?(:explicit_config_name)
@@ -206,9 +224,13 @@ module Runger # :nodoc:
       def explicit_config_name? = !explicit_config_name.nil?
 
       def env_prefix(val = nil)
-        return (@env_prefix = val.to_s.upcase) unless val.nil?
+        unless val.nil?
+          return (@env_prefix = val.to_s.upcase)
+        end
 
-        return @env_prefix if instance_variable_defined?(:@env_prefix)
+        if instance_variable_defined?(:@env_prefix)
+          return @env_prefix
+        end
 
         @env_prefix =
           if superclass < Runger::Config && superclass.explicit_config_name?
@@ -219,9 +241,13 @@ module Runger # :nodoc:
       end
 
       def loader_options(val = nil)
-        return (@loader_options = val) unless val.nil?
+        unless val.nil?
+          return (@loader_options = val)
+        end
 
-        return @loader_options if instance_variable_defined?(:@loader_options)
+        if instance_variable_defined?(:@loader_options)
+          return @loader_options
+        end
 
         @loader_options =
           if superclass < Runger::Config
@@ -238,14 +264,18 @@ module Runger # :nodoc:
 
         mapping.each do |key, val|
           type = val.is_a?(::Hash) ? val[:type] : val
-          next if type != :boolean
+          if type != :boolean
+            next
+          end
 
           alias_method(:"#{key}?", :"#{key}")
         end
       end
 
       def coercion_mapping
-        return @coercion_mapping if instance_variable_defined?(:@coercion_mapping)
+        if instance_variable_defined?(:@coercion_mapping)
+          return @coercion_mapping
+        end
 
         @coercion_mapping =
           if superclass < Runger::Config
@@ -256,7 +286,9 @@ module Runger # :nodoc:
       end
 
       def type_caster(val = nil)
-        return @type_caster unless val.nil?
+        unless val.nil?
+          return @type_caster
+        end
 
         @type_caster ||=
           if coercion_mapping.empty?
@@ -267,9 +299,13 @@ module Runger # :nodoc:
       end
 
       def fallback_type_caster(val = nil)
-        return (@fallback_type_caster = val) unless val.nil?
+        unless val.nil?
+          return (@fallback_type_caster = val)
+        end
 
-        return @fallback_type_caster if instance_variable_defined?(:@fallback_type_caster)
+        if instance_variable_defined?(:@fallback_type_caster)
+          return @fallback_type_caster
+        end
 
         @fallback_type_caster =
           if superclass < Runger::Config
@@ -301,7 +337,9 @@ module Runger # :nodoc:
       end
 
       def accessors_module
-        return @accessors_module if instance_variable_defined?(:@accessors_module)
+        if instance_variable_defined?(:@accessors_module)
+          return @accessors_module
+        end
 
         @accessors_module =
           Module.new.tap do |mod|
@@ -325,7 +363,9 @@ module Runger # :nodoc:
 
       def validate_param_names!(names)
         invalid_names = names.grep_v(PARAM_NAME)
-        return if invalid_names.empty?
+        if invalid_names.empty?
+          return
+        end
 
         raise(
           ArgumentError,
@@ -351,7 +391,9 @@ module Runger # :nodoc:
     def initialize(overrides = nil)
       @config_name = self.class.config_name
 
-      raise(ArgumentError, 'Config name is missing') unless @config_name
+      unless @config_name
+        raise(ArgumentError, 'Config name is missing')
+      end
 
       @env_prefix = self.class.env_prefix
       @values = {}
@@ -475,7 +517,9 @@ module Runger # :nodoc:
         val = values.dig(*name.to_s.split('.').map(&:to_sym))
         val.nil? || (val.is_a?(String) && val.empty?)
       end.then do |missing|
-        next if missing.empty?
+        if missing.empty?
+          next
+        end
 
         raise_validation_error("The following config parameters for `#{self.class.name}(config_name: #{self.class.config_name})` are missing or empty: #{missing.join(', ')}")
       end
@@ -483,7 +527,9 @@ module Runger # :nodoc:
 
     def write_config_attr(key, val)
       key = key.to_sym
-      return unless self.class.config_attributes.include?(key)
+      unless self.class.config_attributes.include?(key)
+        return
+      end
 
       val = __type_caster__.coerce(key, val)
       public_send(:"#{key}=", val)

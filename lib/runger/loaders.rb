@@ -19,7 +19,9 @@ class Runger::Loaders::Registry
 
   def insert_before(another_id, id, handler = nil, &block)
     ind = registry.find_index { |(hid, _)| hid == another_id }
-    raise(ArgumentError, "Loader with ID #{another_id} hasn't been registered") if ind.nil?
+    if ind.nil?
+      raise(ArgumentError, "Loader with ID #{another_id} hasn't been registered")
+    end
 
     handler ||= block
     insert_at(ind, id, handler)
@@ -27,7 +29,9 @@ class Runger::Loaders::Registry
 
   def insert_after(another_id, id, handler = nil, &block)
     ind = registry.find_index { |(hid, _)| hid == another_id }
-    raise(ArgumentError, "Loader with ID #{another_id} hasn't been registered") if ind.nil?
+    if ind.nil?
+      raise(ArgumentError, "Loader with ID #{another_id} hasn't been registered")
+    end
 
     handler ||= block
     insert_at(ind + 1, id, handler)
@@ -35,7 +39,9 @@ class Runger::Loaders::Registry
 
   def override(id, handler)
     find(id).then do |id_to_handler|
-      raise(ArgumentError, "Loader with ID #{id} hasn't been registered") if id_to_handler.nil?
+      if id_to_handler.nil?
+        raise(ArgumentError, "Loader with ID #{id} hasn't been registered")
+      end
 
       id_to_handler[1] = handler
     end
@@ -43,7 +49,9 @@ class Runger::Loaders::Registry
 
   def delete(id)
     find(id).then do |id_to_handler|
-      raise(ArgumentError, "Loader with ID #{id} hasn't been registered") if id_to_handler.nil?
+      if id_to_handler.nil?
+        raise(ArgumentError, "Loader with ID #{id} hasn't been registered")
+      end
 
       registry.delete(id_to_handler)
     end
@@ -58,7 +66,9 @@ class Runger::Loaders::Registry
   private
 
   def insert_at(index, id, handler)
-    raise(ArgumentError, "Loader with ID #{id} has been already registered") unless find(id).nil?
+    unless find(id).nil?
+      raise(ArgumentError, "Loader with ID #{id} has been already registered")
+    end
 
     registry.insert(index, [id, handler])
   end

@@ -40,14 +40,18 @@ module Runger
       def option_parser_options
         config_attributes.each_with_object({}) do |key, result|
           descriptor = option_parser_descriptors[key.to_s]
-          next if descriptor[:ignore] == true
+          if descriptor[:ignore] == true
+            next
+          end
 
           result[key] = descriptor
         end
       end
 
       def option_parser_extensions
-        return @option_parser_extensions if instance_variable_defined?(:@option_parser_extensions)
+        if instance_variable_defined?(:@option_parser_extensions)
+          return @option_parser_extensions
+        end
 
         @option_parser_extensions =
           if superclass < Runger::Config
@@ -58,7 +62,9 @@ module Runger
       end
 
       def option_parser_descriptors
-        return @option_parser_descriptors if instance_variable_defined?(:@option_parser_descriptors)
+        if instance_variable_defined?(:@option_parser_descriptors)
+          return @option_parser_descriptors
+        end
 
         @option_parser_descriptors =
           if superclass < Runger::Config

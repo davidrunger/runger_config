@@ -9,7 +9,9 @@ module Runger
 
     class << self
       def call(val)
-        return val unless val.is_a?(::Hash) || val.is_a?(::String)
+        unless val.is_a?(::Hash) || val.is_a?(::String)
+          return val
+        end
 
         case val
         when Hash

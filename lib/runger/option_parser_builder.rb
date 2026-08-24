@@ -18,9 +18,17 @@ class Runger::OptionParserBuilder
     private
 
     def option_parser_on_args(key, flag: false, desc: nil, type: ::String)
-      on_args = ["--#{key.to_s.tr('_', '-')}#{' VALUE' unless flag}"]
-      on_args << type unless flag
-      on_args << desc unless desc.nil?
+      on_args = [
+        "--#{key.to_s.tr('_', '-')}#{unless flag
+                                       ' VALUE'
+                                     end}",
+      ]
+      unless flag
+        on_args << type
+      end
+      unless desc.nil?
+        on_args << desc
+      end
       on_args
     end
   end

@@ -18,7 +18,9 @@ class Dummy::Application < Rails::Application
     inflect.acronym('API')
   end
 
-  config.autoloader = :zeitwerk if defined?(::Zeitwerk)
+  if defined?(::Zeitwerk)
+    config.autoloader = :zeitwerk
+  end
 
   config.runger_config.use_local_files = false
   if ENV['USE_APP_CONFIGS'] == '1'

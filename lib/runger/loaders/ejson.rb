@@ -24,7 +24,9 @@ class Runger::Loaders::EJSON < Runger::Loaders::Base
           rel_config_path:,
         )
 
-      next unless secrets_hash
+      unless secrets_hash
+        next
+      end
 
       config_hash =
         if ejson_namespace
@@ -33,7 +35,9 @@ class Runger::Loaders::EJSON < Runger::Loaders::Base
           secrets_hash.except('_public_key')
         end
 
-      next unless config_hash.is_a?(Hash)
+      unless config_hash.is_a?(Hash)
+        next
+      end
 
       configs <<
         trace!(:ejson, path: rel_path) do
@@ -41,7 +45,9 @@ class Runger::Loaders::EJSON < Runger::Loaders::Base
         end
     end
 
-    return {} if configs.empty?
+    if configs.empty?
+      return {}
+    end
 
     configs.inject do |result_config, next_config|
       ::Runger::Utils.deep_merge!(result_config, next_config)
@@ -53,7 +59,9 @@ class Runger::Loaders::EJSON < Runger::Loaders::Base
   def rel_config_paths
     chain = [environmental_rel_config_path]
 
-    chain << 'secrets.local.ejson' if use_local?
+    if use_local?
+      chain << 'secrets.local.ejson'
+    end
 
     chain
   end
@@ -83,7 +91,9 @@ class Runger::Loaders::EJSON < Runger::Loaders::Base
 
       result = ejson_parser.call(abs_path)
 
-      return [result, rel_path] if result
+      if result
+        return [result, rel_path]
+      end
     end
 
     nil

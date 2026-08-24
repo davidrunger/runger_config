@@ -39,7 +39,9 @@ module Runger # :nodoc:
 
   # Configure default loaders
   loaders.append(:yml, Loaders::YAML)
-  loaders.append(:ejson, Loaders::EJSON) if Utils.which('ejson')
+  if Utils.which('ejson')
+    loaders.append(:ejson, Loaders::EJSON)
+  end
   loaders.append(:env, Loaders::Env)
 
   if ENV.key?('DOPPLER_TOKEN') && ENV['RUNGER_CONFIG_DISABLE_DOPPLER'] != 'true'
@@ -53,4 +55,6 @@ else
   require 'runger/rails/autoload'
 end
 
-require 'runger/testing' if ENV['RACK_ENV'] == 'test' || ENV['RAILS_ENV'] == 'test'
+if ENV['RACK_ENV'] == 'test' || ENV['RAILS_ENV'] == 'test'
+  require 'runger/testing'
+end

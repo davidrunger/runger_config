@@ -4,4 +4,6 @@
 require_relative 'application'
 
 # Initialize the Rails application.
-Dummy::Application.initialize! unless ENV['DO_NOT_INITIALIZE_RAILS'] == '1'
+unless ENV['DO_NOT_INITIALIZE_RAILS'] == '1'
+  Dummy::Application.initialize!
+end

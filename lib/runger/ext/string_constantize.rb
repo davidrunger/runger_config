@@ -6,15 +6,23 @@ module Runger::Ext::StringConstantize
     def safe_constantize
       names = split('::')
 
-      return nil if names.empty?
+      if names.empty?
+        return nil
+      end
 
       # Remove the first blank element in case of '::ClassName' notation.
-      names.shift if names.size > 1 && names.first.empty?
+      if names.size > 1 && names.first.empty?
+        names.shift
+      end
 
       names.inject(Object) do |constant, name|
-        break if constant.nil?
+        if constant.nil?
+          break
+        end
 
-        constant.const_get(name, false) if constant.const_defined?(name, false)
+        if constant.const_defined?(name, false)
+          constant.const_get(name, false)
+        end
       end
     end
   end

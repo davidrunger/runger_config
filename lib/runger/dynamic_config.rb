@@ -17,7 +17,9 @@ module Runger::DynamicConfig
       options[:config_path] ||= config.resolve_config_path(name, options[:env_prefix])
 
       raw_config = config.load_from_sources(new_empty_config, name:, **options)
-      return raw_config unless auto_cast
+      unless auto_cast
+        return raw_config
+      end
 
       ::Runger::AutoCast.call(raw_config)
     end

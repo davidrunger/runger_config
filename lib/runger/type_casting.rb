@@ -25,7 +25,9 @@ module Runger
     end
 
     def deserialize(raw, type_id, array: false)
-      return if raw.nil?
+      if raw.nil?
+        return
+      end
 
       caster =
         if type_id.is_a?(Symbol) || type_id.nil?
@@ -67,29 +69,45 @@ module Runger
     obj.accept(:float, &:to_f)
 
     obj.accept(:date) do |dateish|
-      require 'date' unless defined?(::Date)
+      unless defined?(::Date)
+        require 'date'
+      end
 
-      next dateish if dateish.is_a?(::Date)
+      if dateish.is_a?(::Date)
+        next dateish
+      end
 
-      next dateish.to_date if dateish.respond_to?(:to_date)
+      if dateish.respond_to?(:to_date)
+        next dateish.to_date
+      end
 
       ::Date.parse(dateish)
     end
 
     obj.accept(:datetime) do |datetimeish|
-      require 'date' unless defined?(::Date)
+      unless defined?(::Date)
+        require 'date'
+      end
 
-      next datetimeish if datetimeish.is_a?(::DateTime)
+      if datetimeish.is_a?(::DateTime)
+        next datetimeish
+      end
 
-      next datetimeish.to_datetime if datetimeish.respond_to?(:to_datetime)
+      if datetimeish.respond_to?(:to_datetime)
+        next datetimeish.to_datetime
+      end
 
       ::DateTime.parse(datetimeish)
     end
 
     obj.accept(:uri) do |uriish|
-      require 'uri' unless defined?(::URI)
+      unless defined?(::URI)
+        require 'uri'
+      end
 
-      next uriish if uriish.is_a?(::URI)
+      if uriish.is_a?(::URI)
+        next uriish
+      end
 
       ::URI.parse(uriish)
     end
@@ -120,22 +138,32 @@ module Runger
     def coerce(key, val, config: mapping)
       caster_config = config[key.to_sym]
 
-      return fallback.coerce(key, val) unless caster_config
+      unless caster_config
+        return fallback.coerce(key, val)
+      end
 
       case caster_config
       in Hash[array:, type:, **nil]
         registry.deserialize(val, type, array:)
       in Hash[config: subconfig]
-        subconfig = subconfig.safe_constantize if subconfig.is_a?(::String)
-        raise(ArgumentError, "Config is not found: #{subconfig}") unless subconfig
+        if subconfig.is_a?(::String)
+          subconfig = subconfig.safe_constantize
+        end
+        unless subconfig
+          raise(ArgumentError, "Config is not found: #{subconfig}")
+        end
 
         subconfig.new(val)
       in Hash
-        return val unless val.is_a?(Hash)
+        unless val.is_a?(Hash)
+          return val
+        end
 
         caster_config.each_key do |k|
           ks = k.to_s
-          next unless val.key?(ks)
+          unless val.key?(ks)
+            next
+          end
 
           val[ks] = coerce(k, val[ks], config: caster_config)
         end

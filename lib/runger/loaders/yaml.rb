@@ -14,7 +14,9 @@ class Runger::Loaders::YAML < Runger::Loaders::Base
         environmental?(config) ? config_with_env(config) : config
       end
 
-    return base_config unless use_local?
+    unless use_local?
+      return base_config
+    end
 
     local_path = local_config_path(config_path)
     local_config =
@@ -28,11 +30,17 @@ class Runger::Loaders::YAML < Runger::Loaders::Base
 
   def environmental?(parsed_yml)
     # strange, but still possible
-    return true if ::Runger::Settings.default_environmental_key? && parsed_yml.key?(::Runger::Settings.default_environmental_key)
+    if ::Runger::Settings.default_environmental_key? && parsed_yml.key?(::Runger::Settings.default_environmental_key)
+      return true
+    end
     # possible
-    return true if !::Runger::Settings.future.unwrap_known_environments && ::Runger::Settings.current_environment
+    if !::Runger::Settings.future.unwrap_known_environments && ::Runger::Settings.current_environment
+      return true
+    end
     # for other environments
-    return true if ::Runger::Settings.known_environments&.any? { parsed_yml.key?(it) }
+    if ::Runger::Settings.known_environments&.any? { parsed_yml.key?(it) }
+      return true
+    end
 
     # preferred
     parsed_yml.key?(::Runger::Settings.current_environment)
@@ -40,16 +48,22 @@ class Runger::Loaders::YAML < Runger::Loaders::Base
 
   def config_with_env(config)
     env_config = config[::Runger::Settings.current_environment] || {}
-    return env_config unless ::Runger::Settings.default_environmental_key?
+    unless ::Runger::Settings.default_environmental_key?
+      return env_config
+    end
 
     default_config = config[::Runger::Settings.default_environmental_key] || {}
     ::Runger::Utils.deep_merge!(default_config, env_config)
   end
 
   def parse_yml(path)
-    return {} unless File.file?(path)
+    unless File.file?(path)
+      return {}
+    end
 
-    require 'yaml' unless defined?(::YAML)
+    unless defined?(::YAML)
+      require 'yaml'
+    end
 
     # By default, YAML load will return `false` when the yaml document is
     # empty. When this occurs, we return an empty hash instead, to match
@@ -78,7 +92,9 @@ class Runger::Loaders::YAML < Runger::Loaders::Base
 
   def relative_config_path(path)
     Pathname.new(path).then do |path|
-      return path if path.relative?
+      if path.relative?
+        return path
+      end
 
       path.relative_path_from(::Runger::Settings.app_root)
     end

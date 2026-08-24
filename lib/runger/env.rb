@@ -39,7 +39,9 @@ class Runger::Env
   end
 
   def fetch(prefix)
-    return data[prefix].deep_dup if data.key?(prefix)
+    if data.key?(prefix)
+      return data[prefix].deep_dup
+    end
 
     ::Runger::Tracing.capture do
       data[prefix] = parse_env(prefix)
@@ -59,7 +61,9 @@ class Runger::Env
   def parse_env(prefix)
     match_prefix = prefix.empty? ? prefix : "#{prefix}_"
     env_container.each_pair.with_object({}) do |(key, val), data|
-      next unless key.start_with?(match_prefix)
+      unless key.start_with?(match_prefix)
+        next
+      end
 
       path = key.sub(/^#{match_prefix}/, '').downcase
 
